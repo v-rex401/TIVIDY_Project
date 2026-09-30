@@ -1,4 +1,4 @@
 # TIVIDY_Project
 <img width="600" height="327" alt="image" src="https://github.com/user-attachments/assets/ffd7b821-1ab2-42e9-b79c-d4c8392ee720" />
-<img width="1280" height="720" alt="meme2" src="https://github.com/user-attachments/assets/b3a250a4-947e-473e-a9b5-1db8c14b003c" />
+<img width="600" height="327" alt="meme2" src="https://github.com/user-attachments/assets/b3a250a4-947e-473e-a9b5-1db8c14b003c" />
 
