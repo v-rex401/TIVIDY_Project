@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Compile
-        run: g++ -std=c++11 -Wall -Wextra -o main src/*.cpp
+        run: g++ -std=c++11 -Wall -Wextra -o main $(find src -name '*.cpp')
 
       - name: Run
         run: ./main
