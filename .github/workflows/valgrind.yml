@@ -16,7 +16,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y valgrind
 
       - name: Compile with debug info
-        run: g++ -std=c++11 -g -o main src/*.cpp
+        run: g++ -std=c++11 -g -o main $(find src -name '*.cpp')
 
       - name: Run under Valgrind
         run: valgrind --leak-check=full --error-exitcode=1 ./main
