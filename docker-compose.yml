@@ -1,0 +1,8 @@
+services:
+  tividy:
+    build: .
+    stdin_open: true
+    tty: true
+  tests:
+    build: .
+    command: make test

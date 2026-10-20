@@ -1,0 +1,13 @@
+{
+  "configurations": [
+    {
+      "name": "Mac",
+      "includePath": [
+        "${workspaceFolder}/include",
+        "${workspaceFolder}/build/_deps/googletest-src/googletest/include"
+      ],
+      "cppStandard": "c++11"
+    }
+  ],
+  "version": 4
+}

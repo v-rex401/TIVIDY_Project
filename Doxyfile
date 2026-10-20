@@ -1,0 +1,34 @@
+# Doxyfile for TIVIDY
+# Generate with:  doxygen Doxyfile      Output: docs/html/index.html
+
+PROJECT_NAME = "TIVIDY"
+PROJECT_BRIEF = "Generic Workflow Management System"
+PROJECT_NUMBER = 1.0
+
+INPUT = src include
+RECURSIVE = YES
+FILE_PATTERNS = *.cpp *.h *.hpp
+
+OUTPUT_DIRECTORY = docs
+GENERATE_HTML = YES
+GENERATE_LATEX = NO
+
+# Document everything, including members with no comment yet,
+# so the output is useful while the code is still being written.
+EXTRACT_ALL = YES
+EXTRACT_PRIVATE = YES
+EXTRACT_STATIC = YES
+
+# Warn about undocumented things
+QUIET = YES
+WARNINGS = YES
+WARN_IF_UNDOCUMENTED = YES
+WARN_NO_PARAMDOC = YES
+
+# Diagrams. Inheritance/collaboration graphs are built in
+# Set HAVE_DOT = YES only if Graphviz is installed (brew install graphviz).
+HAVE_DOT = NO
+
+JAVADOC_AUTOBRIEF = YES
+OPTIMIZE_OUTPUT_FOR_C = NO
+SOURCE_BROWSER = YES

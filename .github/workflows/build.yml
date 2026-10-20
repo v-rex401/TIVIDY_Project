@@ -4,7 +4,7 @@ name: Build
 on:
   pull_request:
     branches: [ "main", "dev"]
-  push: 
+  push:
     branches: ["main", "dev"]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Compile
-        run: g++ -std=c++11 -Wall -Wextra -o main $(find src -name '*.cpp')
+        run: g++ -std=c++11 -Wall -Wextra -Iinclude -o main $(find src -name '*.cpp')
 
       - name: Run
-        run: ./main
+        run: ./main < /dev/null
