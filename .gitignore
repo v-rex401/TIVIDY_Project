@@ -2,4 +2,6 @@ build/
 *.o
 *.out
 .DS_Store
-docs/html
+docs/html/
+html/
+latex/
