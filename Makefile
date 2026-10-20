@@ -1,3 +1,5 @@
+.PHONY: all docs run test clean
+
 all:
 	cmake -S . -B build && cmake --build build
 
