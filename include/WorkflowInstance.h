@@ -15,6 +15,11 @@ class EventLog;
 class Observer;
 class WorkflowVisitor;
 
+/**
+ * @brief The main context class that manages a workflow.
+ * It interacts with the State, Memento, and Observer pattern.
+ */
+
 class WorkflowInstance : public WorkFlowSubject {
 
 private:
@@ -27,7 +32,22 @@ private:
 	EventLog* eventLog;
 
 public:
+
+	/**
+	 * @brief Constructs a new WorkflowInstance.
+	 */
+	WorkflowInstance();
+
+	/**
+	 * @brief Creates a Memento that contains a snapshot of the current state.
+	 * @return A pointer to the newly created Memento.
+	 */
 	Memento* createMemento();
+
+	/**
+	 * @brief Restores the state of the workflow from a Memento.
+	 * @package m Pointer to the Memento to restore from.
+	 */
 	void setMemento(Memento* m);
 
 	void attach(Observer* o) override;
