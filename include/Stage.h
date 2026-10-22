@@ -1,32 +1,37 @@
 #ifndef STAGE_H
 #define STAGE_H
 
+#include <string>
+#include <vector>
+
+#include "WorkItem.h"
+
 class Stage : WorkItem {
 
 private:
-	string name;
-	string title;
-	vector<WorkItem2*> members;
+	std::string name;
+	std::string title;
+	std::vector<WorkItem*> members;
 	Staff* responsible;
 
 public:
-	void addMember(WorkItem2* c);
+	void addMember(WorkItem* c);
 
-	void removeMember(WorkItem2* c);
+	void removeMember(WorkItem* c);
 
 	void handleRequest();
 
-	void setNextHandler(WorkItem2* next);
+	void setNextHandler(WorkItem* next);
 
 	void accept(WorkflowVisitor* v);
 
-	WorkflowItem* clone();
+	WorkItem* clone();
 
-	string getName();
+	std::string getName();
 
-	string getTitle();
+	std::string getTitle();
 
-	void printHierarchy(string indent);
+	void printHierarchy(std::string indent);
 };
 
 #endif
