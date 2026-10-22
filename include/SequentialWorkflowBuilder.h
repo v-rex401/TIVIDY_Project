@@ -25,17 +25,17 @@ public:
 	/**
 	 * @brief Builds a stage in the workflow
 	 */
-	void buildStage(std::string name);
+	void buildStage(std::string name) override;
 
 	/**
 	 * @brief Builds a task within a stage in the workflow
 	 */
-	void buildTask(std::string stageName, std::string title);
+	void buildTask(std::string stageName, std::string title) override;
 
 	/**
 	 * @brief Links the workflow handlers
 	 */
-	void linkHandlers();
+	void linkHandlers() override;
 
 	/**
 	 * @brief Builds a transition between workflow stages
