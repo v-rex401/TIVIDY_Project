@@ -4,7 +4,8 @@
 #include <string>
 
 #include "WorkflowBuilder.h"
-#include "WorkflowDefinition.h"
+
+class WorkflowDefinition;
 
 class SequentialWorkflowBuilder : public WorkflowBuilder {
 
