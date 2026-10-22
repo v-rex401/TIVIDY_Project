@@ -1,0 +1,34 @@
+name: "Auto Merge Branch" 
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!dev'
+      - '!main'
+
+permissions: 
+  contents: write
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  merge-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 #fetches full history so fit can calculate merge 
+
+      - name: Set up git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge dev into current branch
+        run: |
+          CURRENT_BRANCH="${{github.ref_name}}"
+          echo "Target branch is $CURRENT_BRANCH"
+          git checkout $CURRENT_BRANCH
+          git fetch origin dev
+          git merge origin/dev --no-edit 
+          git push origin $CURRENT_BRANCH

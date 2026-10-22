@@ -1,13 +1,20 @@
 #ifndef REJECT_H
 #define REJECT_H
 
-class Reject : Command {
-
-
+#include "Command.h"
+/**
+ * @brief ConcreteCommand: Reject a pending approval so that the work is sent back for reassessment
+ * Receiver is the WorkflowInstance passed at construction (not owned).
+ */
+class Reject : public Command {
 public:
-	void execute();
-
-	void undo();
+    /** @param receiver The WorkflowInstance this command acts on (not owned). */
+    explicit Reject(WorkflowInstance* receiver);
+    ~Reject();
+    /** @brief Carry out this action on the receiver. */
+    void execute() override;
+    /** @brief Reverse this action on the receiver where possible. */
+    void undo() override;
 };
 
-#endif
+#endif // REJECT_H
