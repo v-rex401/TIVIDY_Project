@@ -1,18 +1,18 @@
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
+#include <string>
+#include "Staff.h"
 
-class Employee : Staff {
+class Employee : public Staff {
 
 private:
-	String name;
-	String title;
+	std::string name;
+	std::string title;
 	int rank;
 
 public:
-	String getName();
-
-	String getTitle();
-
+	std::string getName();
+	std::string getTitle();
 	int getRank();
 };
 
