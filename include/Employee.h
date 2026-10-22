@@ -11,6 +11,11 @@ private:
 	int rank;
 
 public:
+	/**
+	 * @brief The default constructor for an Employee.
+	 */
+	Employee() = default;
+	~Employee() = default;
 	std::string getName();
 	std::string getTitle();
 	int getRank();
