@@ -1,11 +1,18 @@
 #ifndef WORKFLOWDEFINITION_H
 #define WORKFLOWDEFINITION_H
 
+#include <string>
+#include <vector>
+
+class WorkItem;
+class WorkflowVisitor;
+class WorkflowBuilder;
+
 class WorkflowDefinition {
 
 private:
-	string name;
-	vector<WorkItem*> stages;
+	std::string name;
+	std::vector<WorkItem*> stages;
 
 public:
 	void accept(WorkflowVisitor* wv);
@@ -14,7 +21,7 @@ public:
 
 	void addStage(WorkItem* s);
 
-	vector<WorkItem*>* getStages();
+	std::vector<WorkItem*>* getStages();
 
 	void setBuilder(WorkflowBuilder* b);
 };
