@@ -6,7 +6,7 @@
 
 #include "WorkItem.h"
 
-class Stage : WorkItem {
+class Stage : public WorkItem {
 
 private:
 	std::string name;
