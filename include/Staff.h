@@ -8,6 +8,10 @@ private:
 	Staff* successor;
 
 public:
+	/**
+	 * @brief Virtual destructor the Staff interface. 
+	 * It ensures proper cleanup of derived Employee and Team objects when deleted via a Staff pointer.
+	 */
 	virtual ~Staff() = default;
 };
 
