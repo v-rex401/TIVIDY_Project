@@ -1,7 +1,8 @@
 #ifndef PENDING_H
 #define PENDING_H
+#include "State.h"
 
-class Pending : State {
+class Pending : public State {
 
 
 public:

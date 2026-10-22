@@ -1,7 +1,8 @@
 #ifndef COMPLETED_H
 #define COMPLETED_H
+#include "State.h"
 
-class Completed : State {
+class Completed : public State {
 
 
 public:

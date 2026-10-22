@@ -1,23 +1,28 @@
 #ifndef TEAM_H
 #define TEAM_H
+#include <vector>
+#include <string>
+#include "Staff.h"
 
-class Team : Staff {
+class Team : public Staff {
 
 private:
-	String name;
-	String title;
+	std::string name;
+	std::string title;
 	int rank;
-	vector<Staff*> members;
+	std::vector<Staff*> members;
 
 public:
-	String getName();
-
-	String getTitle();
-
+	/**
+	 * @brief This constructs a Team.
+	 * It initializes an empty team ready to have members added to it.
+	 */
+	Team() = default;
+	~Team() = default;
+	std::string getName();
+	std::string getTitle();
 	void operation();
-
-	void printHierarchy(String indent);
-
+	void printHierarchy(std::string indent);
 	int getRank();
 };
 
