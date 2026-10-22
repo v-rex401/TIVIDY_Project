@@ -13,6 +13,12 @@ private:
 	std::vector<Staff*> members;
 
 public:
+	/**
+	 * @brief This constructs a Team.
+	 * It initializes an empty team ready to have members added to it.
+	 */
+	Team() = default;
+	~Team() = default;
 	std::string getName();
 	std::string getTitle();
 	void operation();
