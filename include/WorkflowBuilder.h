@@ -24,6 +24,8 @@ public:
 	void setInitialData(std::string key, std::string value);
 
 	void buildDefinition(std::string name);
+
+	virtual ~WorkflowBuilder()  = default;
 };
 
 #endif
