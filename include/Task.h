@@ -18,19 +18,19 @@ private:
 	Staff responsible;
 
 public:
-	std::string getName();
+	std::string getName() override;
 
-	std::string getTitle();
+	std::string getTitle() override;
 
 	/**
 	 * @brief Print the tasks in a workflow hierarchy
 	 */
-	void printHierarchy(std::string indent);
+	void printHierarchy(std::string indent) override;
 
 	/**
 	 * @brief Handle a workflow request in the chain
 	 */
-	void handleRequest();
+	void handleRequest() override;
 
 	/**
 	 * @brief Set the next handler in the chain

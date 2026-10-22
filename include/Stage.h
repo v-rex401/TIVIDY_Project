@@ -32,7 +32,7 @@ public:
 	/**
 	 * @brief Handle a workflow request in the chain
 	 */
-	void handleRequest();
+	void handleRequest() override;
 	
 	/**
 	 * @brief Set the next handler in the chain
@@ -49,14 +49,14 @@ public:
 	 */
 	WorkItem* clone();
 
-	std::string getName();
+	std::string getName() override;
 
-	std::string getTitle();
+	std::string getTitle() override;
 
 	/**
 	 * @brief Print the stage hierarchy
 	 */
-	void printHierarchy(std::string indent);
+	void printHierarchy(std::string indent) override;
 };
 
 #endif
