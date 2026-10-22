@@ -1,19 +1,24 @@
 #ifndef TASK_H
 #define TASK_H
 
-class Task : WorkItem {
+#include <string>
+
+#include "WorkItem.h"
+#include "Staff.h"
+
+class Task : public WorkItem {
 
 private:
-	String name;
-	String title;
+	std::string name;
+	std::string title;
 	Staff responsible;
 
 public:
-	String getName();
+	std::string getName();
 
-	String getTitle();
+	std::string getTitle();
 
-	void printHierarchy(String indent);
+	void printHierarchy(std::string indent);
 
 	void handleRequest();
 
