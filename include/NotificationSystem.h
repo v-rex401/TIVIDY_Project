@@ -22,6 +22,12 @@ public:
 	NotificationSystem();
 	/** @brief The vendor's own call. Note the name differs from ExternalSystem::request(). */
 	void sendNotification();
+
+	/**
+	 * @brief Number of notifications sent so far
+	 * @return The send count
+	 */
+	int getSentCount() const;
 };
 
 #endif

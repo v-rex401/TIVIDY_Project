@@ -18,3 +18,7 @@ void NotificationSystem::sendNotification() {
 	this->sentCount++;
 	cout<<"[NotificationSystem] "<<this->lastMessage<<std::endl;
 }
+
+int NotificationSystem::getSentCount() const{
+	return this->sentCount;
+}
