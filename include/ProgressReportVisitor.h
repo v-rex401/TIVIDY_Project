@@ -14,7 +14,7 @@ private:
 public:
 	void visitStage(Stage *s);
 
-	void visitTask(Task *Task);
+	void visitTask(Task *t);
 
 	void visitWorkItem(WorkItem *w);
 
