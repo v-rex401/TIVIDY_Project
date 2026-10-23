@@ -1,29 +1,70 @@
 #ifndef SEQUENTIALWORKFLOWBUILDER_H
 #define SEQUENTIALWORKFLOWBUILDER_H
 
-class SequentialWorkflowBuilder : WorkflowBuilder {
+#include <string>
 
-public:
+#include "WorkflowBuilder.h"
+
+class WorkflowDefinition;
+
+/**
+ * @brief Concrete builder for constructing sequential workflow definitions
+ */
+
+class SequentialWorkflowBuilder : public WorkflowBuilder {
+
+private:
 	WorkflowDefinition* definition;
 
-	void buildDefinition(string name);
+public:
+	/**
+	 * @brief Builds a workflow definition
+	 */
+	void buildDefinition(std::string name);
 
-	void buildStage(string name);
+	/**
+	 * @brief Builds a stage in the workflow
+	 */
+	void buildStage(std::string name) override;
 
-	void buildTask(string stageName, string title);
+	/**
+	 * @brief Builds a task within a stage in the workflow
+	 */
+	void buildTask(std::string stageName, std::string title) override;
 
-	void linkHandlers();
+	/**
+	 * @brief Links the workflow handlers
+	 */
+	void linkHandlers() override;
 
-	void buildTransition(string from, string to);
+	/**
+	 * @brief Builds a transition between workflow stages
+	 */
+	void buildTransition(std::string from, std::string to);
 
-	void buildParticipantSlot(string stageName, string role);
+	/**
+	 * @brief Builds a participant slot for a stage in the workflow
+	 */
+	void buildParticipantSlot(std::string stageName, std::string role);
 
-	void setAssignmentStrategyType(string type);
+	/**
+	 * @brief Sets the assignment strategy type for the workflow
+	 */
+	void setAssignmentStrategyType(std::string type);
 
-	void setRoutingStrategyType(string type);
+	/**
+	 * @brief Sets the routing strategy type for the workflow
+	 */
+	void setRoutingStrategyType(std::string type);
 
-	void setInitialData(string key, string value);
+	/**
+	 * @brief Sets the initial data for the workflow
+	 */
+	void setInitialData(std::string key, std::string value);
 
+	/**
+	 * @brief Retrieves the constructed workflow definition
+	 */
 	WorkflowDefinition* getWorkflowDefinition();
 };
 
