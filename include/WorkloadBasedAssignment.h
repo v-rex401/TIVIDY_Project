@@ -1,8 +1,9 @@
 #ifndef WORKLOADBASEDASSIGNMENT_H
 #define WORKLOADBASEDASSIGNMENT_H
 
-class WorkloadBasedAssignment : AssignmentStrategy {
+#include "AssignmentStrategy.h"
 
+class WorkloadBasedAssignment : public AssignmentStrategy {
 
 public:
 	Staff* selectAssignmentItem(WorkItem* item, WorkflowInstance* context);
