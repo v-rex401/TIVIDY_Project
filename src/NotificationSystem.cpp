@@ -22,3 +22,7 @@ void NotificationSystem::sendNotification() {
 int NotificationSystem::getSentCount() const{
 	return this->sentCount;
 }
+
+string NotificationSystem::getLastMessage() const{
+	return this->lastMessage;
+}

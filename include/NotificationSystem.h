@@ -28,6 +28,12 @@ public:
 	 * @return The send count
 	 */
 	int getSentCount() const;
+
+	/**
+	 * @brief Text of the most recent notification
+	 * @return The message or empty string if nothing has been sent
+	 */
+	string getLastMessage() const;
 };
 
 #endif
