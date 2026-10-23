@@ -3,12 +3,16 @@
 
 #include <vector>
 #include "AssignmentStrategy.h"
+#include "AssignmentRule.h"
+#include "RuleEngine.h"
 
 class RuleBasedAssignment : public AssignmentStrategy {
 
-public:
+private:
 	std::vector<AssignmentRule> rules;
+	RuleEngine ruleEngine;
 
+public:
 	Staff* selectAssignmentItem(WorkItem* item, WorkflowInstance* context);
 };
 
