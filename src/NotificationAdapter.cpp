@@ -15,6 +15,8 @@ NotificationAdapter::~NotificationAdapter() {
 }
 
 void NotificationAdapter::request() {
-	// TODO - implement NotificationAdapter::request
-	throw "Not yet implemented";
+	if(this->adaptee == NULL){
+		return;
+	}
+	this->adaptee->sendNotification();
 }
