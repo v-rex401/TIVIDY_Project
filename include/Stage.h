@@ -1,32 +1,62 @@
 #ifndef STAGE_H
 #define STAGE_H
 
-class Stage : WorkItem {
+#include <string>
+#include <vector>
+
+#include "WorkItem.h"
+
+/**
+ * @brief Represents a stage (that contains work items) in a workflow
+ */
+
+class Stage : public WorkItem {
 
 private:
-	string name;
-	string title;
-	vector<WorkItem2*> members;
+	std::string name;
+	std::string title;
+	std::vector<WorkItem*> members;
 	Staff* responsible;
 
 public:
-	void addMember(WorkItem2* c);
+	/**
+	 * @brief Add a work item to the stage
+	 */
+	void addMember(WorkItem* c);
 
-	void removeMember(WorkItem2* c);
+	/**
+	 * @brief Remove a work item from the stage
+	 */
+	void removeMember(WorkItem* c);
 
-	void handleRequest();
+	/**
+	 * @brief Handle a workflow request in the chain
+	 */
+	void handleRequest() override;
+	
+	/**
+	 * @brief Set the next handler in the chain
+	 */
+	void setNextHandler(WorkItem* next);
 
-	void setNextHandler(WorkItem2* next);
-
+	/**
+	 * @brief Accept a workflow visitor
+	 */
 	void accept(WorkflowVisitor* v);
 
-	WorkflowItem* clone();
+	/**
+	 * @brief Create a clone of the stage
+	 */
+	WorkItem* clone();
 
-	string getName();
+	std::string getName() override;
 
-	string getTitle();
+	std::string getTitle() override;
 
-	void printHierarchy(string indent);
+	/**
+	 * @brief Print the stage hierarchy
+	 */
+	void printHierarchy(std::string indent) override;
 };
 
 #endif

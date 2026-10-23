@@ -1,22 +1,40 @@
 #ifndef TASK_H
 #define TASK_H
 
-class Task : WorkItem {
+#include <string>
+
+#include "WorkItem.h"
+#include "Staff.h"
+
+/**
+ * @brief Represents a task in a workflow
+ */
+
+class Task : public WorkItem {
 
 private:
-	String name;
-	String title;
+	std::string name;
+	std::string title;
 	Staff responsible;
 
 public:
-	String getName();
+	std::string getName() override;
 
-	String getTitle();
+	std::string getTitle() override;
 
-	void printHierarchy(String indent);
+	/**
+	 * @brief Print the tasks in a workflow hierarchy
+	 */
+	void printHierarchy(std::string indent) override;
 
-	void handleRequest();
+	/**
+	 * @brief Handle a workflow request in the chain
+	 */
+	void handleRequest() override;
 
+	/**
+	 * @brief Set the next handler in the chain
+	 */
 	void setNextHandler(WorkItem* next);
 };
 
