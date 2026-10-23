@@ -1,31 +1,37 @@
 #include "AuditExportVisitor.h"
+#include <iostream>
 
-void AuditExportVisitor::visitStage(Stage* s) {
-	// TODO - implement AuditExportVisitor::visitStage
-	throw "Not yet implemented";
+void AuditExportVisitor::visitStage(Stage *s)
+{
+	std::cout << "Stage: ";
+	std::cout << s->getName() << std::endl;
 }
 
-void AuditExportVisitor::visitTask(Task* Task) {
-	// TODO - implement AuditExportVisitor::visitTask
-	throw "Not yet implemented";
+void AuditExportVisitor::visitTask(Task *t)
+{
+	std::cout << "Task: ";
+	std::cout << t->getName() << std::endl;
 }
 
-void AuditExportVisitor::visitWorkItem(WorkItem* w) {
-	// TODO - implement AuditExportVisitor::visitWorkItem
-	throw "Not yet implemented";
+void AuditExportVisitor::visitWorkItem(WorkItem *w)
+{
+	std::cout << "WorkItem: ";
+	std::cout << w->getName() << std::endl;
+	// TODO: Print Hierarchy
 }
 
-void AuditExportVisitor::visitParticipant(Staff* p) {
-	// TODO - implement AuditExportVisitor::visitParticipant
-	throw "Not yet implemented";
+void AuditExportVisitor::visitParticipant(Staff *p)
+{
+	std::cout << "Staff: ";
+	// TODO: Need to put functions in the Staff class
 }
 
-void AuditExportVisitor::visitHistoryEntry(WorkflowEvent* e) {
-	// TODO - implement AuditExportVisitor::visitHistoryEntry
-	throw "Not yet implemented";
+void AuditExportVisitor::visitHistoryEntry(WorkflowEvent *e)
+{
+	std::cout << e->getDescription() << std::endl;
 }
 
-string AuditExportVisitor::getAuditTrail() {
-	// TODO - implement AuditExportVisitor::getAuditTrail
-	throw "Not yet implemented";
+string AuditExportVisitor::getAuditTrail()
+{
+	return "Audit Trail:";
 }
