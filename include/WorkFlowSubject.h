@@ -1,19 +1,21 @@
 #ifndef WORKFLOWSUBJECT_H
 #define WORKFLOWSUBJECT_H
 
+#include <vector>
+class Observer;
 class WorkFlowSubject {
-
-private:
-	vector<Observer*> observerList;
-
 public:
-	virtual void attach(Observer* o) = 0;
-
-	virtual void detach(Observer* o) = 0;
-
-	virtual void notify() = 0;
-
-	vector<Observer*> getObserverList();
+    virtual ~WorkFlowSubject() {}
+  
+    virtual void attach(Observer* o);
+   
+    virtual void detach(Observer* o);
+    
+    virtual void notify() = 0;
+   
+    std::vector<Observer*> getObserverList();
+protected:
+    std::vector<Observer*> observerList;
 };
 
-#endif
+#endif // WORKFLOWSUBJECT_H
