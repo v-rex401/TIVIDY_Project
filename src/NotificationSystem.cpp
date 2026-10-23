@@ -7,6 +7,11 @@
 
 #include "NotificationSystem.h"
 
+NotificationSystem::NotificationSystem(){
+	this->sentCount = 0;
+	this->lastMessage = "";
+}
+
 void NotificationSystem::sendNotification() {
 	// TODO - implement NotificationSystem::sendNotification
 	throw "Not yet implemented";
