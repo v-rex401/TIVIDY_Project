@@ -1,6 +1,12 @@
+/**
+ * @file ExternalSystem.cpp
+ * @brief Adapter Target interface.
+ * @author Anke de Frey
+ * @date 2026-10-22
+ */
+
 #include "ExternalSystem.h"
 
-void ExternalSystem::request() {
-	// TODO - implement ExternalSystem::request
-	throw "Not yet implemented";
+ExternalSystem::~ExternalSystem(){
+	
 }

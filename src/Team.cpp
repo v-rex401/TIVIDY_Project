@@ -1,21 +1,49 @@
-#include "Team.h"
+/**
+ * @file Team.cpp
+ * @brief Implementation of the team hierarchy.
+ * @author Jezelle Govender
+ * @date 2026-10-22
+ */
 
-String Team::getName() {
+#include "Team.h"
+#include "Employee.h"
+#include <iostream>
+
+std::string Team::getName() {
 	return this->name;
 }
 
-String Team::getTitle() {
+std::string Team::getTitle() {
 	return this->title;
 }
 
 void Team::operation() {
-	// TODO - implement Team::operation
-	throw "Not yet implemented";
+	//no logic specified in the UML.
 }
 
-void Team::printHierarchy(String indent) {
-	// TODO - implement Team::printHierarchy
-	throw "Not yet implemented";
+/**
+ * @brief Prints the team hierarchy.
+ * @param indent The string that is used for indentation formatting.
+ */
+void Team::printHierarchy(std::string indent) {
+	std::cout << indent << "Team: " << name << " (Rank: " << rank << ")\n"; 
+
+	std::string memberIndent = indent + " ";
+	for(size_t i = 0; i < members.size(); ++i) {
+		//std::cout << memberIndent << "- [Staff Member]\n";
+
+		//Recursing into sub-teams
+		Team *t = dynamic_cast<Team*>(members[i]);
+		if(t != nullptr) {
+			t->printHierarchy(memberIndent);
+			continue;
+		}
+
+		Employee *e = dynamic_cast<Employee*>(members[i]);
+		if(e != nullptr) {
+			std::cout << memberIndent << "Employee: " << e->getName() << " (Rank : " << e->getRank() << ")\n";
+		}
+	}
 }
 
 int Team::getRank() {
