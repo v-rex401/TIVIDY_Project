@@ -9,7 +9,7 @@ class ProgressReportVisitor : public WorkflowVisitor
 private:
 	int completed;
 	int total;
-	string report;
+	std::string report;
 
 public:
 	void visitStage(Stage *s);
@@ -22,7 +22,7 @@ public:
 
 	void visitHistoryEntry(WorkflowEvent *e);
 
-	string getReport();
+	std::string getReport();
 };
 
 #endif

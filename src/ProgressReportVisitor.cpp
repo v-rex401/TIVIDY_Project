@@ -1,5 +1,6 @@
 #include "ProgressReportVisitor.h"
 #include <iostream>
+#include <string>
 
 void ProgressReportVisitor::visitStage(Stage *s)
 {
@@ -31,7 +32,7 @@ void ProgressReportVisitor::visitHistoryEntry(WorkflowEvent *e)
 	std::cout << e->getDescription() << std::endl;
 }
 
-string ProgressReportVisitor::getReport()
+std::string ProgressReportVisitor::getReport()
 {
 	return this->report;
 }

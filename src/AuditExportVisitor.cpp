@@ -30,8 +30,10 @@ void AuditExportVisitor::visitHistoryEntry(WorkflowEvent *e)
 {
 	std::cout << e->getDescription() << std::endl;
 }
-
-string AuditExportVisitor::getAuditTrail()
+std::string AuditExportVisitor::getAuditTrail()
 {
-	return "Audit Trail:";
+	std::string result = "Audit Trail\n";
+	result += trail;
+
+	return result;
 }

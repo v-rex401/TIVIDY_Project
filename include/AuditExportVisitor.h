@@ -7,7 +7,7 @@ class AuditExportVisitor : public WorkflowVisitor
 {
 
 public:
-	string trail;
+	std::string trail;
 
 	void visitStage(Stage *s);
 
@@ -19,7 +19,7 @@ public:
 
 	void visitHistoryEntry(WorkflowEvent *e);
 
-	string getAuditTrail();
+	std::string getAuditTrail();
 };
 
 #endif
