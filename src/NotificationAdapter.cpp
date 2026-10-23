@@ -12,6 +12,7 @@ NotificationAdapter::NotificationAdapter(NotificationSystem* adaptee) {
 }
 
 NotificationAdapter::~NotificationAdapter() {
+	this->adaptee = NULL;
 }
 
 void NotificationAdapter::request() {
