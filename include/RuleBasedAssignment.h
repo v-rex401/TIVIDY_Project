@@ -1,10 +1,13 @@
 #ifndef RULEBASEDASSIGNMENT_H
 #define RULEBASEDASSIGNMENT_H
 
-class RuleBasedAssignment : AssignmentStrategy {
+#include <vector>
+#include "AssignmentStrategy.h"
+
+class RuleBasedAssignment : public AssignmentStrategy {
 
 public:
-	List<AssignmentRule> rules;
+	std::vector<AssignmentRule> rules;
 
 	Staff* selectAssignmentItem(WorkItem* item, WorkflowInstance* context);
 };
