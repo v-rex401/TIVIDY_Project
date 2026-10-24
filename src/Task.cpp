@@ -17,8 +17,7 @@ void Task::printHierarchy(std::string indent) {
 }
 
 void Task::handleRequest() {
-	// TODO - implement Task::handleRequest
-	throw "Not yet implemented";
+	//to be implemented with Chain of Responsibility 
 }
 
 void Task::setNextHandler(WorkItem* next) {
