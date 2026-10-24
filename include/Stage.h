@@ -49,7 +49,7 @@ public:
 	/**
 	 * @brief Create a clone of the stage
 	 */
-	WorkItem* clone();
+	WorkItem* clone() override;
 
 	std::string getName() override;
 
