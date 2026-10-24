@@ -268,3 +268,12 @@ Signatures to be agreed with Azolile (UML-017) and Ronin (UML-009).
 | -------------------------- | ---------------------------------------------------- |
 | Empty class                | `facade`, `run()`, menu operations, input helpers    |
 | No Command / Invoker links | `Client ..> Command «creates»`, `Client ..> Invoker` |
+
+Members so far (input loop):
+
+| Member                                                                     | Visibility |
+| -------------------------------------------------------------------------- | ---------- |
+| `facade: WorkflowFacade*` (not owned), `in: istream&`, `out: ostream&`, `running: bool` | private    |
+| `Client(facade: WorkflowFacade*, in: istream& = cin, out: ostream& = cout)`, `run(): void` | public     |
+| `mainMenu(): void`, `instanceMenu(): void`                                 | private    |
+| `choose(title: string, options: vector<string>, exitLabel: string): int`, `readLine(line: string&): bool`, `parseChoice(text: string, min: int, max: int, value: int&): bool` (static) | private    |
