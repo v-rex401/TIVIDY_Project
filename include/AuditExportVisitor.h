@@ -1,22 +1,25 @@
 #ifndef AUDITEXPORTVISITOR_H
 #define AUDITEXPORTVISITOR_H
 
-class AuditExportVisitor : WorkflowVisitor {
+#include "WorkflowVisitor.h"
+
+class AuditExportVisitor : public WorkflowVisitor
+{
 
 public:
-	string trail;
+	std::string trail;
 
-	void visitStage(Stage* s);
+	void visitStage(Stage *s);
 
-	void visitTask(Task* Task);
+	void visitTask(Task *t);
 
-	void visitWorkItem(WorkItem* w);
+	void visitWorkItem(WorkItem *w);
 
-	void visitParticipant(Staff* p);
+	void visitParticipant(Staff *p);
 
-	void visitHistoryEntry(WorkflowEvent* e);
+	void visitHistoryEntry(WorkflowEvent *e);
 
-	string getAuditTrail();
+	std::string getAuditTrail();
 };
 
 #endif
