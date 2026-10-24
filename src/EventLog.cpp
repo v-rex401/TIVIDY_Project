@@ -19,12 +19,13 @@ EventLog::~EventLog()
 
 void EventLog::addEntry(WorkflowEvent *e)
 {
-	// TODO - implement EventLog::addEntry
+	if(e== NULL){
+		return;
+	}
+	this->entries.push_back(e);
 }
 
 const std::vector<WorkflowEvent *> &EventLog::getEntries() const
 {
-	std::vector<WorkflowEvent *> temp;
-	// TODO - implement EventLog::getEntries
-	return temp;
+	return this->entries;
 }
