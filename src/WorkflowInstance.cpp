@@ -1,4 +1,7 @@
-#include "WorkflowInstance.h"
+#include "WorkflowEvent.h"
+#include <algorithm>
+#include "Observer.h"
+#include "EventLog.h"
 
 Memento* WorkflowInstance::createMemento() {
 	// TODO - implement WorkflowInstance::createMemento
@@ -11,8 +14,13 @@ void WorkflowInstance::setMemento(Memento* m) {
 }
 
 void WorkflowInstance::attach(Observer* o) {
-	// TODO - implement WorkflowInstance::attach
-	throw "Not yet implemented";
+	if (o == nullptr) {
+        return;
+    }
+    if (std::find(observerList.begin(), observerList.end(), o) != observerList.end()) {
+        return;  // already attached
+    }
+    observerList.push_back(o);
 }
 
 void WorkflowInstance::detach(Observer* o) {
