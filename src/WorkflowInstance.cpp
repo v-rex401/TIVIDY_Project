@@ -48,8 +48,21 @@ EventLog* WorkflowInstance::getEventLog() {
 }
 
 void WorkflowInstance::notify() {
-	// TODO - implement WorkflowInstance::notify
-	throw "Not yet implemented";
+	// most recent entry of log is the announced event.
+    EventLog* log = getEventLog();
+    if (log == nullptr) {
+        return;
+    }
+    std::vector<WorkflowEvent*> entries = log->getEntries();
+    if (entries.empty()) {
+        return;
+    }
+    WorkflowEvent* latest = entries.back();
+    // use copy to iterate, may detach during update
+    std::vector<Observer*> snapshot = observerList;
+    for (std::size_t i = 0; i < snapshot.size(); ++i) {
+        snapshot[i]->update(latest, this);
+    }
 }
 
 void WorkflowInstance::handle() {
