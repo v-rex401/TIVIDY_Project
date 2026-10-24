@@ -5,7 +5,7 @@
 
 class SeverityBasedRouting : public RoutingStrategy {
 public:
-	Stage* selectItemStage(WorkItem item, WorkflowInstance* context) override;
+	Stage* selectItemState(WorkItem item, WorkflowInstance* context) override;
 };
 
 #endif
