@@ -3,6 +3,9 @@
 #include "Staff.h"
 #include "WorkflowVisitor.h"
 
+#include <iostream>
+#include <string>
+
 void Stage::addMember(WorkItem* c)
 {
     if(c == nullptr)
@@ -67,4 +70,18 @@ std::string Stage::getName()
 std::string Stage::getTitle()
 {
     return this->title;
+}
+
+void Stage::printHierarchy(std::string indent)
+{
+    std::cout << indent << "Stage: " << this->name << "\n";
+
+    for(WorkItem* member : members)
+    {
+        if(member != nullptr)
+        {
+            member->printHierarchy(indent + "  ");
+        }
+    }
+    
 }
