@@ -1,39 +1,41 @@
 #include "Handler.h"
 
-String Handler::getName() {
+std::string Handler::getName()
+{
 	return this->name;
 }
 
-String Handler::getTitle() {
+std::string Handler::getTitle()
+{
 	return this->title;
 }
 
-void Handler::printHierarchy(String indent) {
+void Handler::printHierarchy(std::string indent)
+{
 	// TODO - implement Handler::printHierarchy
-	throw "Not yet implemented";
 }
 
-void Handler::addMember(int Component) {
+void Handler::addMember(int Component)
+{
 	// TODO - implement Handler::addMember
-	throw "Not yet implemented";
 }
 
-void Handler::removeMember(int Component) {
+void Handler::removeMember(int Component)
+{
 	// TODO - implement Handler::removeMember
-	throw "Not yet implemented";
 }
 
-void Handler::setNextHandler(Handler* next) {
+void Handler::setNextHandler(Handler *next)
+{
 	// TODO - implement Handler::setNextHandler
-	throw "Not yet implemented";
 }
 
-void Handler::handleRequest() {
+void Handler::handleRequest()
+{
 	// TODO - implement Handler::handleRequest
-	throw "Not yet implemented";
 }
 
-void Handler::setNextHandler2(WorkItem* next) {
+void Handler::setNextHandler(WorkItem *next)
+{
 	// TODO - implement Handler::setNextHandler2
-	throw "Not yet implemented";
 }

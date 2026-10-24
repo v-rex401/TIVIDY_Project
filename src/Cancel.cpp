@@ -1,11 +1,13 @@
 #include "Cancel.h"
 
-void Cancel::execute() {
+void Cancel::execute()
+{
 	// TODO - implement Cancel::execute
-	throw "Not yet implemented";
+	return;
 }
 
-void Cancel::undo() {
+void Cancel::undo()
+{
 	// TODO - implement Cancel::undo
-	throw "Not yet implemented";
+	return;
 }

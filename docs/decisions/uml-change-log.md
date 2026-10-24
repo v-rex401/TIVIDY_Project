@@ -40,7 +40,7 @@ Where the code has to differ from the class diagram (`docs/vpp/RevisedUML_2.1.vp
 | [015](#uml-015--visitor-double-dispatch-is-incomplete)            | Add `accept` to `Task`, `Staff`, `WorkflowEvent`             | Vashti               | Open   |     |      |
 | [016](#uml-016--adapter-operations-carry-no-data)                 | Give Adapter operations real data                            | Anke                 | Open   |     |      |
 | [017](#uml-017--workflowmanager-stores-nothing)                   | Manager owns instances and definitions                       | Azolile              | Open   |     |      |
-| [018](#uml-018--workflowfacade-is-untyped-and-incomplete)         | Type the facade; add TUI operations                          | JP                   | Open   | ✅  |      |
+| [018](#uml-018--workflowfacade-is-untyped-and-incomplete)         | Type the facade; add TUI operations                          | JP                   | Open   | ✅  |  ✅  |
 | [019](#uml-019--client-has-no-operations)                         | Give `Client` (TUI) operations                               | JP                   | Open   |     |      |
 | [020](#uml-020--typos-in-names)                                   | Fix typos in class and operation names                       | Ronin, Azolile, Anke | Open   |     |      |
 | [021](#uml-021--no-class-diagram-export)                          | Export the class diagram to `docs/images/`                   | Team                 | Open   |     |      |
