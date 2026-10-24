@@ -3,12 +3,13 @@
 
 #include "RoutingStrategy.h"
 
-class ApprovalChainRouting : public RoutingStrategy {
+class ApprovalChainRouting : public RoutingStrategy
+{
 private:
 	double threshold;
 
 public:
-	Stage *selectItemState(WorkItem item, WorkflowInstance *context) override;
+	Stage *selectItemState(WorkItem *item, WorkflowInstance *context);
 };
 
 #endif
