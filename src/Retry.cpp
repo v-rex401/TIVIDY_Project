@@ -1,11 +1,18 @@
 #include "Retry.h"
+#include "WorkflowInstance.h"
+
+Retry::Retry(WorkflowInstance* receiver) : Command(receiver) {}
+Retry::~Retry() {}
 
 void Retry::execute() {
-	// TODO - implement Retry::execute
-	throw "Not yet implemented";
+    WorkflowInstance* instance = getReceiver();
+    if (instance == nullptr) {
+        return;
+    }
+    saveSnapshot();
+    instance->retry();
 }
 
 void Retry::undo() {
-	// TODO - implement Retry::undo
-	throw "Not yet implemented";
+    restoreSnapshot();
 }
