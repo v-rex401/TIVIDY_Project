@@ -1,11 +1,18 @@
 #include "Reject.h"
+#include "WorkflowInstance.h"
+
+Reject::Reject(WorkflowInstance* receiver) : Command(receiver) {}
+Reject::~Reject() {}
 
 void Reject::execute() {
-	// TODO - implement Reject::execute
-	throw "Not yet implemented";
+    WorkflowInstance* instance = getReceiver();
+    if (instance == nullptr) {
+        return;
+    }
+    saveSnapshot();
+    instance->reject();
 }
 
 void Reject::undo() {
-	// TODO - implement Reject::undo
-	throw "Not yet implemented";
+    restoreSnapshot();
 }
