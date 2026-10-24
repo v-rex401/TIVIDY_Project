@@ -1,31 +1,31 @@
 #include "WorkflowBuilder.h"
 
-void WorkflowBuilder::buildTransition(string from, string to) {
+void WorkflowBuilder::buildTransition(std::string from, std::string to)
+{
 	// TODO - implement WorkflowBuilder::buildTransition
-	throw "Not yet implemented";
 }
 
-void WorkflowBuilder::buildParticipantSlot(string stageName, string role) {
+void WorkflowBuilder::buildParticipantSlot(std::string stageName, std::string role)
+{
 	// TODO - implement WorkflowBuilder::buildParticipantSlot
-	throw "Not yet implemented";
 }
 
-void WorkflowBuilder::setAssignmentStrategyType(string type) {
+void WorkflowBuilder::setAssignmentStrategyType(std::string type)
+{
 	// TODO - implement WorkflowBuilder::setAssignmentStrategyType
-	throw "Not yet implemented";
 }
 
-void WorkflowBuilder::setRoutingStrategyType(string type) {
+void WorkflowBuilder::setRoutingStrategyType(std::string type)
+{
 	// TODO - implement WorkflowBuilder::setRoutingStrategyType
-	throw "Not yet implemented";
 }
 
-void WorkflowBuilder::setInitialData(string key, string value) {
+void WorkflowBuilder::setInitialData(std::string key, std::string value)
+{
 	// TODO - implement WorkflowBuilder::setInitialData
-	throw "Not yet implemented";
 }
 
-void WorkflowBuilder::buildDefinition(string name) {
+void WorkflowBuilder::buildDefinition(std::string name)
+{
 	// TODO - implement WorkflowBuilder::buildDefinition
-	throw "Not yet implemented";
 }

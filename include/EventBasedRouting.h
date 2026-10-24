@@ -1,12 +1,17 @@
 #ifndef EVENTBASEDROUTING_H
 #define EVENTBASEDROUTING_H
 
-class EventBasedRouting : RoutingStrategy {
+#include <vector>
+#include "RoutingStrategy.h"
+#include "Threshold.h"
+
+class EventBasedRouting : public RoutingStrategy
+{
+private:
+	std::vector<Threshold> thresholds;
 
 public:
-	List<Threshold> thresholds;
-
-	Stage* selectItemState(WorkItem item, WorkflowInstance* context);
+	Stage *selectItemState(WorkItem *item, WorkflowInstance *context);
 };
 
 #endif
