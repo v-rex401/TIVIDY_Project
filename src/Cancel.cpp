@@ -1,11 +1,19 @@
 #include "Cancel.h"
+#include "WorkflowInstance.h"
+#include "Cancelled.h"
+
+Cancel::Cancel(WorkflowInstance* receiver) : Command(receiver) {}
+Cancel::~Cancel() {}
 
 void Cancel::execute() {
-	// TODO - implement Cancel::execute
-	throw "Not yet implemented";
+    WorkflowInstance* instance = getReceiver();
+    if (instance == nullptr) {
+        return;
+    }
+    saveSnapshot();
+    instance->setState(new Cancelled());  // the instance takes ownership of the new state
 }
 
 void Cancel::undo() {
-	// TODO - implement Cancel::undo
-	throw "Not yet implemented";
+    restoreSnapshot();
 }
