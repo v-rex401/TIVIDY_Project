@@ -1,14 +1,16 @@
 #include "Task.h"
 
-String Task::getName() {
+#include <string>
+
+std::string Task::getName() {
 	return this->name;
 }
 
-String Task::getTitle() {
+std::string Task::getTitle() {
 	return this->title;
 }
 
-void Task::printHierarchy(String indent) {
+void Task::printHierarchy(std::string indent) {
 	// TODO - implement Task::printHierarchy
 	throw "Not yet implemented";
 }
