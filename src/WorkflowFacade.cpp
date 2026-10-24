@@ -1,26 +1,52 @@
+/**
+ * @file WorkflowFacade.cpp
+ * @brief Implementation of WorkflowFacade: every call is delegated to the WorkflowManager.
+ * @author JP
+ * @date 2026-10-24
+ */
+
 #include "WorkflowFacade.h"
+#include "WorkflowManager.h"
 
-void WorkflowFacade::startWorkflow(int definition) {
-	// TODO - implement WorkflowFacade::startWorkflow
-	throw "Not yet implemented";
+WorkflowFacade::WorkflowFacade() : manager(new WorkflowManager()) {}
+
+WorkflowFacade::~WorkflowFacade() {
+	delete manager;
 }
 
-void WorkflowFacade::createWorkflowInstance(int definition) {
-	// TODO - implement WorkflowFacade::createWorkflowInstance
-	throw "Not yet implemented";
+void WorkflowFacade::startWorkflow(WorkflowDefinition* definition) {
+	manager->startWorkflow(definition);
 }
 
-void WorkflowFacade::submitWorkItem(int instance, int workitem) {
-	// TODO - implement WorkflowFacade::submitWorkItem
-	throw "Not yet implemented";
+WorkflowInstance* WorkflowFacade::createWorkflowInstance(WorkflowDefinition* definition) {
+	return manager->createInstance(definition);
+}
+
+void WorkflowFacade::submitWorkItem(WorkflowInstance* instance, WorkItem* workitem) {
+	manager->assignWorkItem(workitem, instance);
+	manager->routeWorkItem(workitem, instance);
 }
 
 void WorkflowFacade::executeWorkflow(WorkflowInstance* w) {
-	// TODO - implement WorkflowFacade::executeWorkflow
-	throw "Not yet implemented";
+	manager->executeWorkflow(w);
 }
 
 void WorkflowFacade::cancelWorkflow(WorkflowInstance* instance) {
-	// TODO - implement WorkflowFacade::cancelWorkflow
-	throw "Not yet implemented";
+	manager->cancelWorkflow(instance);
+}
+
+void WorkflowFacade::addDefinition(WorkflowDefinition* definition) {
+	manager->addDefinition(definition);
+}
+
+std::vector<WorkflowDefinition*> WorkflowFacade::getDefinitions() {
+	return manager->getDefinitions();
+}
+
+std::vector<WorkflowInstance*> WorkflowFacade::getInstances() {
+	return manager->getInstances();
+}
+
+WorkflowInstance* WorkflowFacade::getInstance(const std::string& id) {
+	return manager->getInstance(id);
 }
