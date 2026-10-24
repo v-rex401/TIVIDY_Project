@@ -1,11 +1,17 @@
 #include "Approve.h"
+#include "WorkflowInstance.h"
+Approve::Approve(WorkflowInstance* receiver) : Command(receiver) {}
+Approve::~Approve() {}
 
 void Approve::execute() {
-	// TODO - implement Approve::execute
-	throw "Not yet implemented";
+    WorkflowInstance* instance = getReceiver();
+    if (instance == nullptr) {
+        return;
+    }
+    saveSnapshot();
+    instance->approve();
 }
 
 void Approve::undo() {
-	// TODO - implement Approve::undo
-	throw "Not yet implemented";
+    restoreSnapshot();
 }
