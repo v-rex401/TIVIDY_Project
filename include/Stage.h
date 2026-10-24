@@ -6,6 +6,8 @@
 
 #include "WorkItem.h"
 
+class Staff;
+class WorkflowVisitor;
 /**
  * @brief Represents a stage (that contains work items) in a workflow
  */
