@@ -46,3 +46,16 @@ void Stage::accept(WorkflowVisitor* v)
     v->visitStage(this);
 }
 
+WorkItem* Stage::clone()
+{
+    Stage* cloneStage = new Stage();
+
+    cloneStage->name = this->name;
+    cloneStage->title = this->title;
+    cloneStage->responsible = this->responsible;
+    //unable to deep copy members as base class does not have a clone method
+    //virtual clone needs to be added to WorkItem for a full deep copy
+
+    return cloneStage;
+}
+
