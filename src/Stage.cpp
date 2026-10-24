@@ -33,6 +33,11 @@ void Stage::removeMember(WorkItem* c)
     }
 }
 
+void Stage::handleRequest()
+{
+    //to be implemented with Chain of Responsibility 
+}
+
 void Stage::setNextHandler(WorkItem* next)
 {
     WorkItem::setNextHandler(next);
@@ -83,5 +88,5 @@ void Stage::printHierarchy(std::string indent)
             member->printHierarchy(indent + "  ");
         }
     }
-    
+
 }
