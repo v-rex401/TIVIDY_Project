@@ -4,7 +4,9 @@
 #include <string>
 
 #include "WorkItem.h"
-#include "Staff.h"
+
+class Staff;
+class WorkflowVisitor;
 
 /**
  * @brief Represents a task in a workflow
