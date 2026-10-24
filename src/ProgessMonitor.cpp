@@ -1,6 +1,19 @@
-#include "ProgessMonitor.h"
+#include "ProgressMonitor.h"
+#include "WorkflowEvent.h"
+#include "WorkflowInstance.h"
+#include <ostream>
 
-void ProgessMonitor::update() {
-	// TODO - implement ProgessMonitor::update
-	throw "Not yet implemented";
+ProgressMonitor::ProgressMonitor() {}
+ProgressMonitor::~ProgressMonitor() {}
+
+void ProgressMonitor::update(WorkflowEvent* event, WorkflowInstance* context) {
+    if (event == nullptr || context == nullptr) {
+        return;
+    }
+
+    Progress& p = progress[context];
+    p.count++;
+    p.lastType = event->getType();
+    p.lastDescription = event->getDescription();
+    p.lastTimestamp = event->getTimestamp();
 }
