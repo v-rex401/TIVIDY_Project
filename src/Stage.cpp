@@ -27,3 +27,9 @@ void Stage::removeMember(WorkItem* c)
     }
 }
 
+void Stage::setNextHandler(WorkItem* next)
+{
+    WorkItem::setNextHandler(next);
+
+}
+
