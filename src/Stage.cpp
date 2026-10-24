@@ -1,5 +1,8 @@
 #include "Stage.h"
 
+#include "Staff.h"
+#include "WorkflowVisitor.h"
+
 void Stage::addMember(WorkItem* c)
 {
     if(c == nullptr)
@@ -31,5 +34,15 @@ void Stage::setNextHandler(WorkItem* next)
 {
     WorkItem::setNextHandler(next);
 
+}
+
+void Stage::accept(WorkflowVisitor* v)
+{
+    if(v == nullptr)
+    {
+        return;
+    }
+
+    v->visitStage(this);
 }
 
