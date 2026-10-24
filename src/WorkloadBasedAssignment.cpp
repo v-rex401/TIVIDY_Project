@@ -1,7 +1,7 @@
 #include "WorkloadBasedAssignment.h"
 
 WorkloadBasedAssignment::WorkloadBasedAssignment(const std::vector<Staff*>& pool) {
-	//
+	this->roster = pool;
 }
 
 Staff* WorkloadBasedAssignment::selectAssignmentItem(WorkItem* item, WorkflowInstance* context) {
