@@ -32,7 +32,7 @@ private:
 	CommandHistory* history;
 	EventLog* eventLog;
 
-	std::vector<std::unique_ptr<Staff>> ownedStates; //Added to keep all state objects alive for the lifetime of the instance.
+	std::vector<std::unique_ptr<State>> ownedStates; //Added to keep all state objects alive for the lifetime of the instance.
 
 public:
 
@@ -65,6 +65,12 @@ public:
 	EventLog* getEventLog();
 
 	void accept(WorkflowVisitor* v);
+
+	/**
+	 * @brief Gets the unique ID of the workflow instance.
+	 * @return the string ID
+	 */
+	std::string getId() const;
 };
 
 #endif
