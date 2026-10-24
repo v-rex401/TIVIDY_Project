@@ -3,6 +3,8 @@
 
 #include <string>
 
+class WorkflowVisitor;
+
 /**
  * @brief Abstract base class for tasks and stages in a workflow
  */
@@ -10,7 +12,7 @@
 class WorkItem {
 
 private:
-	WorkItem* successor;
+	WorkItem* successor = nullptr;
 
 public:
 	virtual std::string getName() = 0;
@@ -31,6 +33,16 @@ public:
 	 * @brief Set the next handler in the chain
 	 */
 	void setNextHandler(WorkItem* next);
+
+	/**
+	 * @brief Create a clone of the work item
+	 */
+	virtual WorkItem* clone() = 0;
+
+	/**
+	 * @brief Accept a workflow visitor
+	 */
+	virtual void accept(WorkflowVisitor* v);
 
 	virtual ~WorkItem() = default;
 };

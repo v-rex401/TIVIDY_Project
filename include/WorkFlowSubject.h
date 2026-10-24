@@ -1,5 +1,7 @@
 #ifndef WORKFLOWSUBJECT_H
 #define WORKFLOWSUBJECT_H
+#include "Observer.h"
+#include <vector>
 
 #include <vector>
 #include "Observer.h"
@@ -20,4 +22,4 @@ public:
 	std::vector<Observer *> getObserverList();
 };
 
-#endif
+#endif // WORKFLOWSUBJECT_H
