@@ -56,21 +56,21 @@ void Stage::accept(WorkflowVisitor* v)
 
 WorkItem* Stage::clone()
 {
-    Stage* cloneStage = new Stage();
+    Stage* clonedStage = new Stage();
 
-    cloneStage->name = this->name;
-    cloneStage->title = this->title;
-    cloneStage->responsible = this->responsible;
+    clonedStage->name = this->name;
+    clonedStage->title = this->title;
+    clonedStage->responsible = this->responsible;
     
     for(WorkItem* member : members)
     {
         if(member != nullptr)
         {
-            cloneStage->addMember(member);
+            clonedStage->addMember(member->clone());
         }
     }
 
-    return cloneStage;
+    return clonedStage;
 }
 
 std::string Stage::getName()
