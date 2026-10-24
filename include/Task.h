@@ -4,7 +4,9 @@
 #include <string>
 
 #include "WorkItem.h"
-#include "Staff.h"
+
+class Staff;
+class WorkflowVisitor;
 
 /**
  * @brief Represents a task in a workflow
@@ -37,6 +39,16 @@ public:
 	 * @brief Set the next handler in the chain
 	 */
 	void setNextHandler(WorkItem *next);
+
+	/**
+	 * @brief Create a clone of the task
+	 */
+	WorkItem* clone() override;
+
+	/**
+	 * @brief Accept a workflow visitor
+	 */
+	void accept(WorkflowVisitor* v) override;
 };
 
 #endif
