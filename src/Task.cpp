@@ -21,6 +21,6 @@ void Task::handleRequest() {
 }
 
 void Task::setNextHandler(WorkItem* next) {
-	// TODO - implement Task::setNextHandler
-	throw "Not yet implemented";
+	WorkItem::setNextHandler(next);
+	
 }
