@@ -32,6 +32,11 @@ public:
 	 */
 	void setNextHandler(WorkItem* next);
 
+	/**
+	 * @brief Create a clone of the work item
+	 */
+	virtual WorkItem* clone() = 0;
+
 	virtual ~WorkItem() = default;
 };
 

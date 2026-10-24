@@ -61,8 +61,14 @@ WorkItem* Stage::clone()
     cloneStage->name = this->name;
     cloneStage->title = this->title;
     cloneStage->responsible = this->responsible;
-    //unable to deep copy members as base class does not have a clone method
-    //virtual clone needs to be added to WorkItem for a full deep copy
+    
+    for(WorkItem* member : members)
+    {
+        if(member != nullptr)
+        {
+            cloneStage->addMember(member);
+        }
+    }
 
     return cloneStage;
 }
