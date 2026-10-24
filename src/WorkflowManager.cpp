@@ -12,20 +12,26 @@ void WorkflowManager::setRoutingStrategy(RoutingStrategy *rs)
 
 Staff *WorkflowManager::assignWorkItem(WorkItem *wi, WorkflowInstance *wc)
 {
-	// TODO - implement WorkflowManager::assignWorkItem
-	return nullptr;
+	return this->assignmentStrategy->selectAssignmentItem(wi, wc);
 }
 
-void WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc)
+Stage *WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc)
 {
-	// TODO - implement WorkflowManager::routeWorkItem
-	return;
+	return this->routingStrategy->selectItemState(wi, wc);
 }
 
-WorkflowInstance *WorkflowManager::createInstance(WorkflowDefinition *def)
+WorkflowInstance *WorkflowManager::createInstance(WorkflowDefinition *def, std::string id)
 {
-	// TODO - implement WorkflowManager::createInstance
-	return nullptr;
+	if (!def) return nullptr;
+
+	WorkflowInstance* temp = new WorkflowInstance();
+
+	temp->setId(id); //Add setter to WorkflowInstance
+	temp->setDefinition(def); 
+
+	temp->attach();
+
+	return temp;
 }
 
 void WorkflowManager::startWorkflow(WorkflowDefinition *def)
@@ -42,4 +48,9 @@ void WorkflowManager::cancelWorkflow(WorkflowInstance *i)
 {
 	// TODO - implement WorkflowManager::cancelWorkflow
 	return;
+}
+
+WorkflowManager::~WorkflowManager() {
+	delete this->routingStrategy;
+	delete this->assignmentStrategy;
 }
