@@ -59,3 +59,8 @@ WorkItem* Stage::clone()
     return cloneStage;
 }
 
+std::string Stage::getName()
+{
+    return this->name;
+}
+
