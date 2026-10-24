@@ -1,31 +1,36 @@
 #ifndef HANDLER_H
 #define HANDLER_H
 
-class Handler : WorkItem {
+#include "WorkItem.h"
+#include "Staff.h"
+#include <vector>
+
+class Handler : public WorkItem
+{
 
 private:
-	vector<WorkItem> members;
-	String name;
-	String title;
-	Handler* successor;
-	Staff* responsible;
+	std::vector<WorkItem *> members;
+	std::string name;
+	std::string title;
+	Handler *successor;
+	Staff *responsible;
 
 public:
-	String getName();
+	std::string getName();
 
-	String getTitle();
+	std::string getTitle();
 
-	void printHierarchy(String indent);
+	void printHierarchy(std::string indent);
 
 	void addMember(int Component);
 
 	void removeMember(int Component);
 
-	void setNextHandler(Handler* next);
+	void setNextHandler(Handler *next);
 
 	void handleRequest();
 
-	void setNextHandler2(WorkItem* next);
+	void setNextHandler(WorkItem *next);
 };
 
 #endif
