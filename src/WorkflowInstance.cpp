@@ -24,8 +24,7 @@ void WorkflowInstance::attach(Observer* o) {
 }
 
 void WorkflowInstance::detach(Observer* o) {
-	// TODO - implement WorkflowInstance::detach
-	throw "Not yet implemented";
+	observerList.erase(std::remove(observerList.begin(), observerList.end(), o), observerList.end());
 }
 
 void WorkflowInstance::setState(State* s) {
