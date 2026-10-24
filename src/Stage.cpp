@@ -64,3 +64,7 @@ std::string Stage::getName()
     return this->name;
 }
 
+std::string Stage::getTitle()
+{
+    return this->title;
+}
