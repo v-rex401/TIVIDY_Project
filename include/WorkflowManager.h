@@ -22,9 +22,9 @@ public:
 
 	WorkflowInstance *createInstance(WorkflowDefinition *def, std::string id);
 
-	void startWorkflow(WorkflowDefinition *def);
+	void startWorkflow(WorkflowInstance *instance);
 
-	void executeWorkflow(WorkflowInstance *i);
+	void executeWorkflow(WorkflowInstance *instance, WorkItem *item);
 
 	void cancelWorkflow(WorkflowInstance *i);
 

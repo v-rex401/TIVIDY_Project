@@ -34,20 +34,32 @@ WorkflowInstance *WorkflowManager::createInstance(WorkflowDefinition *def, std::
 	return temp;
 }
 
-void WorkflowManager::startWorkflow(WorkflowDefinition *def)
+void WorkflowManager::startWorkflow(WorkflowInstance *instance)
 {
-	// TODO - implement WorkflowManager::startWorkflow
+	if (!instance) return;
+	//
 }
 
-void WorkflowManager::executeWorkflow(WorkflowInstance *i)
+void WorkflowManager::executeWorkflow(WorkflowInstance *instance, WorkItem* item)
 {
-	// TODO - implement WorkflowManager::executeWorkflow
+	if (!instance || !item) return;
+
+	instance->wi.push_back(item);
+
+	Handler* rootProcessorChain = this->getRootHandlerChain();
+
+	if (rootProcessorChain) {
+		rootProcessorChain->handleRequest(item, instance);
+	}
 }
 
-void WorkflowManager::cancelWorkflow(WorkflowInstance *i)
+void WorkflowManager::cancelWorkflow(WorkflowInstance *instance)
 {
-	// TODO - implement WorkflowManager::cancelWorkflow
-	return;
+	if (!instance) return;
+
+	instance->wi.clear();
+
+	instance->detach(this);
 }
 
 WorkflowManager::~WorkflowManager() {
