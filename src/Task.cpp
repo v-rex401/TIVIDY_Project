@@ -1,6 +1,7 @@
 #include "Task.h"
 
 #include <string>
+#include <iostream>
 
 std::string Task::getName() {
 	return this->name;
@@ -11,8 +12,8 @@ std::string Task::getTitle() {
 }
 
 void Task::printHierarchy(std::string indent) {
-	// TODO - implement Task::printHierarchy
-	throw "Not yet implemented";
+	std::cout << indent << "Task: " << this->name << "\n";
+
 }
 
 void Task::handleRequest() {
