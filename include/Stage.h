@@ -44,7 +44,7 @@ public:
 	/**
 	 * @brief Accept a workflow visitor
 	 */
-	void accept(WorkflowVisitor* v);
+	void accept(WorkflowVisitor* v) override;
 
 	/**
 	 * @brief Create a clone of the stage

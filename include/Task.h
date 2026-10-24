@@ -48,7 +48,7 @@ public:
 	/**
 	 * @brief Accept a workflow visitor
 	 */
-	void accept(WorkflowVisitor* v);
+	void accept(WorkflowVisitor* v) override;
 };
 
 #endif
