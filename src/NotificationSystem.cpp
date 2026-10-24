@@ -6,8 +6,23 @@
  */
 
 #include "NotificationSystem.h"
+#include <iostream>
+
+NotificationSystem::NotificationSystem(){
+	this->sentCount = 0;
+	this->lastMessage = "";
+}
 
 void NotificationSystem::sendNotification() {
-	// TODO - implement NotificationSystem::sendNotification
-	throw "Not yet implemented";
+	this->lastMessage = "Notification sent to all registered recipients";
+	this->sentCount++;
+	cout<<"[NotificationSystem] "<<this->lastMessage<<std::endl;
+}
+
+int NotificationSystem::getSentCount() const{
+	return this->sentCount;
+}
+
+string NotificationSystem::getLastMessage() const{
+	return this->lastMessage;
 }
