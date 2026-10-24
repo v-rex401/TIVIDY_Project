@@ -11,8 +11,10 @@ class RuleBasedAssignment : public AssignmentStrategy {
 private:
 	std::vector<AssignmentRule> rules;
 	RuleEngine ruleEngine;
+	std::vector<Staff*> roster;
 
 public:
+	RuleBasedAssignment(const std::vector<AssignmentRule>& initialRules, const std::vector<Staff*>& pool);
 	Staff* selectAssignmentItem(WorkItem* item, WorkflowInstance* context);
 };
 

@@ -11,6 +11,7 @@ class AssignmentStrategy
 
 public:
 	virtual Staff *selectAssignmentItem(WorkItem *item, WorkflowInstance *context) = 0;
+	virtual ~AssignmentStrategy() {}
 };
 
 #endif

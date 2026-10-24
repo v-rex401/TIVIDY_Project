@@ -1,6 +1,9 @@
 #ifndef WORKFLOWMANAGER_H
 #define WORKFLOWMANAGER_H
 
+#include "AssignmentStrategy.h"
+#include "RoutingStrategy.h"
+
 class WorkflowManager {
 
 private:
@@ -23,6 +26,8 @@ public:
 	void executeWorkflow(WorkflowInstance* i);
 
 	void cancelWorkflow(WorkflowInstance* i);
+
+	~WorkflowManager();
 };
 
 #endif
