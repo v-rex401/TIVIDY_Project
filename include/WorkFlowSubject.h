@@ -1,6 +1,6 @@
 #ifndef WORKFLOWSUBJECT_H
 #define WORKFLOWSUBJECT_H
-#include Observer.h
+#include "Observer.h"
 #include <vector>
 
 class WorkFlowSubject {
