@@ -11,7 +11,7 @@ private:
 	std::vector<Threshold> thresholds;
 
 public:
-	Stage *selectItemState(WorkItem *item, WorkflowInstance *context);
+	Stage *selectItemState(WorkItem *item, WorkflowInstance *context) override;
 };
 
 #endif
