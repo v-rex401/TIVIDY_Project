@@ -8,6 +8,6 @@ bool Threshold::isTriggered(double incomingValue) const {
     //
 }
     
-Stage* Threshold::getTargetStage() {
+Stage* Threshold::getTargetStage() const {
     //
 }
