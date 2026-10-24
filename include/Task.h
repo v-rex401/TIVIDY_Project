@@ -10,12 +10,13 @@
  * @brief Represents a task in a workflow
  */
 
-class Task : public WorkItem {
+class Task : public WorkItem
+{
 
 private:
 	std::string name;
 	std::string title;
-	Staff responsible;
+	Staff *responsible;
 
 public:
 	std::string getName() override;
@@ -35,7 +36,7 @@ public:
 	/**
 	 * @brief Set the next handler in the chain
 	 */
-	void setNextHandler(WorkItem* next);
+	void setNextHandler(WorkItem *next);
 };
 
 #endif
