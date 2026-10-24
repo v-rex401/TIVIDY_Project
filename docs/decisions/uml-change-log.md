@@ -277,3 +277,7 @@ Members so far (input loop):
 | `Client(facade: WorkflowFacade*, in: istream& = cin, out: ostream& = cout)`, `run(): void` | public     |
 | `mainMenu(): void`, `instanceMenu(): void`                                 | private    |
 | `choose(title: string, options: vector<string>, exitLabel: string): int`, `readLine(line: string&): bool`, `parseChoice(text: string, min: int, max: int, value: int&): bool` (static) | private    |
+
+`Client ..> WorkflowFacade` is now a directed association (role `facade`, multiplicity 1), since `Client` keeps the pointer.
+
+**Done:** members above and the facade association, in the `.vpp` and `docs/images/UML(JP-Client-Update).png`. **Still open:** the Command / Invoker links, added with the TUI action sub-menu.
