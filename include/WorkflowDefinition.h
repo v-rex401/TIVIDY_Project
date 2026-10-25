@@ -6,7 +6,6 @@
 
 class WorkItem;
 class WorkflowVisitor;
-class WorkflowBuilder;
 
 /**
  * @brief Defines the structure and stages of a workflow
@@ -38,6 +37,8 @@ public:
 	 * @brief Get the stages of the workflow
 	 */
 	std::vector<WorkItem*>* getStages();
+
+	~WorkflowDefinition();
 };
 
 #endif

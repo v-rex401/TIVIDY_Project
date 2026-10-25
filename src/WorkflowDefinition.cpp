@@ -50,3 +50,11 @@ std::vector<WorkItem *> *WorkflowDefinition::getStages()
 {
 	return &this->stages;
 }
+
+WorkflowDefinition::~WorkflowDefinition()
+{
+    for(WorkItem* stage : this->stages)
+    {
+        delete stage;
+    }
+}
