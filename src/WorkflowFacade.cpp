@@ -10,43 +10,62 @@
 
 WorkflowFacade::WorkflowFacade() : manager(new WorkflowManager()) {}
 
-WorkflowFacade::~WorkflowFacade() {
+WorkflowFacade::~WorkflowFacade()
+{
 	delete manager;
 }
 
-void WorkflowFacade::startWorkflow(WorkflowDefinition* definition) {
+void WorkflowFacade::startWorkflow(WorkflowDefinition *definition)
+{
 	manager->startWorkflow(definition);
 }
 
-WorkflowInstance* WorkflowFacade::createWorkflowInstance(WorkflowDefinition* definition) {
+WorkflowInstance *WorkflowFacade::createWorkflowInstance(WorkflowDefinition *definition)
+{
 	return manager->createInstance(definition);
 }
 
-void WorkflowFacade::submitWorkItem(WorkflowInstance* instance, WorkItem* workitem) {
+void WorkflowFacade::submitWorkItem(WorkflowInstance *instance, WorkItem *workitem)
+{
 	manager->assignWorkItem(workitem, instance);
 	manager->routeWorkItem(workitem, instance);
 }
 
-void WorkflowFacade::executeWorkflow(WorkflowInstance* w) {
+void WorkflowFacade::executeWorkflow(WorkflowInstance *w)
+{
 	manager->executeWorkflow(w);
 }
 
-void WorkflowFacade::cancelWorkflow(WorkflowInstance* instance) {
+void WorkflowFacade::cancelWorkflow(WorkflowInstance *instance)
+{
 	manager->cancelWorkflow(instance);
 }
 
-void WorkflowFacade::addDefinition(WorkflowDefinition* definition) {
-	manager->addDefinition(definition);
+void WorkflowFacade::addDefinition(WorkflowDefinition *definition)
+{
+	// manager->addDefinition(definition);
+	manager->createInstance(definition);
 }
 
-std::vector<WorkflowDefinition*> WorkflowFacade::getDefinitions() {
-	return manager->getDefinitions();
+std::vector<WorkflowDefinition *> WorkflowFacade::getDefinitions()
+{
+	// TODO : Add method in WorkflowManager to return definitions
+	//  return manager->getDefinitions();
+	std::vector<WorkflowDefinition *> results;
+	return results;
 }
 
-std::vector<WorkflowInstance*> WorkflowFacade::getInstances() {
-	return manager->getInstances();
+std::vector<WorkflowInstance *> WorkflowFacade::getInstances()
+{
+	// TODO : Add method in WorkflowManager to return instances
+	// return manager->getInstances();
+	std::vector<WorkflowInstance *> results;
+	return results;
 }
 
-WorkflowInstance* WorkflowFacade::getInstance(const std::string& id) {
-	return manager->getInstance(id);
+WorkflowInstance *WorkflowFacade::getInstance(const std::string &id)
+{
+	// TODO : Add method in WorkflowManager to return an instance
+	// return manager->getInstance(id);
+	return nullptr;
 }

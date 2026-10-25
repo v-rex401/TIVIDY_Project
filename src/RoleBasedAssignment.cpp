@@ -1,9 +1,12 @@
 #include "RoleBasedAssignment.h"
 
-RoleBasedAssignment::RoleBasedAssignment(const std::vector<Staff*>& pool) {
+RoleBasedAssignment::RoleBasedAssignment(const std::vector<Staff *> &pool)
+{
     //
 }
 
-Staff* RoleBasedAssignment::selectAssignmentItem(WorkItem* item, WorkflowInstance* context) {
+Staff *RoleBasedAssignment::selectAssignmentItem(WorkItem *item, WorkflowInstance *context)
+{
     //
+    return nullptr;
 }
