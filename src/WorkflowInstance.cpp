@@ -7,13 +7,13 @@
 Memento *WorkflowInstance::createMemento()
 {
     // TODO - implement WorkflowInstance::createMemento
-    throw "Not yet implemented";
+    return nullptr;
 }
 
 void WorkflowInstance::setMemento(Memento *m)
 {
     // TODO - implement WorkflowInstance::setMemento
-    throw "Not yet implemented";
+    return;
 }
 
 void WorkflowInstance::attach(Observer *o)
@@ -39,25 +39,25 @@ void WorkflowInstance::detach(Observer *o)
 void WorkflowInstance::setState(State *s)
 {
     // TODO - implement WorkflowInstance::setState
-    throw "Not yet implemented";
+    return;
 }
 
 State *WorkflowInstance::getState()
 {
     // TODO - implement WorkflowInstance::getState
-    throw "Not yet implemented";
+    return nullptr;
 }
 
 WorkItem *WorkflowInstance::getWorkItem()
 {
     // TODO - implement WorkflowInstance::getWorkItem
-    throw "Not yet implemented";
+    return nullptr;
 }
 
 EventLog *WorkflowInstance::getEventLog()
 {
     // TODO - implement WorkflowInstance::getEventLog
-    throw "Not yet implemented";
+    return nullptr;
 }
 
 void WorkflowInstance::notify()
@@ -85,11 +85,11 @@ void WorkflowInstance::notify()
 void WorkflowInstance::handle()
 {
     // TODO - implement WorkflowInstance::handle
-    throw "Not yet implemented";
+    return;
 }
 
 void WorkflowInstance::accept(WorkflowVisitor *v)
 {
     // TODO - implement WorkflowInstance::accept
-    throw "Not yet implemented";
+    return;
 }
