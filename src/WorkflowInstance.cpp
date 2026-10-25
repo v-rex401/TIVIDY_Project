@@ -191,7 +191,7 @@ std::string WorkflowInstance::getId() const {
     return id;
 }
 
-void WorkflowInstance::setID(const std::string& newId) {
+void WorkflowInstance::setId(const std::string& newId) {
     this->id = newId;
 }
 
