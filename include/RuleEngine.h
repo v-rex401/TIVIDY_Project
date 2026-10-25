@@ -9,8 +9,8 @@ class RuleEngine
 {
 
 public:
-    // TODO: This should be implemented or this header should be removed
-    bool evaluate(const AssignmentRule &rule, WorkItem *item, WorkflowInstance *instance) { return false; };
+    // TODO: This is not in the UML this header should be removed
+    bool evaluate(const AssignmentRule &rule, WorkItem *item, WorkflowInstance *instance);
 };
 
 #endif

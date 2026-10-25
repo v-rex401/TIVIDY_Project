@@ -28,7 +28,7 @@ void Task::setNextHandler(WorkItem *next)
 	WorkItem::setNextHandler(next);
 }
 
-void Task::accept(WorkflowVisitor *v)
+void Task::accept(WorkflowVisitor * /* v */)
 {
 	// TODO: Implement
 	return;

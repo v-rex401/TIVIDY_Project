@@ -10,12 +10,13 @@ void Invoker::executeCommand()
 	// TODO - implement Invoker::executeCommand
 }
 
-void Invoker::save(Memento *m)
+void Invoker::save(Memento * /* m */)
 {
+
 	// TODO - implement Invoker::save
 }
 
-void Invoker::undo(Memento *m)
+void Invoker::undo(Memento * /* m */)
 {
 	// TODO - implement Invoker::undo
 }

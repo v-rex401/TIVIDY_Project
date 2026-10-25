@@ -14,7 +14,7 @@ Memento *WorkflowInstance::createMemento()
     return nullptr;
 }
 
-void WorkflowInstance::setMemento(Memento *m)
+void WorkflowInstance::setMemento(Memento * /* m */)
 {
     // TODO - implement WorkflowInstance::setMemento
     return;
@@ -40,7 +40,7 @@ void WorkflowInstance::detach(Observer *o)
     observerList.erase(std::remove(observerList.begin(), observerList.end(), o), observerList.end());
 }
 
-void WorkflowInstance::setState(State *s)
+void WorkflowInstance::setState(State * /* s */)
 {
     // TODO - implement WorkflowInstance::setState
     return;
@@ -92,7 +92,7 @@ void WorkflowInstance::handle()
     return;
 }
 
-void WorkflowInstance::accept(WorkflowVisitor *v)
+void WorkflowInstance::accept(WorkflowVisitor * /* v */)
 {
     // TODO - implement WorkflowInstance::accept
     return;
