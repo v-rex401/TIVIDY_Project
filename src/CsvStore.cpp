@@ -66,6 +66,21 @@ std::vector<std::string> CsvStore::parseLine(const std::string& line) {
 }
 
 std::vector<std::vector<std::string> > CsvStore::read(const std::string& path) {
+    std::vector<std::vector<std::string> > rows;
+	std::ifstream in(path.c_str());
+	if (!in.is_open()) {
+		return rows;
+	}
+
+	std::string line;
+	while (std::getline(in, line)) {
+		if (line.empty()) {
+			continue;
+		}
+		rows.push_back(parseLine(line));
+	}
+	in.close();
+	return rows;
 }
 
 bool CsvStore::write(const std::string& path, const std::vector<std::vector<std::string> >& rows) {
