@@ -176,8 +176,24 @@ void WorkflowInstance::handle() {
     }
 }
 
-void WorkflowInstance::accept(WorkflowVisitor *v)
-{
-    // TODO - implement WorkflowInstance::accept
-    return;
+/**
+ * @brief Lets a visitor walk this instance's structure, so walk through work items, participants and history entries.
+ */
+void WorkflowInstance::accept(WorkflowVisitor *v) {
+    if(v == nullptr) {
+        return;
+    }
+
+    for(std::size_t i = 0; i < workItem.size(); ++i) {
+        workItem[i]->accept(v);
+    }
+
+    for(std::size_t i = 0; i < participants.size(); ++i) {
+        v->visitParticipant(participants[i]);
+    }
+
+    std::vector<WorkflowEvent*> entries = eventLog->getEntries();
+    for(std::size_t i = 0; i < entries.size(); ++i) {
+        v->visitHistoryEntry(entries[i]);
+    }
 }
