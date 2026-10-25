@@ -102,10 +102,20 @@ void WorkflowInstance::detach(Observer *o)
     observerList.erase(std::remove(observerList.begin(), observerList.end(), o), observerList.end());
 }
 
-void WorkflowInstance::setState(State *s)
-{
-    // TODO - implement WorkflowInstance::setState
-    return;
+
+/**
+ * @brief Changes the current state and notifies the observers. Takes ownership of s, which must be a new state created by the caller.
+ * To go back to an old state, use setMemento().
+ */
+void WorkflowInstance::setState(State *s) {
+    if(s == nullptr) {
+        return;
+    }
+    ownedStates.push_back(std::unique_ptr<State>(s));
+    currentState = s;
+
+    eventLog->addEntry(makeStateChangeEvent(id)); //the log owns the event
+    notify();
 }
 
 State *WorkflowInstance::getState()
