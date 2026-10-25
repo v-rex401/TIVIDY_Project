@@ -40,6 +40,7 @@ public:
 	 * @brief Constructs a new WorkflowInstance.
 	 */
 	WorkflowInstance();
+	virtual ~WorkflowInstance();
 
 	/**
 	 * @brief Creates a Memento that contains a snapshot of the current state.
