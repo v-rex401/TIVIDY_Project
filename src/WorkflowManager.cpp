@@ -47,10 +47,11 @@ void WorkflowManager::executeWorkflow(WorkflowInstance *instance, WorkItem *item
 {
 	// TODO : This function does not work at all
 
-	// TODO: There s not function called getRootHandlerChain
-	/* if (!instance || !item)
+	// TODO: There is not function called getRootHandlerChain
+	if (!instance || !item)
 		return;
 
+	/*
 	instance->wi.push_back(item);
 
 	Handler *rootProcessorChain = this->getRootHandlerChain();

@@ -9,7 +9,8 @@ class RoutingStrategy
 {
 
 public:
-	virtual Stage* selectItemState(WorkItem* item, WorkflowInstance* context) = 0;
+	virtual Stage *selectItemState(WorkItem *item, WorkflowInstance *context) = 0;
+	virtual ~RoutingStrategy() {}
 };
 
 #endif

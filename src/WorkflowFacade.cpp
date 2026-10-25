@@ -36,6 +36,7 @@ void WorkflowFacade::submitWorkItem(WorkflowInstance *instance, WorkItem *workit
 
 void WorkflowFacade::executeWorkflow(WorkflowInstance *w)
 {
+	WorkflowInstance *temp = w;
 	// manager->executeWorkflow(w);
 	// TODO: This needs to use the correct arguments or use a different function
 }
@@ -48,6 +49,7 @@ void WorkflowFacade::cancelWorkflow(WorkflowInstance *instance)
 void WorkflowFacade::addDefinition(WorkflowDefinition *definition)
 {
 	// manager->addDefinition(definition);
+	WorkflowDefinition *temp = definition;
 	// TODO: This needs to use the correct arguments or use a different function
 }
 
