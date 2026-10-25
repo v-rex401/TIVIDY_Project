@@ -15,14 +15,17 @@ WorkflowFacade::~WorkflowFacade()
 	delete manager;
 }
 
-void WorkflowFacade::startWorkflow(WorkflowDefinition *definition)
+void WorkflowFacade::startWorkflow(WorkflowDefinition * /* definition */)
 {
-	manager->startWorkflow(definition);
+	// manager->startWorkflow(definition);
+	// TODO: This needs to use the correct arguments or use a different function
 }
 
-WorkflowInstance *WorkflowFacade::createWorkflowInstance(WorkflowDefinition *definition)
+WorkflowInstance *WorkflowFacade::createWorkflowInstance(WorkflowDefinition * /* definition */)
 {
-	return manager->createInstance(definition);
+	// return manager->createInstance(definition);
+	// TODO: This needs to use the correct arguments or use a different function
+	return nullptr;
 }
 
 void WorkflowFacade::submitWorkItem(WorkflowInstance *instance, WorkItem *workitem)
@@ -31,9 +34,10 @@ void WorkflowFacade::submitWorkItem(WorkflowInstance *instance, WorkItem *workit
 	manager->routeWorkItem(workitem, instance);
 }
 
-void WorkflowFacade::executeWorkflow(WorkflowInstance *w)
+void WorkflowFacade::executeWorkflow(WorkflowInstance * /* w */)
 {
-	manager->executeWorkflow(w);
+	// manager->executeWorkflow(w);
+	// TODO: This needs to use the correct arguments or use a different function
 }
 
 void WorkflowFacade::cancelWorkflow(WorkflowInstance *instance)
@@ -41,10 +45,10 @@ void WorkflowFacade::cancelWorkflow(WorkflowInstance *instance)
 	manager->cancelWorkflow(instance);
 }
 
-void WorkflowFacade::addDefinition(WorkflowDefinition *definition)
+void WorkflowFacade::addDefinition(WorkflowDefinition * /* definition */)
 {
 	// manager->addDefinition(definition);
-	manager->createInstance(definition);
+	// TODO: This needs to use the correct arguments or use a different function
 }
 
 std::vector<WorkflowDefinition *> WorkflowFacade::getDefinitions()
@@ -63,7 +67,7 @@ std::vector<WorkflowInstance *> WorkflowFacade::getInstances()
 	return results;
 }
 
-WorkflowInstance *WorkflowFacade::getInstance(const std::string &id)
+WorkflowInstance *WorkflowFacade::getInstance(const std::string & /* id */)
 {
 	// TODO : Add method in WorkflowManager to return an instance
 	// return manager->getInstance(id);

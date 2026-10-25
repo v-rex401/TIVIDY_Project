@@ -73,7 +73,7 @@ public:
 	 */
 	std::string getId() const;
 
-	void setID(const std::string& newId);
+	void setId(const std::string &newId);
 	void setDefinition(WorkflowDefinition *def);
 };
 

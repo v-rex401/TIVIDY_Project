@@ -12,34 +12,70 @@ void WorkflowManager::setRoutingStrategy(RoutingStrategy *rs)
 
 Staff *WorkflowManager::assignWorkItem(WorkItem *wi, WorkflowInstance *wc)
 {
-	// TODO - implement WorkflowManager::assignWorkItem
-	return nullptr;
+	return this->assignmentStrategy->selectAssignmentItem(wi, wc);
 }
 
-void WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc)
+Stage *WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc)
 {
-	// TODO - implement WorkflowManager::routeWorkItem
-	return;
+	return this->routingStrategy->selectItemState(wi, wc);
 }
 
-WorkflowInstance *WorkflowManager::createInstance(WorkflowDefinition *def)
+WorkflowInstance *WorkflowManager::createInstance(WorkflowDefinition *def, std::string id)
 {
-	// TODO - implement WorkflowManager::createInstance
-	return nullptr;
+	if (!def)
+		return nullptr;
+
+	WorkflowInstance *temp = new WorkflowInstance();
+
+	temp->setId(id); // Add setter to WorkflowInstance
+	temp->setDefinition(def);
+
+	// TODO: Why is temp calling attach???????????
+	// temp->attach();
+
+	return temp;
 }
 
-void WorkflowManager::startWorkflow(WorkflowDefinition *def)
+void WorkflowManager::startWorkflow(WorkflowInstance *instance)
 {
-	// TODO - implement WorkflowManager::startWorkflow
+	if (!instance)
+		return;
+	//
 }
 
-void WorkflowManager::executeWorkflow(WorkflowInstance *i)
+void WorkflowManager::executeWorkflow(WorkflowInstance *instance, WorkItem *item)
 {
-	// TODO - implement WorkflowManager::executeWorkflow
+	// TODO : This function does not work at all
+
+	// TODO: There is not function called getRootHandlerChain
+	if (!instance || !item)
+		return;
+
+	/*
+	instance->wi.push_back(item);
+
+	Handler *rootProcessorChain = this->getRootHandlerChain();
+
+	if (rootProcessorChain)
+	{
+		rootProcessorChain->handleRequest(item, instance);
+	} */
 }
 
-void WorkflowManager::cancelWorkflow(WorkflowInstance *i)
+void WorkflowManager::cancelWorkflow(WorkflowInstance *instance)
 {
-	// TODO - implement WorkflowManager::cancelWorkflow
-	return;
+	if (!instance)
+		return;
+
+	/* instance->wi.clear();
+
+	instance->detach(this); */
+
+	// TODO: WorkflowManager is not an observer so it can't detach itself
+}
+
+WorkflowManager::~WorkflowManager()
+{
+	delete this->routingStrategy;
+	delete this->assignmentStrategy;
 }

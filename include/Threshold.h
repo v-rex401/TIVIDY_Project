@@ -11,7 +11,7 @@ private:
 public:
     Threshold(double limit, Stage* targetStage);
     bool isTriggered(double incomingValue) const;
-    Stage* getTargetStage();
+    Stage* getTargetStage() const;
 };
 
 #endif
