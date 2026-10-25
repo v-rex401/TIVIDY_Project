@@ -190,3 +190,11 @@ void WorkflowInstance::accept(WorkflowVisitor *v) {
 std::string WorkflowInstance::getId() const {
     return id;
 }
+
+void WorkflowInstance::setID(const std::string& newId) {
+    this->id = newId;
+}
+
+void WorkflowInstance::setDefinition(WorkflowDefinition* def) {
+    this->definition = def;
+}
