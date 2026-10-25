@@ -167,10 +167,13 @@ void WorkflowInstance::notify()
     }
 }
 
-void WorkflowInstance::handle()
-{
-    // TODO - implement WorkflowInstance::handle
-    return;
+/**
+ * @brief Delegates to the current state
+ */
+void WorkflowInstance::handle() {
+    if(currentState != nullptr) {
+        currentState->handle(this);
+    }
 }
 
 void WorkflowInstance::accept(WorkflowVisitor *v)
