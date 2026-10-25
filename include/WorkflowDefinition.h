@@ -46,6 +46,11 @@ public:
 	 */
 	void setBuilder(WorkflowBuilder* b);
 
+	/**
+	 * @brief Set name for workflow
+	 */
+	void setName(std::string name);
+
 };
 
 #endif

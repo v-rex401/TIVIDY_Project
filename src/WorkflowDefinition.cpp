@@ -55,3 +55,8 @@ void WorkflowDefinition::setBuilder(WorkflowBuilder* b)
 {
     this->builder = b;
 }
+
+void WorkflowDefinition::setName(std::string name)
+{
+    this->name = name;
+}
