@@ -66,6 +66,9 @@ void WorkflowInstance::setMemento(Memento *m) {
     }
 }
 
+/**
+ * @brief Attaches an observer, uses a reference to the real list.
+ */
 void WorkflowInstance::attach(Observer *o)
 {
     std::vector<Observer *> &observerList = getObserverList();
