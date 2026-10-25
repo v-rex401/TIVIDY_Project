@@ -5,7 +5,12 @@
 
 #include <vector>
 #include "Observer.h"
-
+/**
+ * @brief Subject (Observer pattern): keeps the list of attached observers.
+ *
+ * WorkflowInstance is the ConcreteSubject. Observers are only referenced,
+ * never owned.
+ */
 class WorkFlowSubject
 {
 
