@@ -28,12 +28,18 @@ WorkflowInstance::WorkflowInstance()
         State* initial = new Pending(); //not through setState because no observers yet attached, so no event is needed.
         ownedStates.push_back(std::unique_ptr<State>(initial));
         currentState = initial;
-      }
+}
 
-Memento *WorkflowInstance::createMemento()
-{
-    // TODO - implement WorkflowInstance::createMemento
-    return nullptr;
+/**
+ * @brief Captures a snapshot of the current state.
+ * The Memento only points at the state, and the instance keeps ownership of it.
+ * @return A newly allocated Memento. 
+ */    
+Memento *WorkflowInstance::createMemento() {
+    Memento* m = new Memento();
+    m->setState(currentState);
+    m->workItem = workItem.empty() ? nullptr : workItem.front();
+    return m;
 }
 
 void WorkflowInstance::setMemento(Memento *m)
