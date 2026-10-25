@@ -48,4 +48,5 @@ void EscalatingWorkflowBuilder::setInitialData(std::string key, std::string valu
 WorkflowDefinition *EscalatingWorkflowBuilder::getWorkflowDefinition()
 {
 	// TODO - implement EscalatingWorkflowBuilder::getWorkflowDefinition
+	return nullptr;
 }
