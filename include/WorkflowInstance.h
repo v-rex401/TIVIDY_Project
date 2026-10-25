@@ -2,6 +2,7 @@
 #define WORKFLOWINSTANCE_H
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "WorkFlowSubject.h"
 #include "State.h"
@@ -20,19 +21,21 @@ class WorkflowVisitor;
  * It interacts with the State, Memento, and Observer pattern.
  */
 
-class WorkflowInstance : public WorkFlowSubject {
+class WorkflowInstance : public WorkFlowSubject
+{
 
 private:
 	std::string id;
-	State* currentState;
-	WorkflowDefinition* definition;
-	std::vector<WorkItem*> workItem;
-	std::vector<Staff*> participants;
-	CommandHistory* history;
-	EventLog* eventLog;
+	State *currentState;
+	WorkflowDefinition *definition;
+	std::vector<WorkItem *> workItem;
+	std::vector<Staff *> participants;
+	CommandHistory *history;
+	EventLog *eventLog;
+
+	std::vector<std::unique_ptr<State>> ownedStates; // Added to keep all state objects alive for the lifetime of the instance.
 
 public:
-
 	/**
 	 * @brief Constructs a new WorkflowInstance.
 	 */
@@ -42,26 +45,32 @@ public:
 	 * @brief Creates a Memento that contains a snapshot of the current state.
 	 * @return A pointer to the newly created Memento.
 	 */
-	Memento* createMemento();
+	Memento *createMemento();
 
 	/**
 	 * @brief Restores the state of the workflow from a Memento.
-	 * @package m Pointer to the Memento to restore from.
+	 * @param m Pointer to the Memento to restore from.
 	 */
-	void setMemento(Memento* m);
+	void setMemento(Memento *m);
 
-	void attach(Observer* o) override;
-	void detach(Observer* o) override;
+	void attach(Observer *o) override;
+	void detach(Observer *o) override;
 	void notify();
 
-	void setState(State* s);
-	State* getState();
+	void setState(State *s);
+	State *getState();
 	void handle();
 
-	std::vector<WorkItem*> getWorkItem();
-	EventLog* getEventLog();
+	WorkItem *getWorkItem();
+	EventLog *getEventLog();
 
-	void accept(WorkflowVisitor* v);
+	void accept(WorkflowVisitor *v);
+
+	/**
+	 * @brief Gets the unique ID of the workflow instance.
+	 * @return the string ID
+	 */
+	std::string getId() const;
 };
 
 #endif

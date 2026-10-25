@@ -17,12 +17,11 @@ public:
     virtual void detach(Observer* o) = 0;
     /** @brief Tell every attached observer that something happened. */
     virtual void notify() = 0;
-    /** @brief Declared per the UML; not implemented yet. */
-    std::vector<Observer*> getObserverList();
-protected:
-    // Private in the UML. Protected so that the concrete subject can implement
-    // attach/detach/notify without needing getObserverList().
-    std::vector<Observer*> observerList;
+    /** @brief Return a reference to the observerList. */
+    std::vector<Observer *> &getObserverList();
+private:
+    std::vector<Observer*> observerList; 
+	
 };
  
 #endif // WORKFLOWSUBJECT_H
