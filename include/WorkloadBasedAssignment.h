@@ -10,7 +10,7 @@ private:
 
 public:
 	WorkloadBasedAssignment(const std::vector<Staff*>& pool);
-	Staff* selectAssignmentItem(WorkItem* item, WorkflowInstance* context);
+	Staff* selectAssignmentItem(WorkItem* item, WorkflowInstance* context, const std::vector<WorkflowInstance*>& runningInstances);
 };
 
 #endif

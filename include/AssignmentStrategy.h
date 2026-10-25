@@ -10,7 +10,7 @@ class AssignmentStrategy
 {
 
 public:
-	virtual Staff *selectAssignmentItem(WorkItem *item, WorkflowInstance *context) = 0;
+	virtual Staff *selectAssignmentItem(WorkItem *item, WorkflowInstance *context, const std::vector<WorkflowInstance*>& runningInstances) = 0;
 	virtual ~AssignmentStrategy() {}
 };
 
