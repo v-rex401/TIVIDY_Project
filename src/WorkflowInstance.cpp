@@ -118,10 +118,11 @@ void WorkflowInstance::setState(State *s) {
     notify();
 }
 
-State *WorkflowInstance::getState()
-{
-    // TODO - implement WorkflowInstance::getState
-    return nullptr;
+/**
+ * @brief a getter function
+ */
+State *WorkflowInstance::getState() {
+    return currentState;
 }
 
 WorkItem *WorkflowInstance::getWorkItem()
