@@ -17,10 +17,21 @@ class Stage : public WorkItem {
 private:
 	std::string name;
 	std::string title;
+	std::string requiredPosition;
 	std::vector<WorkItem*> members;
 	Staff* responsible;
 
 public:
+	/**
+	 * @brief get the required Staff position of a Stage
+	 */
+	virtual std::string getRequiredPosition() override;
+
+	/**
+	 * @brief set the required Staff position of a Stage
+	 */
+	virtual void setRequiredPosition(const std::string& position) override;
+
 	/**
 	 * @brief Add a work item to the stage
 	 */

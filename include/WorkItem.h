@@ -19,6 +19,10 @@ public:
 
 	virtual std::string getTitle() = 0;
 
+	virtual std::string getRequiredPosition() = 0;
+
+	virtual void setRequiredPosition(const std::string& position) = 0;
+
 	/**
 	 * @brief Print the hierarchy of work items
 	 */

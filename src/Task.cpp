@@ -24,3 +24,11 @@ void Task::setNextHandler(WorkItem* next) {
 	WorkItem::setNextHandler(next);
 	
 }
+
+std::string Task::getRequiredPosition() {
+    return this->requiredPosition;
+}
+
+void Task::setRequiredPosition(const std::string& position) {
+    this->requiredPosition = position;
+}

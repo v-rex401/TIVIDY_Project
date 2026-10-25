@@ -61,6 +61,7 @@ WorkItem* Stage::clone()
     clonedStage->name = this->name;
     clonedStage->title = this->title;
     clonedStage->responsible = this->responsible;
+    clonedStage->requiredPosition = this->requiredPosition;
     
     for(WorkItem* member : members)
     {
@@ -95,4 +96,12 @@ void Stage::printHierarchy(std::string indent)
         }
     }
 
+}
+
+std::string Stage::getRequiredPosition() {
+    return this->requiredPosition;
+}
+
+void Stage::setRequiredPosition(const std::string& position) {
+    this->requiredPosition = position;
 }

@@ -18,12 +18,23 @@ class Task : public WorkItem
 private:
 	std::string name;
 	std::string title;
+	std::string requiredPosition;
 	Staff *responsible;
 
 public:
 	std::string getName() override;
 
 	std::string getTitle() override;
+
+	/**
+	 * @brief get the required Staff position of a Stage
+	 */
+	virtual std::string getRequiredPosition() override;
+
+	/**
+	 * @brief set the required Staff position of a Stage
+	 */
+	virtual void setRequiredPosition(const std::string& position) override;
 
 	/**
 	 * @brief Print the tasks in a workflow hierarchy
