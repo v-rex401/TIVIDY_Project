@@ -42,6 +42,14 @@ Memento *WorkflowInstance::createMemento() {
     return m;
 }
 
+/**
+ * @brief Destroys the instance. The owned states are automatically released by the unique_ptr vector.
+ */
+WorkflowInstance::~WorkflowInstance() {
+    delete history;
+    delete eventLog;
+}
+
 void WorkflowInstance::setMemento(Memento *m)
 {
     // TODO - implement WorkflowInstance::setMemento
