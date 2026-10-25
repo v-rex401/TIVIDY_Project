@@ -4,6 +4,10 @@
 #include "WorkflowInstance.h"
 #include "EventLog.h"
 
+// Added missing constructor
+WorkflowInstance::WorkflowInstance()
+{
+}
 Memento *WorkflowInstance::createMemento()
 {
     // TODO - implement WorkflowInstance::createMemento
