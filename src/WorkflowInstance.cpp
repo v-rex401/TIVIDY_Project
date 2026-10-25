@@ -15,6 +15,15 @@
 #include "Observer.h"
 #include "EventLog.h"
 #include "CommandHistory.h"
+#include <ctime>
+
+//Added a helper for the time
+static WorkflowEvent* makeStateChangeEvent(const std::string& id) {
+    char buf[32];
+    std::time_t now = std::time(nullptr);
+    std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+    return new WorkflowEvent("STATE_CHANGE", "Workflow instance " + id + " changed state", buf);
+}
 
 /**
  * @brief Constructs a new WorkflowInstance. Every new instance starts in the Pending state, and it owns its own EventLog and CommandHistory.
@@ -62,6 +71,7 @@ void WorkflowInstance::setMemento(Memento *m) {
     State* saved = m->getState(); //friend access
     if(saved != nullptr) {
         currentState = saved;
+        eventLog->addEntry(makeStateChangeEvent(id));
         notify();
     }
 }
