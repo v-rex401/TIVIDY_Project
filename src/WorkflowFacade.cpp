@@ -25,6 +25,7 @@ WorkflowInstance *WorkflowFacade::createWorkflowInstance(WorkflowDefinition *def
 {
 	// return manager->createInstance(definition);
 	// TODO: This needs to use the correct arguments or use a different function
+	return nullptr;
 }
 
 void WorkflowFacade::submitWorkItem(WorkflowInstance *instance, WorkItem *workitem)
