@@ -18,13 +18,14 @@ void ProgressReportVisitor::visitWorkItem(WorkItem *w)
 {
 	std::cout << "WorkItem: ";
 	std::cout << w->getName() << std::endl;
-	// TODO: Print Hierarchy
+	w->printHierarchy(0);
 }
 
-void ProgressReportVisitor::visitParticipant(Staff * /* p */)
+void ProgressReportVisitor::visitParticipant(Staff *p)
 {
-	std::cout << "Staff: ";
-	// TODO: Need to put functions in the Staff class
+	std::cout << "Participant: ";
+	std::cout << p->getName() << std::endl;
+	p->printHierarchy(0);
 }
 
 void ProgressReportVisitor::visitHistoryEntry(WorkflowEvent *e)
