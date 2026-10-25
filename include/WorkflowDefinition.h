@@ -38,11 +38,6 @@ public:
 	 * @brief Get the stages of the workflow
 	 */
 	std::vector<WorkItem*>* getStages();
-
-	/**
-	 * @brief Set the workflow builder
-	 */
-	void setBuilder(WorkflowBuilder* b);
 };
 
 #endif

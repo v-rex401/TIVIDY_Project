@@ -21,8 +21,3 @@ std::vector<WorkItem *> *WorkflowDefinition::getStages()
 	// TODO - implement WorkflowDefinition::getStages
 	return nullptr;
 }
-
-void WorkflowDefinition::setBuilder(WorkflowBuilder * /* b */)
-{
-	// TODO - implement WorkflowDefinition::setBuilder
-}
