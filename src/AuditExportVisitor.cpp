@@ -1,13 +1,14 @@
 #include "AuditExportVisitor.h"
 #include <iostream>
 
+// TODO: Check on the indent
 void AuditExportVisitor::visitStage(Stage *s)
 {
 	std::cout << "Stage: ";
 	std::cout << s->getName() << std::endl;
 	std::cout << "Title: ";
 	std::cout << s->getTitle() << std::endl;
-	s->printHierarchy(0);
+	s->printHierarchy("Indent");
 }
 
 void AuditExportVisitor::visitTask(Task *t)
@@ -16,7 +17,7 @@ void AuditExportVisitor::visitTask(Task *t)
 	std::cout << t->getName() << std::endl;
 	std::cout << "Title: ";
 	std::cout << t->getTitle() << std::endl;
-	t->printHierarchy(0);
+	t->printHierarchy("Indent");
 }
 
 void AuditExportVisitor::visitWorkItem(WorkItem *w)
@@ -25,7 +26,7 @@ void AuditExportVisitor::visitWorkItem(WorkItem *w)
 	std::cout << w->getName() << std::endl;
 	std::cout << "Title: ";
 	std::cout << w->getTitle() << std::endl;
-	w->printHierarchy(0);
+	w->printHierarchy("Indent");
 }
 
 void AuditExportVisitor::visitParticipant(Staff *p)
@@ -34,7 +35,7 @@ void AuditExportVisitor::visitParticipant(Staff *p)
 	std::cout << p->getName() << std::endl;
 	std::cout << "Title: ";
 	std::cout << p->getTitle() << std::endl;
-	p->printHierarchy(0);
+	p->printHierarchy("Indent");
 }
 
 void AuditExportVisitor::visitHistoryEntry(WorkflowEvent *e)
