@@ -1,28 +1,34 @@
 #ifndef WORKFLOWMANAGER_H
 #define WORKFLOWMANAGER_H
 
-class WorkflowManager {
+#include "AssignmentStrategy.h"
+#include "RoutingStrategy.h"
+
+class WorkflowManager
+{
 
 private:
-	AssignmentStrategy* assignmentStrategy;
-	RoutingStrategy* routingStrategy;
+	AssignmentStrategy *assignmentStrategy;
+	RoutingStrategy *routingStrategy;
 
 public:
-	void setAssignmentStrategy(AssignmentStrategy* as);
+	void setAssignmentStrategy(AssignmentStrategy *as);
 
-	void setRoutingStrategy(RoutingStrategy* rs);
+	void setRoutingStrategy(RoutingStrategy *rs);
 
-	Staff* assignWorkItem(WorkItem* wi, WorkflowInstance* wc);
+	Staff *assignWorkItem(WorkItem *wi, WorkflowInstance *wc);
 
-	void routeWorkItem(WorkItem wi, WorkflowInstance* wc);
+	void routeWorkItem(WorkItem *wi, WorkflowInstance *wc);
 
-	WorkflowInstance* createInstance(WorkflowDefinition* def);
+	WorkflowInstance *createInstance(WorkflowDefinition *def);
 
-	void startWorkflow(WorkflowDefinition* def);
+	void startWorkflow(WorkflowDefinition *def);
 
-	void executeWorkflow(WorkflowInstance* i);
+	void executeWorkflow(WorkflowInstance *i);
 
-	void cancelWorkflow(WorkflowInstance* i);
+	void cancelWorkflow(WorkflowInstance *i);
+
+	~WorkflowManager();
 };
 
 #endif

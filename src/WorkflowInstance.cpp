@@ -1,56 +1,95 @@
+#include "WorkflowEvent.h"
+#include <algorithm>
+#include "Observer.h"
 #include "WorkflowInstance.h"
+#include "EventLog.h"
 
-Memento* WorkflowInstance::createMemento() {
-	// TODO - implement WorkflowInstance::createMemento
-	throw "Not yet implemented";
+Memento *WorkflowInstance::createMemento()
+{
+    // TODO - implement WorkflowInstance::createMemento
+    return nullptr;
 }
 
-void WorkflowInstance::setMemento(Memento* m) {
-	// TODO - implement WorkflowInstance::setMemento
-	throw "Not yet implemented";
+void WorkflowInstance::setMemento(Memento *m)
+{
+    // TODO - implement WorkflowInstance::setMemento
+    return;
 }
 
-void WorkflowInstance::attach(Observer* o) {
-	// TODO - implement WorkflowInstance::attach
-	throw "Not yet implemented";
+void WorkflowInstance::attach(Observer *o)
+{
+    std::vector<Observer *> &observerList = getObserverList();
+    if (o == nullptr)
+    {
+        return;
+    }
+    if (std::find(observerList.begin(), observerList.end(), o) != observerList.end())
+    {
+        return; // already attached
+    }
+    observerList.push_back(o);
 }
 
-void WorkflowInstance::detach(Observer* o) {
-	// TODO - implement WorkflowInstance::detach
-	throw "Not yet implemented";
+void WorkflowInstance::detach(Observer *o)
+{
+    std::vector<Observer *> &observerList = getObserverList();
+    observerList.erase(std::remove(observerList.begin(), observerList.end(), o), observerList.end());
 }
 
-void WorkflowInstance::setState(State* s) {
-	// TODO - implement WorkflowInstance::setState
-	throw "Not yet implemented";
+void WorkflowInstance::setState(State *s)
+{
+    // TODO - implement WorkflowInstance::setState
+    return;
 }
 
-State* WorkflowInstance::getState() {
-	// TODO - implement WorkflowInstance::getState
-	throw "Not yet implemented";
+State *WorkflowInstance::getState()
+{
+    // TODO - implement WorkflowInstance::getState
+    return nullptr;
 }
 
-void WorkflowInstance::getWorkItem() {
-	// TODO - implement WorkflowInstance::getWorkItem
-	throw "Not yet implemented";
+WorkItem *WorkflowInstance::getWorkItem()
+{
+    // TODO - implement WorkflowInstance::getWorkItem
+    return nullptr;
 }
 
-EventLog* WorkflowInstance::getEventLog() {
-	// TODO - implement WorkflowInstance::getEventLog
-	throw "Not yet implemented";
+EventLog *WorkflowInstance::getEventLog()
+{
+    // TODO - implement WorkflowInstance::getEventLog
+    return nullptr;
 }
 
-void WorkflowInstance::notify() {
-	// TODO - implement WorkflowInstance::notify
-	throw "Not yet implemented";
+void WorkflowInstance::notify()
+{
+    // most recent entry of log is the announced event.
+    EventLog *log = getEventLog();
+    if (log == nullptr)
+    {
+        return;
+    }
+    std::vector<WorkflowEvent *> entries = log->getEntries();
+    if (entries.empty())
+    {
+        return;
+    }
+    WorkflowEvent *latest = entries.back();
+    // use copy to iterate, may detach during update
+    std::vector<Observer *> snapshot = getObserverList();
+    for (std::size_t i = 0; i < snapshot.size(); ++i)
+    {
+        snapshot[i]->update(latest, this);
+    }
 }
 
-void WorkflowInstance::handle() {
-	// TODO - implement WorkflowInstance::handle
-	throw "Not yet implemented";
+void WorkflowInstance::handle()
+{
+    // TODO - implement WorkflowInstance::handle
+    return;
 }
 
-void WorkflowInstance::accept(WorkflowVisitor* v) {
-	// TODO - implement WorkflowInstance::accept
-	throw "Not yet implemented";
+void WorkflowInstance::accept(WorkflowVisitor *v)
+{
+    // TODO - implement WorkflowInstance::accept
+    return;
 }

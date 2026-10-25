@@ -1,6 +1,12 @@
 #include "WorkloadBasedAssignment.h"
 
-Staff* WorkloadBasedAssignment::selectAssignmentItem(WorkItem* item, WorkflowInstance* context) {
-	// TODO - implement WorkloadBasedAssignment::selectAssignmentItem
-	throw "Not yet implemented";
+WorkloadBasedAssignment::WorkloadBasedAssignment(const std::vector<Staff *> &pool)
+{
+	//
+}
+
+Staff *WorkloadBasedAssignment::selectAssignmentItem(WorkItem *item, WorkflowInstance *context)
+{
+	//
+	return nullptr;
 }

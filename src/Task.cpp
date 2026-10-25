@@ -1,24 +1,26 @@
 #include "Task.h"
 
-String Task::getName() {
+#include <string>
+#include <iostream>
+
+std::string Task::getName() {
 	return this->name;
 }
 
-String Task::getTitle() {
+std::string Task::getTitle() {
 	return this->title;
 }
 
-void Task::printHierarchy(String indent) {
-	// TODO - implement Task::printHierarchy
-	throw "Not yet implemented";
+void Task::printHierarchy(std::string indent) {
+	std::cout << indent << "Task: " << this->name << "\n";
+
 }
 
 void Task::handleRequest() {
-	// TODO - implement Task::handleRequest
-	throw "Not yet implemented";
+	//to be implemented with Chain of Responsibility 
 }
 
 void Task::setNextHandler(WorkItem* next) {
-	// TODO - implement Task::setNextHandler
-	throw "Not yet implemented";
+	WorkItem::setNextHandler(next);
+	
 }

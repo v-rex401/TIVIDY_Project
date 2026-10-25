@@ -1,25 +1,28 @@
 #ifndef PROGRESSREPORTVISITOR_H
 #define PROGRESSREPORTVISITOR_H
 
-class ProgressReportVisitor : WorkflowVisitor {
+#include "WorkflowVisitor.h"
+
+class ProgressReportVisitor : public WorkflowVisitor
+{
 
 private:
 	int completed;
 	int total;
-	string report;
+	std::string report;
 
 public:
-	void visitStage(Stage* s);
+	void visitStage(Stage *s);
 
-	void visitTask(Task* Task);
+	void visitTask(Task *t);
 
-	void visitWorkItem(WorkItem* w);
+	void visitWorkItem(WorkItem *w);
 
-	void visitParticipant(Staff* p);
+	void visitParticipant(Staff *p);
 
-	void visitHistoryEntry(WorkflowEvent* e);
+	void visitHistoryEntry(WorkflowEvent *e);
 
-	string getReport();
+	std::string getReport();
 };
 
 #endif

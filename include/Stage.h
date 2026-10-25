@@ -6,6 +6,8 @@
 
 #include "WorkItem.h"
 
+class Staff;
+class WorkflowVisitor;
 /**
  * @brief Represents a stage (that contains work items) in a workflow
  */
@@ -42,12 +44,12 @@ public:
 	/**
 	 * @brief Accept a workflow visitor
 	 */
-	void accept(WorkflowVisitor* v);
+	void accept(WorkflowVisitor* v) override;
 
 	/**
 	 * @brief Create a clone of the stage
 	 */
-	WorkItem* clone();
+	WorkItem* clone() override;
 
 	std::string getName() override;
 

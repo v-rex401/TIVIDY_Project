@@ -1,19 +1,26 @@
 #ifndef WORKFLOWVISITOR_H
 #define WORKFLOWVISITOR_H
 
-class WorkflowVisitor {
+#include "Stage.h"
+#include "Task.h"
+#include "WorkItem.h"
+#include "WorkItem.h"
+#include "Staff.h"
+#include "WorkflowEvent.h"
 
+class WorkflowVisitor
+{
 
 public:
-	void visitStage(Stage* s);
+	virtual void visitStage(Stage *s);
 
-	void visitTask(Task* Task);
+	virtual void visitTask(Task *Task);
 
-	void visitWorkItem(WorkItem* w);
+	virtual void visitWorkItem(WorkItem *w);
 
-	void visitParticipant(Staff* p);
+	virtual void visitParticipant(Staff *p);
 
-	void visitHistoryEntry(WorkflowEvent* e);
+	virtual void visitHistoryEntry(WorkflowEvent *e);
 };
 
 #endif

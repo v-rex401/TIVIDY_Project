@@ -7,22 +7,24 @@
 
 #include "EventLog.h"
 
-EventLog::EventLog() {
+EventLog::EventLog()
+{
 	// TODO - implement EventLog::EventLog()
-	throw "Not yet implemented";
 }
 
-EventLog::~EventLog() {
-    // TODO - implement EventLog::~EventLog
-	throw "Not yet implemented";
+EventLog::~EventLog()
+{
+	// TODO - implement EventLog::~EventLog
 }
 
-void EventLog::addEntry(WorkflowEvent* e) {
+void EventLog::addEntry(WorkflowEvent *e)
+{
 	// TODO - implement EventLog::addEntry
-	throw "Not yet implemented";
 }
 
-const vector<WorkflowEvent*>& EventLog::getEntries() const{
+const std::vector<WorkflowEvent *> &EventLog::getEntries() const
+{
+	std::vector<WorkflowEvent *> temp;
 	// TODO - implement EventLog::getEntries
-	throw "Not yet implemented";
+	return temp;
 }

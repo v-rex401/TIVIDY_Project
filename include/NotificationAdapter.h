@@ -9,9 +9,10 @@
  *
  * Presents NotificationSystem through the ExternalSystem interface the engine
  * expects, translating request() into the adaptee's sendNotification().
+ * Inherits ExternalSystem publicly so the engine can hold it as ExternalSystem*
  */
 
-class NotificationAdapter : ExternalSystem {
+class NotificationAdapter : public ExternalSystem {
 
 private:
 	NotificationSystem* adaptee;

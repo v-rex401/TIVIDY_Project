@@ -1,6 +1,15 @@
-#include "ProgessMonitor.h"
+#include "ProgressMonitor.h"
+#include "WorkflowEvent.h"
+#include "WorkflowInstance.h"
+#include <iostream>
 
-void ProgessMonitor::update() {
-	// TODO - implement ProgessMonitor::update
-	throw "Not yet implemented";
+ProgressMonitor::ProgressMonitor() {}
+ProgressMonitor::~ProgressMonitor() {}
+
+void ProgressMonitor::update(WorkflowEvent* event, WorkflowInstance* context) {
+    if (event == nullptr || context == nullptr) {
+        return;
+    }
+    std::cout << "[PROGRESS] [" << event->getTimestamp() << "] " << event->getType() << ": " << event->getDescription() << std::endl;
 }
+

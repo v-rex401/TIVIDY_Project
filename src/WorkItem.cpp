@@ -1,6 +1,14 @@
 #include "WorkItem.h"
+#include "WorkflowVisitor.h"
 
 void WorkItem::setNextHandler(WorkItem* next) {
-	// TODO - implement WorkItem::setNextHandler
-	throw "Not yet implemented";
+	this->successor = next;
+}
+
+void WorkItem::accept(WorkflowVisitor* v)
+{
+    if(v != nullptr)
+    {
+        v->visitWorkItem(this);
+    }
 }
