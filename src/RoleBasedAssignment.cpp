@@ -4,7 +4,7 @@ RoleBasedAssignment::RoleBasedAssignment(const std::vector<Staff*>& pool) {
     this->roster = pool;
 }
 
-Staff* RoleBasedAssignment::selectAssignmentItem(WorkItem* item, WorkflowInstance* context) {
+Staff* RoleBasedAssignment::selectAssignmentItem(WorkItem* item, WorkflowInstance* context, const std::vector<WorkflowInstance*>& runningInstances) {
     if (!item) return nullptr;
 
     for (auto* staff : roster) {

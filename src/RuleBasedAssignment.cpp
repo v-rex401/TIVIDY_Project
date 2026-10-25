@@ -5,13 +5,17 @@ RuleBasedAssignment::RuleBasedAssignment(const std::vector<AssignmentRule>& init
     this->roster = pool;
 }
 
-Staff* RuleBasedAssignment::selectAssignmentItem(WorkItem* item, WorkflowInstance* context) {
+Staff* RuleBasedAssignment::selectAssignmentItem(WorkItem* item, WorkflowInstance* context, const std::vector<WorkflowInstance*>& runningInstances) {
+    if (item == nullptr) return nullptr;
+
     for (const auto& rule : rules) {
-        if (ruleEngine.evaluate(rule, item, context)) {
-            for (auto* staff : roster) {
-                if (staff && staff->getTitle() == rule.targetTitle) {
-                    return staff;
-                }
+        if (!ruleEngine.evaluate(rule, item, context)) {
+            continue;
+        }
+        
+        for (Staff* staff : roster) {
+            if (staff != nullptr && staff->getTitle() == rule.targetTitle) {
+                return staff;
             }
         }
     }

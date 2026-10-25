@@ -32,3 +32,7 @@ std::string Task::getRequiredPosition() {
 void Task::setRequiredPosition(const std::string& position) {
     this->requiredPosition = position;
 }
+
+std::string Task::getSeverity() {
+	return this->severity;
+}

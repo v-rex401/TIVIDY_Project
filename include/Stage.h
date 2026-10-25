@@ -18,10 +18,16 @@ private:
 	std::string name;
 	std::string title;
 	std::string requiredPosition;
+	std::string severity;
 	std::vector<WorkItem*> members;
 	Staff* responsible;
 
 public:
+	/**
+	 * @brief get the severity of a Stage
+	 */
+	virtual std::string getSeverity() override;
+
 	/**
 	 * @brief get the required Staff position of a Stage
 	 */

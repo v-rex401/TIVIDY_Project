@@ -19,8 +19,19 @@ public:
 
 	virtual std::string getTitle() = 0;
 
+	/**
+	 * @brief get the severity of a Stage
+	 */
+	virtual std::string getSeverity() = 0;
+
+	/**
+	 * @brief get the required Staff position of a Stage
+	 */
 	virtual std::string getRequiredPosition() = 0;
 
+	/**
+	 * @brief set the required Staff position of a Stage
+	 */
 	virtual void setRequiredPosition(const std::string& position) = 0;
 
 	/**
