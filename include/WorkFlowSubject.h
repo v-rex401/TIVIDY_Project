@@ -19,7 +19,7 @@ public:
 
 	virtual void notify() = 0;
 
-	std::vector<Observer *> getObserverList();
+	std::vector<Observer *> &getObserverList();
 };
 
 #endif // WORKFLOWSUBJECT_H

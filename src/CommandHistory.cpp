@@ -8,4 +8,5 @@ void CommandHistory::save(Memento *m)
 Memento *CommandHistory::restore()
 {
 	// TODO - implement CommandHistory::restore
+	return nullptr;
 }
