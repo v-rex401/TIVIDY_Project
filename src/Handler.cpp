@@ -10,22 +10,22 @@ std::string Handler::getTitle()
 	return this->title;
 }
 
-void Handler::printHierarchy(std::string indent)
+void Handler::printHierarchy(std::string /* indent */)
 {
 	// TODO - implement Handler::printHierarchy
 }
 
-void Handler::addMember(int Component)
+void Handler::addMember(int /* Component */)
 {
 	// TODO - implement Handler::addMember
 }
 
-void Handler::removeMember(int Component)
+void Handler::removeMember(int /* Component */)
 {
 	// TODO - implement Handler::removeMember
 }
 
-void Handler::setNextHandler(Handler *next)
+void Handler::setNextHandler(Handler * /* next */)
 {
 	// TODO - implement Handler::setNextHandler
 }
@@ -33,9 +33,4 @@ void Handler::setNextHandler(Handler *next)
 void Handler::handleRequest()
 {
 	// TODO - implement Handler::handleRequest
-}
-
-void Handler::setNextHandler(WorkItem *next)
-{
-	// TODO - implement Handler::setNextHandler2
 }

@@ -11,7 +11,8 @@ private:
 	std::vector<Threshold> thresholds;
 
 public:
-	Stage *selectItemState(WorkItem *item, WorkflowInstance *context);
+	EventBasedRouting(const std::vector<Threshold>& initialThresholds);
+	Stage *selectItemState(WorkItem *item, WorkflowInstance *context) override;
 };
 
 #endif
