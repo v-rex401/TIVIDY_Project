@@ -17,12 +17,14 @@ WorkflowFacade::~WorkflowFacade()
 
 void WorkflowFacade::startWorkflow(WorkflowDefinition *definition)
 {
-	manager->startWorkflow(definition);
+	// manager->startWorkflow(definition);
+	// TODO: This needs to use the correct arguments or use a different function
 }
 
 WorkflowInstance *WorkflowFacade::createWorkflowInstance(WorkflowDefinition *definition)
 {
-	return manager->createInstance(definition);
+	// return manager->createInstance(definition);
+	// TODO: This needs to use the correct arguments or use a different function
 }
 
 void WorkflowFacade::submitWorkItem(WorkflowInstance *instance, WorkItem *workitem)
@@ -33,7 +35,8 @@ void WorkflowFacade::submitWorkItem(WorkflowInstance *instance, WorkItem *workit
 
 void WorkflowFacade::executeWorkflow(WorkflowInstance *w)
 {
-	manager->executeWorkflow(w);
+	// manager->executeWorkflow(w);
+	// TODO: This needs to use the correct arguments or use a different function
 }
 
 void WorkflowFacade::cancelWorkflow(WorkflowInstance *instance)
@@ -44,7 +47,7 @@ void WorkflowFacade::cancelWorkflow(WorkflowInstance *instance)
 void WorkflowFacade::addDefinition(WorkflowDefinition *definition)
 {
 	// manager->addDefinition(definition);
-	manager->createInstance(definition);
+	// TODO: This needs to use the correct arguments or use a different function
 }
 
 std::vector<WorkflowDefinition *> WorkflowFacade::getDefinitions()
