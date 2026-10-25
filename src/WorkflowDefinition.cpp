@@ -1,23 +1,52 @@
 #include "WorkflowDefinition.h"
 
-void WorkflowDefinition::accept(WorkflowVisitor * /* wv */)
+#include "WorkItem.h"
+#include "WorkflowVisitor.h"
+
+void WorkflowDefinition::accept(WorkflowVisitor* wv)
 {
-	// TODO - implement WorkflowDefinition::accept
+	if(wv == nullptr)
+    {
+        return;
+    }
+
+    for(WorkItem* stage : this->stages)
+    {
+        if(stage != nullptr)
+        {
+            stage->accept(wv);
+        }
+    }
 }
 
 WorkflowDefinition *WorkflowDefinition::clone()
 {
-	// TODO - implement WorkflowDefinition::clone
-	return nullptr;
+	WorkflowDefinition* clonedDefinition = new WorkflowDefinition();
+
+    clonedDefinition->name = this->name;
+
+    for(WorkItem* stage : this->stages)
+    {
+        if(stage != nullptr)
+        {
+            clonedDefinition->addStage(stage->clone());
+        }
+    }
+
+    return clonedDefinition;
 }
 
-void WorkflowDefinition::addStage(WorkItem * /* s */)
+void WorkflowDefinition::addStage(WorkItem* s)
 {
-	// TODO - implement WorkflowDefinition::addStage
+	if(s == nullptr)
+    {
+        return;
+    }
+
+    this->stages.push_back(s);
 }
 
 std::vector<WorkItem *> *WorkflowDefinition::getStages()
 {
-	// TODO - implement WorkflowDefinition::getStages
-	return nullptr;
+	return &this->stages;
 }
