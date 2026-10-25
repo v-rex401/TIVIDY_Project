@@ -6,6 +6,7 @@
 
 class WorkItem;
 class WorkflowVisitor;
+class WorkflowBuilder;
 
 /**
  * @brief Defines the structure and stages of a workflow
@@ -16,6 +17,8 @@ class WorkflowDefinition {
 private:
 	std::string name;
 	std::vector<WorkItem*> stages;
+
+	WorkflowBuilder* builder = nullptr;
 
 public:
 	/**
@@ -39,11 +42,10 @@ public:
 	std::vector<WorkItem*>* getStages();
 
 	/**
-	 * @brief Set the workflow definition name
+	 * @brief Set builder for workflow
 	 */
-	void setName(std::string name);
+	void setBuilder(WorkflowBuilder* b);
 
-	~WorkflowDefinition();
 };
 
 #endif

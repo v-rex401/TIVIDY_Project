@@ -51,15 +51,7 @@ std::vector<WorkItem *> *WorkflowDefinition::getStages()
 	return &this->stages;
 }
 
-void WorkflowDefinition::setName(std::string name)
+void WorkflowDefinition::setBuilder(WorkflowBuilder* b)
 {
-    this->name = name;
-}
-
-WorkflowDefinition::~WorkflowDefinition()
-{
-    for(WorkItem* stage : this->stages)
-    {
-        delete stage;
-    }
+    this->builder = b;
 }
