@@ -38,6 +38,11 @@ public:
 	 */
 	std::vector<WorkItem*>* getStages();
 
+	/**
+	 * @brief Set the workflow definition name
+	 */
+	void setName(std::string name);
+
 	~WorkflowDefinition();
 };
 

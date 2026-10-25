@@ -51,6 +51,11 @@ std::vector<WorkItem *> *WorkflowDefinition::getStages()
 	return &this->stages;
 }
 
+void WorkflowDefinition::setName(std::string name)
+{
+    this->name = name;
+}
+
 WorkflowDefinition::~WorkflowDefinition()
 {
     for(WorkItem* stage : this->stages)
