@@ -120,21 +120,26 @@ void WorkflowInstance::setState(State *s) {
 
 /**
  * @brief a getter function
+ * @return the current state.
  */
 State *WorkflowInstance::getState() {
     return currentState;
 }
 
-WorkItem *WorkflowInstance::getWorkItem()
-{
-    // TODO - implement WorkflowInstance::getWorkItem
-    return nullptr;
+/**
+ * @brief a getter function
+ * @return the work item.
+ */
+std::vector<WorkItem *> WorkflowInstance::getWorkItem() {
+    return workItem;
 }
 
-EventLog *WorkflowInstance::getEventLog()
-{
-    // TODO - implement WorkflowInstance::getEventLog
-    return nullptr;
+/**
+ * @brief a getter function
+ * @return the event log.
+ */
+EventLog *WorkflowInstance::getEventLog() {
+    return eventLog;
 }
 
 void WorkflowInstance::notify()

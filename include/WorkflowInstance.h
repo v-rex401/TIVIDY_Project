@@ -62,7 +62,7 @@ public:
 	State *getState();
 	void handle();
 
-	WorkItem *getWorkItem();
+	std::vector<WorkItem*> getWorkItem();
 	EventLog *getEventLog();
 
 	void accept(WorkflowVisitor *v);
