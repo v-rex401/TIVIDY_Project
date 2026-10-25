@@ -83,6 +83,9 @@ void WorkflowInstance::attach(Observer *o)
     observerList.push_back(o);
 }
 
+/**
+ * @brief Detaches an observer.
+ */
 void WorkflowInstance::detach(Observer *o)
 {
     std::vector<Observer *> &observerList = getObserverList();
