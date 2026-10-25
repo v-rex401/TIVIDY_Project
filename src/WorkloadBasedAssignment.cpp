@@ -1,13 +1,14 @@
 #include "WorkloadBasedAssignment.h"
 
-WorkloadBasedAssignment::WorkloadBasedAssignment(const std::vector<Staff*>& pool) {
+WorkloadBasedAssignment::WorkloadBasedAssignment(const std::vector<Staff *> &pool)
+{
 	this->roster = pool;
 }
 
 Staff* WorkloadBasedAssignment::selectAssignmentItem(WorkItem* item, WorkflowInstance* context, const std::vector<WorkflowInstance*>& runningInstances) {
 	if (context == nullptr || item == nullptr) return nullptr;
 
-	Staff* leastBusyStaff = nullptr;
+	Staff *leastBusyStaff = nullptr;
 	int minWorkload = INT_MAX;
 
 	for (Staff* staff : roster) {

@@ -4,13 +4,17 @@
 #include "WorkflowInstance.h"
 #include "EventLog.h"
 
+// Added missing constructor
+WorkflowInstance::WorkflowInstance()
+{
+}
 Memento *WorkflowInstance::createMemento()
 {
     // TODO - implement WorkflowInstance::createMemento
     return nullptr;
 }
 
-void WorkflowInstance::setMemento(Memento *m)
+void WorkflowInstance::setMemento(Memento * /* m */)
 {
     // TODO - implement WorkflowInstance::setMemento
     return;
@@ -36,7 +40,7 @@ void WorkflowInstance::detach(Observer *o)
     observerList.erase(std::remove(observerList.begin(), observerList.end(), o), observerList.end());
 }
 
-void WorkflowInstance::setState(State *s)
+void WorkflowInstance::setState(State * /* s */)
 {
     // TODO - implement WorkflowInstance::setState
     return;
@@ -88,8 +92,17 @@ void WorkflowInstance::handle()
     return;
 }
 
-void WorkflowInstance::accept(WorkflowVisitor *v)
+void WorkflowInstance::accept(WorkflowVisitor * /* v */)
 {
     // TODO - implement WorkflowInstance::accept
     return;
+}
+
+void WorkflowInstance::setId(const std::string &newId)
+{
+    id = newId;
+}
+void WorkflowInstance::setDefinition(WorkflowDefinition *def)
+{
+    definition = def;
 }

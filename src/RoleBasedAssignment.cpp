@@ -1,6 +1,7 @@
 #include "RoleBasedAssignment.h"
 
-RoleBasedAssignment::RoleBasedAssignment(const std::vector<Staff*>& pool) {
+RoleBasedAssignment::RoleBasedAssignment(const std::vector<Staff *> &pool)
+{
     this->roster = pool;
 }
 

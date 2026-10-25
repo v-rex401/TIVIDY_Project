@@ -9,7 +9,7 @@ void WorkflowManager::setAssignmentStrategy(AssignmentStrategy *as)
 	if (assignmentStrategy == as) {
 		return;
 	}
-	
+
 	delete assignmentStrategy;
 	this->assignmentStrategy = as;
 }
@@ -19,7 +19,7 @@ void WorkflowManager::setRoutingStrategy(RoutingStrategy *rs)
 	if (routingStrategy == rs) {
 		return;
 	}
-	
+
 	delete routingStrategy;
 	this->routingStrategy = rs;
 }
@@ -38,14 +38,16 @@ Stage *WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc)
 
 WorkflowInstance *WorkflowManager::createInstance(WorkflowDefinition *def, std::string id)
 {
-	if (!def) return nullptr;
+	if (!def)
+		return nullptr;
 
-	WorkflowInstance* temp = new WorkflowInstance();
+	WorkflowInstance *temp = new WorkflowInstance();
 
-	temp->setId(id); //Add setter to WorkflowInstance
-	temp->setDefinition(def); 
+	temp->setId(id); // Add setter to WorkflowInstance
+	temp->setDefinition(def);
 
-	temp->attach();
+	// TODO: Why is temp calling attach???????????
+	// temp->attach();
 
 	return temp;
 }
@@ -53,7 +55,7 @@ WorkflowInstance *WorkflowManager::createInstance(WorkflowDefinition *def, std::
 void WorkflowManager::startWorkflow(WorkflowInstance *instance)
 {
 	if (instance == nullptr) return;
-	
+
 	auto it = std::find(runningInstances.begin(), runningInstances.end(), instance);
 
 	if (it != runningInstances.end()) {
@@ -63,7 +65,7 @@ void WorkflowManager::startWorkflow(WorkflowInstance *instance)
 	runningInstances.push_back(instance);
 }
 
-void WorkflowManager::executeWorkflow(WorkflowInstance *instance, WorkItem* item)
+void WorkflowManager::executeWorkflow(WorkflowInstance *instance, WorkItem *item)
 {
 	if (instance == nullptr || item == nullptr) return;
 
@@ -85,7 +87,8 @@ void WorkflowManager::cancelWorkflow(WorkflowInstance *instance)
 	runningInstances.erase(it);
 }
 
-WorkflowManager::~WorkflowManager() {
+WorkflowManager::~WorkflowManager()
+{
 	delete this->routingStrategy;
 	delete this->assignmentStrategy;
 }

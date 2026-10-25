@@ -1,6 +1,6 @@
 #include "WorkflowDefinition.h"
 
-void WorkflowDefinition::accept(WorkflowVisitor *wv)
+void WorkflowDefinition::accept(WorkflowVisitor * /* wv */)
 {
 	// TODO - implement WorkflowDefinition::accept
 }
@@ -11,7 +11,7 @@ WorkflowDefinition *WorkflowDefinition::clone()
 	return nullptr;
 }
 
-void WorkflowDefinition::addStage(WorkItem *s)
+void WorkflowDefinition::addStage(WorkItem * /* s */)
 {
 	// TODO - implement WorkflowDefinition::addStage
 }
@@ -22,7 +22,7 @@ std::vector<WorkItem *> *WorkflowDefinition::getStages()
 	return nullptr;
 }
 
-void WorkflowDefinition::setBuilder(WorkflowBuilder *b)
+void WorkflowDefinition::setBuilder(WorkflowBuilder * /* b */)
 {
 	// TODO - implement WorkflowDefinition::setBuilder
 }

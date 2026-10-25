@@ -1,6 +1,6 @@
 #include "CommandHistory.h"
 
-void CommandHistory::save(Memento *m)
+void CommandHistory::save(Memento * /* m */)
 {
 	// TODO - implement CommandHistory::save
 }

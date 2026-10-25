@@ -21,7 +21,7 @@ void ProgressReportVisitor::visitWorkItem(WorkItem *w)
 	// TODO: Print Hierarchy
 }
 
-void ProgressReportVisitor::visitParticipant(Staff *p)
+void ProgressReportVisitor::visitParticipant(Staff * /* p */)
 {
 	std::cout << "Staff: ";
 	// TODO: Need to put functions in the Staff class

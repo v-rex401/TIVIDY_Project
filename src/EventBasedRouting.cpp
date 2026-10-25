@@ -1,10 +1,12 @@
 #include "EventBasedRouting.h"
 
-EventBasedRouting::EventBasedRouting(const std::vector<Threshold>& initialThresholds) {
+EventBasedRouting::EventBasedRouting(const std::vector<Threshold> &initialThresholds)
+{
 	this->thresholds = initialThresholds;
 }
 
-Stage *EventBasedRouting::selectItemState(WorkItem *item, WorkflowInstance *context)
+// TODO: item needs to be used
+Stage *EventBasedRouting::selectItemState(WorkItem * /* item */, WorkflowInstance *context)
 {
 	if (item == nullptr || context == nullptr) return nullptr;
 
@@ -21,7 +23,7 @@ Stage *EventBasedRouting::selectItemState(WorkItem *item, WorkflowInstance *cont
 				highestTriggeredLimit = limit;
 				selectedStage = th.getTargetStage();
 			}
-			
+
 		}
 	}
 	return selectedStage;
