@@ -6,9 +6,11 @@ SeverityBasedRouting::SeverityBasedRouting(Stage* normal, Stage* emergency) {
 }
 
 Stage *SeverityBasedRouting::selectItemState(WorkItem *item, WorkflowInstance *context) {
-    if (!item) return nullptr;
+    if (item == nullptr || context == nullptr) return nullptr;
 
-    if (item->getTitle() == "Critical" || item->getTitle() == "HighSeverity") {
+    const std::string severity = item->getSeverity();
+
+    if (severity == "Critical" || severity == "High") {
         return emergencyStage;
     }
     return normalStage;

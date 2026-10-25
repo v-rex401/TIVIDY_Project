@@ -7,9 +7,9 @@ ApprovalChainRouting::ApprovalChainRouting(double limitThreshold, Stage* standar
 }
 	
 Stage *ApprovalChainRouting::selectItemState(WorkItem *item, WorkflowInstance *context) {
-	double currentTransactionValue = 15000.0;
+	if (item == nullptr || context == nullptr) return nullptr;
 
-	if (currentTransactionValue > threshold) {
+	if (context->getTransactionValue() > threshold) {
 		return escalationStage;
 	}
 
