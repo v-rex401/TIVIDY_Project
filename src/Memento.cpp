@@ -1,6 +1,19 @@
-#include "Memento.h"
+/**
+ * @file Memento.cpp
+ * @brief Implementation of the Memento state.
+ * @author Jezelle Govender
+ * @date 2026-10-24
+ */
 
-State* Memento::getState() {
+#include "Memento.h"
+#include "State.h"
+#include "WorkItem.h"
+
+Memento::Memento() : state(nullptr), workItem(nullptr) {
+
+}
+
+State* Memento::getState() { //accessible by friend WorkflowInstance
 	return this->state;
 }
 
