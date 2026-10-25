@@ -17,7 +17,7 @@ public:
 	virtual std::string getName() = 0;
 	virtual std::string getTitle() = 0;
 	virtual int getRank() = 0;
-	virtual void printHierarchy() {}
+	virtual void printHierarchy(std::string) {}
 };
 
 #endif
