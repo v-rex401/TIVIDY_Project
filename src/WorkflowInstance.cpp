@@ -1,8 +1,34 @@
+/**
+ * @file WorkflowInstance.cpp
+ * @brief Implementation of WorkflowInstance with State context, Memento originator, Observer subject and Visitor.
+ * @author Jezelle Govender
+ * @date 2026-10-25
+ */
+
+#include "WorkflowInstance.h"
+#include "Pending.h"
+#include "Observer.h"
+#include "WorkItem.h"
+#include "WorkflowVisitor.h"
 #include "WorkflowEvent.h"
 #include <algorithm>
 #include "Observer.h"
-#include "WorkflowInstance.h"
 #include "EventLog.h"
+#include "CommandHistory.h"
+
+/**
+ * @brief Constructs a new WorkflowInstance. Every new instance starts in the Pending state, and it owns its own EventLog and CommandHistory.
+ */
+WorkflowInstance::WorkflowInstance()
+    : id(""), 
+      currentState(nullptr),
+      definition(nullptr),
+      history(new CommandHistory()),
+      eventLog(new EventLog()) {
+        State* initial = new Pending(); //not through setState because no observers yet attached, so no event is needed.
+        ownedStates.push_back(std::unique_ptr<State>(initial));
+        currentState = initial;
+      }
 
 Memento *WorkflowInstance::createMemento()
 {
