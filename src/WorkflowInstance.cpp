@@ -71,7 +71,7 @@ void WorkflowInstance::setMemento(Memento *m) {
     State* saved = m->getState(); //friend access
     if(saved != nullptr) {
         currentState = saved;
-        eventLog->addEntry(makeStateChangeEvent(id));
+       // eventLog->addEntry(makeStateChangeEvent(id));
         notify();
     }
 }
@@ -114,8 +114,8 @@ void WorkflowInstance::setState(State *s) {
     ownedStates.push_back(std::unique_ptr<State>(s));
     currentState = s;
 
-    eventLog->addEntry(makeStateChangeEvent(id)); //the log owns the event
-    notify();
+   // eventLog->addEntry(makeStateChangeEvent(id)); //the log owns the event
+    notify(); //this now logs the event once, and tells the observers
 }
 
 /**
@@ -145,25 +145,14 @@ EventLog *WorkflowInstance::getEventLog() {
 /**
  * @brief Records a state change event
  */
-void WorkflowInstance::notify()
-{
-    // most recent entry of log is the announced event.
-    EventLog *log = getEventLog();
-    if (log == nullptr)
-    {
-        return;
-    }
-    std::vector<WorkflowEvent *> entries = log->getEntries();
-    if (entries.empty())
-    {
-        return;
-    }
-    WorkflowEvent *latest = entries.back();
-    // use copy to iterate, may detach during update
+void WorkflowInstance::notify() {
+    WorkflowEvent* event = makeStateChangeEvent(id);
+    eventLog->addEntry(event); //add it to the log that takes ownership
+
     std::vector<Observer *> snapshot = getObserverList();
     for (std::size_t i = 0; i < snapshot.size(); ++i)
     {
-        snapshot[i]->update(latest, this);
+        snapshot[i]->update(event, this);
     }
 }
 
