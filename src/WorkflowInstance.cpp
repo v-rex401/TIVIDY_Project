@@ -93,3 +93,12 @@ void WorkflowInstance::accept(WorkflowVisitor *v)
     // TODO - implement WorkflowInstance::accept
     return;
 }
+
+void WorkflowInstance::setId(const std::string &newId)
+{
+    id = newId;
+}
+void WorkflowInstance::setDefinition(WorkflowDefinition *def)
+{
+    definition = def;
+}
