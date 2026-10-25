@@ -197,3 +197,7 @@ void WorkflowInstance::accept(WorkflowVisitor *v) {
         v->visitHistoryEntry(entries[i]);
     }
 }
+
+std::string WorkflowInstance::getId() const {
+    return id;
+}
