@@ -6,6 +6,14 @@
 #include <iostream>
 #include <string>
 
+Staff* Task::getResponsible() {
+	return responsible;
+}
+
+void Task::setResponsible(Staff* staff) {
+	responsible = staff;
+}
+
 void Stage::addMember(WorkItem* c)
 {
     if(c == nullptr)

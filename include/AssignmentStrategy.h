@@ -1,6 +1,7 @@
 #ifndef ASSIGNMENTSTRATEGY_H
 #define ASSIGNMENTSTRATEGY_H
 
+#include <vector>
 #include "Staff.h"
 #include "WorkItem.h"
 #include "WorkflowInstance.h"

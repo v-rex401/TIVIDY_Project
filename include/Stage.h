@@ -23,6 +23,9 @@ private:
 	Staff* responsible;
 
 public:
+	Staff* getResponsible() override;
+	void setResponsible(Staff* staff) override;
+
 	/**
 	 * @brief get the severity of a Stage
 	 */

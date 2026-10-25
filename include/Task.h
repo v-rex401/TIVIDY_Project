@@ -23,6 +23,9 @@ private:
 	Staff *responsible;
 
 public:
+	Staff* getResponsible() override;
+	void setResponsible(Staff* staff) override;
+	
 	std::string getName() override;
 
 	std::string getTitle() override;

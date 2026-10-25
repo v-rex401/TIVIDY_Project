@@ -3,6 +3,14 @@
 #include <string>
 #include <iostream>
 
+Staff* Task::getResponsible() {
+	return responsible;
+}
+
+void Task::setResponsible(Staff* staff) {
+	responsible = staff;
+}
+
 std::string Task::getName()
 {
 	return this->name;

@@ -59,6 +59,9 @@ public:
 	 */
 	virtual void accept(WorkflowVisitor* v);
 
+	virtual Staff* getResponsible() { return nullptr; }
+	virtual void setResponsible(Staff* staff) {}
+
 	virtual ~WorkItem() = default;
 };
 
