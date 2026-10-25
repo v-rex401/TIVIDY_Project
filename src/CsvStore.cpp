@@ -84,4 +84,20 @@ std::vector<std::vector<std::string> > CsvStore::read(const std::string& path) {
 }
 
 bool CsvStore::write(const std::string& path, const std::vector<std::vector<std::string> >& rows) {
+    std::ofstream out(path.c_str());
+	if (!out.is_open()) {
+		return false;
+	}
+
+	for (size_t r = 0; r < rows.size(); r++) {
+		for (size_t f = 0; f < rows[r].size(); f++) {
+			if (f > 0) {
+				out << ",";
+			}
+			out << escape(rows[r][f]);
+		}
+		out << "\n";
+	}
+	out.close();
+	return true;
 }
