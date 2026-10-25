@@ -18,13 +18,13 @@ public:
 
 	Staff *assignWorkItem(WorkItem *wi, WorkflowInstance *wc);
 
-	void routeWorkItem(WorkItem *wi, WorkflowInstance *wc);
+	Stage *routeWorkItem(WorkItem *wi, WorkflowInstance *wc);
 
-	WorkflowInstance *createInstance(WorkflowDefinition *def);
+	WorkflowInstance *createInstance(WorkflowDefinition *def, std::string id);
 
-	void startWorkflow(WorkflowDefinition *def);
+	void startWorkflow(WorkflowInstance *instance);
 
-	void executeWorkflow(WorkflowInstance *i);
+	void executeWorkflow(WorkflowInstance *instance, WorkItem *item);
 
 	void cancelWorkflow(WorkflowInstance *i);
 

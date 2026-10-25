@@ -4,8 +4,13 @@
 #include "RoutingStrategy.h"
 
 class SeverityBasedRouting : public RoutingStrategy {
+private:
+	Stage* normalStage;
+	Stage* emergencyStage;
+
 public:
-	Stage* selectItemState(WorkItem item, WorkflowInstance* context) override;
+	SeverityBasedRouting(Stage* normal, Stage* emergency);
+	Stage *selectItemState(WorkItem *item, WorkflowInstance *context) override;
 };
 
 #endif

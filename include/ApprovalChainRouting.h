@@ -7,9 +7,12 @@ class ApprovalChainRouting : public RoutingStrategy
 {
 private:
 	double threshold;
+	Stage* standardStage;
+	Stage* escalationStage;
 
 public:
-	Stage *selectItemState(WorkItem *item, WorkflowInstance *context);
+	ApprovalChainRouting(double limitThreshold, Stage* standard, Stage* escalation);
+	Stage *selectItemState(WorkItem *item, WorkflowInstance *context) override;
 };
 
 #endif
