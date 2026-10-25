@@ -7,6 +7,7 @@ RuleBasedAssignment::RuleBasedAssignment(const std::vector<AssignmentRule>& init
 
 Staff* RuleBasedAssignment::selectAssignmentItem(WorkItem* item, WorkflowInstance* context, const std::vector<WorkflowInstance*>& runningInstances) {
     if (item == nullptr) return nullptr;
+    (void)runningInstances;
 
     for (const auto& rule : rules) {
         if (!ruleEngine.evaluate(rule, item, context)) {

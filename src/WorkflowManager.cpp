@@ -46,9 +46,6 @@ WorkflowInstance *WorkflowManager::createInstance(WorkflowDefinition *def, std::
 	temp->setId(id); // Add setter to WorkflowInstance
 	temp->setDefinition(def);
 
-	// TODO: Why is temp calling attach???????????
-	// temp->attach();
-
 	return temp;
 }
 
@@ -63,13 +60,21 @@ void WorkflowManager::startWorkflow(WorkflowInstance *instance)
 	}
 
 	runningInstances.push_back(instance);
+
+	instance->handle();
 }
 
 void WorkflowManager::executeWorkflow(WorkflowInstance *instance, WorkItem *item)
 {
 	if (instance == nullptr || item == nullptr) return;
 
-	//
+	startWorkflow(instance);
+
+	Staff* assignedStaff = assignWorkItem(item, instance);
+	if (assignedStaff != nullptr) item->setResponsible(assignedStaff);
+	instance->addWorkItem(item);
+
+	instance->setCurrentStage(routeWorkItem(item, instance));
 }
 
 void WorkflowManager::cancelWorkflow(WorkflowInstance *instance)

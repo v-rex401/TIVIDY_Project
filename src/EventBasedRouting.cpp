@@ -6,7 +6,7 @@ EventBasedRouting::EventBasedRouting(const std::vector<Threshold> &initialThresh
 }
 
 // TODO: item needs to be used
-Stage *EventBasedRouting::selectItemState(WorkItem * /* item */, WorkflowInstance *context)
+Stage *EventBasedRouting::selectItemState(WorkItem * item, WorkflowInstance *context)
 {
 	if (item == nullptr || context == nullptr) return nullptr;
 
