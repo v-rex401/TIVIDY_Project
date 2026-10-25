@@ -13,7 +13,7 @@
  #include "Task.h"
 
  /**
-  * @brief Tests that cloning a Stage object creates a new object
+  * @brief Tests that cloning a Stage object creates a new Stage object
   */
  TEST(PrototypeTest, CloneStage)
 {
@@ -24,12 +24,13 @@
 
     ASSERT_NE(clonedStage, nullptr);
     EXPECT_NE(clonedStage, &stage);
+    EXPECT_NE(dynamic_cast<Stage*>(clonedStage), nullptr);
 
     delete clonedStage;
 }
 
 /**
- * @brief Tests that cloning a Task object creates a new object
+ * @brief Tests that cloning a Task object creates a new Task object
  */
 TEST(PrototypeTest, CloneTask)
 {
@@ -40,6 +41,7 @@ TEST(PrototypeTest, CloneTask)
 
     ASSERT_NE(clonedTask, nullptr);
     EXPECT_NE(clonedTask, &task);
+    EXPECT_NE(dynamic_cast<Task*>(clonedTask), nullptr);
 
     delete clonedTask;
 }
