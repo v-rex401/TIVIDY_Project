@@ -2,6 +2,7 @@
 #define WORKFLOWINSTANCE_H
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "WorkFlowSubject.h"
 #include "State.h"
@@ -31,6 +32,8 @@ private:
 	CommandHistory* history;
 	EventLog* eventLog;
 
+	std::vector<std::unique_ptr<State>> ownedStates; //Added to keep all state objects alive for the lifetime of the instance.
+
 public:
 
 	/**
@@ -46,7 +49,7 @@ public:
 
 	/**
 	 * @brief Restores the state of the workflow from a Memento.
-	 * @package m Pointer to the Memento to restore from.
+	 * @param m Pointer to the Memento to restore from.
 	 */
 	void setMemento(Memento* m);
 
@@ -62,6 +65,12 @@ public:
 	EventLog* getEventLog();
 
 	void accept(WorkflowVisitor* v);
+
+	/**
+	 * @brief Gets the unique ID of the workflow instance.
+	 * @return the string ID
+	 */
+	std::string getId() const;
 };
 
 #endif
