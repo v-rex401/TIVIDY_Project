@@ -50,10 +50,20 @@ WorkflowInstance::~WorkflowInstance() {
     delete eventLog;
 }
 
-void WorkflowInstance::setMemento(Memento *m)
-{
-    // TODO - implement WorkflowInstance::setMemento
-    return;
+/**
+ * @brief Restores the state saved in a Memento. It does not go through setState(), as the state is already owned by this instance.
+ * @param m The Memento to restore from.
+ */
+void WorkflowInstance::setMemento(Memento *m) {
+    if(m == nullptr) {
+        return;
+    }
+
+    State* saved = m->getState(); //friend access
+    if(saved != nullptr) {
+        currentState = saved;
+        notify();
+    }
 }
 
 void WorkflowInstance::attach(Observer *o)
