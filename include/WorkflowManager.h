@@ -11,7 +11,11 @@ private:
 	AssignmentStrategy *assignmentStrategy;
 	RoutingStrategy *routingStrategy;
 
+	std::vector<WorkflowInstance*> runningInstances;
+
 public:
+	WorkflowManager();
+
 	void setAssignmentStrategy(AssignmentStrategy *as);
 
 	void setRoutingStrategy(RoutingStrategy *rs);

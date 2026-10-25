@@ -1,22 +1,38 @@
 #include "WorkflowManager.h"
+#include "Cancelled.h"
+#include <algorithm>
+
+WorkflowManager::WorkflowManager() : assignmentStrategy(nullptr), routingStrategy(nullptr) {}
 
 void WorkflowManager::setAssignmentStrategy(AssignmentStrategy *as)
 {
+	if (assignmentStrategy == as) {
+		return;
+	}
+	
+	delete assignmentStrategy;
 	this->assignmentStrategy = as;
 }
 
 void WorkflowManager::setRoutingStrategy(RoutingStrategy *rs)
 {
+	if (routingStrategy == rs) {
+		return;
+	}
+	
+	delete routingStrategy;
 	this->routingStrategy = rs;
 }
 
 Staff *WorkflowManager::assignWorkItem(WorkItem *wi, WorkflowInstance *wc)
 {
-	return this->assignmentStrategy->selectAssignmentItem(wi, wc);
+	if (assignmentStrategy == nullptr || wi == nullptr || wc == nullptr) return nullptr;
+	return this->assignmentStrategy->selectAssignmentItem(wi, wc, runningInstances);
 }
 
 Stage *WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc)
 {
+	if (assignmentStrategy == nullptr || wi == nullptr || wc == nullptr) return nullptr;
 	return this->routingStrategy->selectItemState(wi, wc);
 }
 
@@ -36,30 +52,37 @@ WorkflowInstance *WorkflowManager::createInstance(WorkflowDefinition *def, std::
 
 void WorkflowManager::startWorkflow(WorkflowInstance *instance)
 {
-	if (!instance) return;
-	//
+	if (instance == nullptr) return;
+	
+	auto it = std::find(runningInstances.begin(), runningInstances.end(), instance);
+
+	if (it != runningInstances.end()) {
+		return;
+	}
+
+	runningInstances.push_back(instance);
 }
 
 void WorkflowManager::executeWorkflow(WorkflowInstance *instance, WorkItem* item)
 {
-	if (!instance || !item) return;
+	if (instance == nullptr || item == nullptr) return;
 
-	instance->wi.push_back(item);
-
-	Handler* rootProcessorChain = this->getRootHandlerChain();
-
-	if (rootProcessorChain) {
-		rootProcessorChain->handleRequest(item, instance);
-	}
+	//
 }
 
 void WorkflowManager::cancelWorkflow(WorkflowInstance *instance)
 {
-	if (!instance) return;
+	if (instance == nullptr) return;
 
-	instance->wi.clear();
+	auto it = std::find(runningInstances.begin(), runningInstances.end(), instance);
 
-	instance->detach(this);
+	if (it == runningInstances.end()) {
+		return;
+	}
+
+	instance->setState(new Cancelled());
+
+	runningInstances.erase(it);
 }
 
 WorkflowManager::~WorkflowManager() {

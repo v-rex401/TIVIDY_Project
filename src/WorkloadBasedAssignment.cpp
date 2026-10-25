@@ -5,26 +5,22 @@ WorkloadBasedAssignment::WorkloadBasedAssignment(const std::vector<Staff*>& pool
 }
 
 Staff* WorkloadBasedAssignment::selectAssignmentItem(WorkItem* item, WorkflowInstance* context, const std::vector<WorkflowInstance*>& runningInstances) {
-	if (!context || !item || roster.empty()) return nullptr;
+	if (context == nullptr || item == nullptr) return nullptr;
 
 	Staff* leastBusyStaff = nullptr;
 	int minWorkload = INT_MAX;
 
 	for (Staff* staff : roster) {
-		if (!staff) continue;
+		if (staff == nullptr) continue;
 
 		int currentCount = 0;
 		for (WorkflowInstance* instance : runningInstances) {
-			if (!instance) continue;
+			if (instance == nullptr) continue;
 
-			if (instance->getState() == nullptr) continue;
+			const std::vector<WorkItem*> items = instance->getWorkItem();
 
-			for (WorkItem* workItem : instance->getWorkItem()) {
-				if (!workItem) continue;
-
-				if (workItem->getResponsible() == staff) {
-					++currentCount;
-				}
+			for (WorkItem* assignedItem : items) {
+				if (assignedItem != nullptr && assignedItem->getResponsible() == staff) ++currentCount;
 			}
 		}
 

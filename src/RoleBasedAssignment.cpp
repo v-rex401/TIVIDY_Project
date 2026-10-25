@@ -5,10 +5,14 @@ RoleBasedAssignment::RoleBasedAssignment(const std::vector<Staff*>& pool) {
 }
 
 Staff* RoleBasedAssignment::selectAssignmentItem(WorkItem* item, WorkflowInstance* context, const std::vector<WorkflowInstance*>& runningInstances) {
-    if (!item) return nullptr;
+    if (item == nullptr) return nullptr;
 
-    for (auto* staff : roster) {
-        if (staff && staff->getTitle() == item->getTitle()) return staff;
+    (void)context;
+
+    for (Staff* staff : roster) {
+        if (staff != nullptr && staff->getTitle() == item->getRequiredPosition()) {
+            return staff;
+        }
     }
     return nullptr;
 }
