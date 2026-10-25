@@ -39,12 +39,13 @@ void AuditExportVisitor::visitParticipant(Staff *p)
 
 void AuditExportVisitor::visitHistoryEntry(WorkflowEvent *e)
 {
+	std::cout << e->getTimestamp() << std::endl;
+	std::cout << e->getType() << std::endl;
 	std::cout << e->getDescription() << std::endl;
 }
 std::string AuditExportVisitor::getAuditTrail()
 {
 	std::string result = "Audit Trail\n";
-	result += trail;
-
-	return result;
+	// TODO: Determine what is being visited
+	return "End of Audit Trail";
 }
