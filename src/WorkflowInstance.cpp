@@ -142,6 +142,9 @@ EventLog *WorkflowInstance::getEventLog() {
     return eventLog;
 }
 
+/**
+ * @brief Records a state change event
+ */
 void WorkflowInstance::notify()
 {
     // most recent entry of log is the announced event.
