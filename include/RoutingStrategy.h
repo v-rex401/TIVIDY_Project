@@ -5,7 +5,8 @@
 #include "WorkflowInstance.h"
 #include "Stage.h"
 
-class RoutingStrategy {
+class RoutingStrategy
+{
 
 public:
 	virtual Stage* selectItemState(WorkItem* item, WorkflowInstance* context) = 0;
