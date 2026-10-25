@@ -32,7 +32,7 @@ Staff *WorkflowManager::assignWorkItem(WorkItem *wi, WorkflowInstance *wc)
 
 Stage *WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc)
 {
-	if (assignmentStrategy == nullptr || wi == nullptr || wc == nullptr) return nullptr;
+	if (routingStrategy == nullptr || wi == nullptr || wc == nullptr) return nullptr;
 	return this->routingStrategy->selectItemState(wi, wc);
 }
 
