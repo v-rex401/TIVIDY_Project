@@ -25,6 +25,9 @@ WorkflowDefinition *WorkflowDefinition::clone()
 
     clonedDefinition->name = this->name;
 
+    clonedDefinition->transitionFrom = this->transitionFrom;
+    clonedDefinition->transitionTo = this->transitionTo;
+
     for(WorkItem* stage : this->stages)
     {
         if(stage != nullptr)
@@ -51,12 +54,13 @@ std::vector<WorkItem *> *WorkflowDefinition::getStages()
 	return &this->stages;
 }
 
-void WorkflowDefinition::setBuilder(WorkflowBuilder* b)
-{
-    this->builder = b;
-}
-
 void WorkflowDefinition::setName(std::string name)
 {
     this->name = name;
+}
+
+void WorkflowDefinition::addTransition(std::string from, std::string to)
+{
+    transitionFrom.push_back(from);
+    transitionTo.push_back(to);
 }
