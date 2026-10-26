@@ -4,22 +4,24 @@
 #include "WorkflowInstance.h"
 #include <algorithm>
 #include <vector>
- 
+
 AuditLogObserver::AuditLogObserver() {}
 AuditLogObserver::~AuditLogObserver() {}
- 
+
 void AuditLogObserver::update(WorkflowEvent* event, WorkflowInstance* context) {
     if (event == nullptr || context == nullptr) {
         return;
     }
+
     EventLog* log = context->getEventLog();
     if (log == nullptr) {
         return;
     }
-    // WorkflowInstance::notify() announces the latest entry of the log, so the
-    // event is normally already recorded. EventLog::addEntry() takes ownership,
-    // so appending it a second time would double-free it: skip it.
-    std::vector<WorkflowEvent*> entries = log->getEntries();
+    // The instance records a state change in its own log before announcing it,
+    // so the event is usually already there. EventLog::addEntry() takes
+    // ownership, so appending the same pointer twice would make the log's
+    // destructor delete it twice
+    const std::vector<WorkflowEvent*>& entries = log->getEntries();
     if (std::find(entries.begin(), entries.end(), event) != entries.end()) {
         return;
     }
