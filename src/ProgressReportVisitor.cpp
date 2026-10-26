@@ -31,14 +31,14 @@ void ProgressReportVisitor::visitWorkItem(WorkItem *w)
 {
 	std::cout << "WorkItem: ";
 	std::cout << w->getName() << std::endl;
-	w->printHierarchy("Indent");
+	w->printHierarchy("");
 }
 
 void ProgressReportVisitor::visitParticipant(Staff *p)
 {
 	std::cout << "Participant: ";
 	std::cout << p->getName() << std::endl;
-	p->printHierarchy("Indent");
+	p->printHierarchy("");
 }
 
 void ProgressReportVisitor::visitHistoryEntry(WorkflowEvent *e)
