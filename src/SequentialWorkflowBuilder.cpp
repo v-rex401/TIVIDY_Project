@@ -80,25 +80,57 @@ void SequentialWorkflowBuilder::buildTransition(std::string from, std::string to
 
 void SequentialWorkflowBuilder::buildParticipantSlot(std::string stageName, std::string role)
 {
+    if(this->definition == nullptr)
+    {
+        return;
+    }
 
+    for(WorkItem* stage : *this->definition->getStages())
+    {
+        if(stage != nullptr && stage->getName() == stageName)
+        {
+            this->definition->addParticipantSlot(stageName, role);
+
+            return;
+        }
+    }
 }
 
 void SequentialWorkflowBuilder::setAssignmentStrategyType(std::string type)
 {
+    if(this->definition == nullptr)
+    {
+        return;
+    }
 
+    this->definition->setAssignmentStrategyType(type);
 }
 
 void SequentialWorkflowBuilder::setRoutingStrategyType(std::string type)
 {
+    if(this->definition == nullptr)
+    {
+        return;
+    }
 
+    this->definition->setRoutingStrategyType(type);
 }
 
 void SequentialWorkflowBuilder::setInitialData(std::string key, std::string value)
 {
+    if(this->definition == nullptr)
+    {
+        return;
+    }
 
+    this->definition->addInitialData(key, value);
 }
 
 WorkflowDefinition* SequentialWorkflowBuilder::getWorkflowDefinition()
 {
+    WorkflowDefinition* result = this->definition;
 
+    this->definition = nullptr;
+
+    return result;
 }

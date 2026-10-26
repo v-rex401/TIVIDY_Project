@@ -48,17 +48,17 @@ public:
 	void buildParticipantSlot(std::string stageName, std::string role) override;
 
 	/**
-	 * @brief Sets the assignment strategy type for the workflow
+	 * @brief Sets the assignment strategy that the workflow should use
 	 */
 	void setAssignmentStrategyType(std::string type) override;
 
 	/**
-	 * @brief Sets the routing strategy type for the workflow
+	 * @brief Sets the routing strategy that the workflow should use
 	 */
 	void setRoutingStrategyType(std::string type) override;
 
 	/**
-	 * @brief Sets the initial data for the workflow
+	 * @brief Stores key data values for the workflow
 	 */
 	void setInitialData(std::string key, std::string value) override;
 
