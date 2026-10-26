@@ -10,3 +10,10 @@ Memento *CommandHistory::restore()
 	// TODO - implement CommandHistory::restore
 	return nullptr;
 }
+
+CommandHistory::CommandHistory()
+{
+}
+CommandHistory::~CommandHistory()
+{
+}

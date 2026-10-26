@@ -43,7 +43,7 @@ public:
 	 * @brief Constructs a new WorkflowInstance.
 	 */
 	WorkflowInstance();
-	~WorkflowInstance();
+	virtual ~WorkflowInstance();
 
 	/**
 	 * @brief Creates a Memento that contains a snapshot of the current state.
@@ -59,16 +59,16 @@ public:
 
 	void attach(Observer *o) override;
 	void detach(Observer *o) override;
-	void notify();
+	void notify() override;
 
 	void setState(State *s);
 	State *getState();
 	void handle();
 
 	std::vector<WorkItem *> getWorkItem() const;
-	void addWorkItem(WorkItem* item);
-	Stage* getCurrentStage() const;
-	void setCurrentStage(Stage* stage);
+	void addWorkItem(WorkItem *item);
+	Stage *getCurrentStage() const;
+	void setCurrentStage(Stage *stage);
 	double getTransactionValue() const;
 	void setTransactionValue(double value);
 	double getEventMetric() const;
