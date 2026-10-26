@@ -25,13 +25,13 @@ public:
     int getRank() override { return rank; }
 };
 
-class TestWorkItem : public WorkItem {
+class StrategyTestWorkItem : public WorkItem {
 private:
     std::string name, title, severity, required;
     Staff* responsible;
 
 public:
-    TestWorkItem(const std::string& name = "item", const std::string& title = "task", const std::string& severity = "Normal", const std::string& required = "Doctor")
+    StrategyTestWorkItem(const std::string& name = "item", const std::string& title = "task", const std::string& severity = "Normal", const std::string& required = "Doctor")
         : name(name), title(title), severity(severity), required(required), responsible(nullptr) {}
     std::string getName() override { return name; }
     std::string getTitle() override { return title; }
@@ -40,7 +40,7 @@ public:
     void setRequiredPosition(const std::string& p) override { required = p; }
     void printHierarchy(std::string) override {}
     void handleRequest() override {}
-    WorkItem* clone() override { return new TestWorkItem(*this); }
+    WorkItem* clone() override { return new StrategyTestWorkItem(*this); }
     Staff* getResponsible() override { return responsible; }
     void setResponsible(Staff* s) override { responsible = s; }
     void setSeverity(const std::string& s) { severity = s; }
@@ -74,13 +74,13 @@ public:
 
 TEST(RoleBasedAssignmentTests, SelectsFirstMatchingRequiredPositionAndSkipsNulls) {
     TestStaff doctor("D1", "Doctor"), nurse("N1", "Nurse"), doctor2("D2", "Doctor");
-    TestWorkItem item("x", "unrelated title", "Normal", "Doctor");
+    StrategyTestWorkItem item("x", "unrelated title", "Normal", "Doctor");
     RoleBasedAssignment strategy({nullptr, &nurse, &doctor, &doctor2});
     EXPECT_EQ(&doctor, strategy.selectAssignmentItem(&item, nullptr, {}));
 }
 TEST(RoleBasedAssignmentTests, NullItemAndNoMatchingRoleReturnNull) {
     TestStaff nurse("N1", "Nurse");
-    TestWorkItem item("x", "x", "Normal", "Doctor");
+    StrategyTestWorkItem item("x", "x", "Normal", "Doctor");
     RoleBasedAssignment strategy({&nurse});
     EXPECT_EQ(nullptr, strategy.selectAssignmentItem(nullptr, nullptr, {}));
     EXPECT_EQ(nullptr, strategy.selectAssignmentItem(&item, nullptr, {}));
@@ -88,7 +88,7 @@ TEST(RoleBasedAssignmentTests, NullItemAndNoMatchingRoleReturnNull) {
 
 TEST(RuleBasedAssignmentTests, EvaluatesRulesInOrderAndSelectsMatchingRosterTitle) {
     TestStaff doctor("D", "Doctor"), nurse("N", "Nurse");
-    TestWorkItem item("urgent", "review", "High", "Doctor");
+    StrategyTestWorkItem item("urgent", "review", "High", "Doctor");
     AssignmentRule wrong{"name", "other", "Nurse"};
     AssignmentRule right{"requiredPosition", "Doctor", "Doctor"};
     RuleBasedAssignment strategy({wrong, right}, {nullptr, &nurse, &doctor});
@@ -96,7 +96,7 @@ TEST(RuleBasedAssignmentTests, EvaluatesRulesInOrderAndSelectsMatchingRosterTitl
 }
 TEST(RuleBasedAssignmentTests, UnmatchedRuleNullItemAndMissingTargetReturnNull) {
     TestStaff doctor("D", "Doctor");
-    TestWorkItem item("urgent", "review", "High", "Doctor");
+    StrategyTestWorkItem item("urgent", "review", "High", "Doctor");
     RuleBasedAssignment mismatch({AssignmentRule{"name", "nope", "Doctor"}}, {&doctor});
     RuleBasedAssignment missingTarget({AssignmentRule{"name", "urgent", "Nurse"}}, {&doctor});
     EXPECT_EQ(nullptr, mismatch.selectAssignmentItem(&item, nullptr, {}));
@@ -106,7 +106,7 @@ TEST(RuleBasedAssignmentTests, UnmatchedRuleNullItemAndMissingTargetReturnNull) 
 
 TEST(WorkloadBasedAssignmentTests, ChoosesLeastLoadedStaffAcrossRunningInstances) {
     TestStaff a("A", "Doctor"), b("B", "Doctor");
-    TestWorkItem assignedA1, assignedA2, candidate;
+    StrategyTestWorkItem assignedA1, assignedA2, candidate;
     assignedA1.setResponsible(&a); assignedA2.setResponsible(&a);
     WorkflowInstance one, two, context;
     one.addWorkItem(&assignedA1); two.addWorkItem(&assignedA2);
@@ -115,7 +115,7 @@ TEST(WorkloadBasedAssignmentTests, ChoosesLeastLoadedStaffAcrossRunningInstances
 }
 TEST(WorkloadBasedAssignmentTests, TiesChooseFirstRosterMemberAndNullInputsReturnNull) {
     TestStaff a("A", "Doctor"), b("B", "Doctor");
-    TestWorkItem candidate;
+    StrategyTestWorkItem candidate;
     WorkflowInstance context;
     WorkloadBasedAssignment strategy({nullptr, &a, &b});
     EXPECT_EQ(&a, strategy.selectAssignmentItem(&candidate, &context, {}));
@@ -132,7 +132,7 @@ TEST(SeverityBasedRoutingTests, RoutesCriticalAndHighToEmergencyOtherwiseNormal)
     Stage normal, emergency;
     WorkflowInstance context;
     SeverityBasedRouting strategy(&normal, &emergency);
-    TestWorkItem item;
+    StrategyTestWorkItem item;
     EXPECT_EQ(&normal, strategy.selectItemState(&item, &context));
     item.setSeverity("High"); EXPECT_EQ(&emergency, strategy.selectItemState(&item, &context));
     item.setSeverity("Critical"); EXPECT_EQ(&emergency, strategy.selectItemState(&item, &context));
@@ -143,7 +143,7 @@ TEST(SeverityBasedRoutingTests, RoutesCriticalAndHighToEmergencyOtherwiseNormal)
 TEST(ApprovalChainRoutingTests, ThresholdIsStrictAndUsesContextTransactionValue) {
     Stage standard, escalation;
     WorkflowInstance context;
-    TestWorkItem item;
+    StrategyTestWorkItem item;
     ApprovalChainRouting strategy(100.0, &standard, &escalation);
     context.setTransactionValue(99.99); EXPECT_EQ(&standard, strategy.selectItemState(&item, &context));
     context.setTransactionValue(100.0); EXPECT_EQ(&standard, strategy.selectItemState(&item, &context));
@@ -156,7 +156,7 @@ TEST(ApprovalChainRoutingTests, ThresholdIsStrictAndUsesContextTransactionValue)
 }
 TEST(ApprovalChainRoutingTests, NullDestinationStagesAreReturnedAsConfigured) {
     WorkflowInstance context;
-    TestWorkItem item;
+    StrategyTestWorkItem item;
     ApprovalChainRouting standardMissing(100.0, nullptr, nullptr);
     EXPECT_EQ(nullptr, standardMissing.selectItemState(&item, &context));
     context.setTransactionValue(101.0);
@@ -165,7 +165,7 @@ TEST(ApprovalChainRoutingTests, NullDestinationStagesAreReturnedAsConfigured) {
 TEST(EventBasedRoutingTests, FirstTriggeredThresholdWinsInConfiguredOrder) {
     Stage first, second, third;
     WorkflowInstance context;
-    TestWorkItem item;
+    StrategyTestWorkItem item;
     context.setEventMetric(90.0);
     EventBasedRouting strategy({Threshold(50.0, &first), Threshold(80.0, &second), Threshold(20.0, &third)});
     EXPECT_EQ(&first, strategy.selectItemState(&item, &context));
@@ -182,7 +182,7 @@ TEST(EventBasedRoutingTests, FirstTriggeredThresholdWinsInConfiguredOrder) {
 TEST(WorkflowManagerTests, MissingStrategiesAndNullInputsReturnNull) {
     WorkflowManager manager;
     WorkflowInstance context;
-    TestWorkItem item;
+    StrategyTestWorkItem item;
     EXPECT_EQ(nullptr, manager.assignWorkItem(&item, &context));
     EXPECT_EQ(nullptr, manager.routeWorkItem(&item, &context));
     EXPECT_EQ(nullptr, manager.assignWorkItem(nullptr, &context));
@@ -200,7 +200,7 @@ TEST(WorkflowManagerTests, DelegatesAssignmentAndRoutingAndOwnsReplacedStrategie
     manager.setRoutingStrategy(new RecordingRouting(&destination, &routingDestroyed));
     EXPECT_EQ(1, routingDestroyed);
     WorkflowInstance context;
-    TestWorkItem item;
+    StrategyTestWorkItem item;
     EXPECT_EQ(&staff, manager.assignWorkItem(&item, &context));
     EXPECT_EQ(&destination, manager.routeWorkItem(&item, &context));
     manager.setAssignmentStrategy(nullptr);
@@ -226,7 +226,7 @@ TEST(WorkflowManagerTests, StartIsIdempotentAndExecuteAssignsRoutesAndRecordsIte
     manager.setAssignmentStrategy(assignment);
     manager.setRoutingStrategy(routing);
     WorkflowInstance context;
-    TestWorkItem item;
+    StrategyTestWorkItem item;
     manager.startWorkflow(nullptr);
     manager.startWorkflow(&context);
     manager.startWorkflow(&context);
@@ -249,7 +249,7 @@ TEST(WorkflowManagerTests, FailedAssignmentOrRouteDoesNotRecordItem) {
     manager.setAssignmentStrategy(new RecordingAssignment(nullptr));
     manager.setRoutingStrategy(new RecordingRouting(&destination));
     WorkflowInstance context;
-    TestWorkItem item;
+    StrategyTestWorkItem item;
     manager.executeWorkflow(&context, &item);
     EXPECT_TRUE(context.getWorkItems().empty());
     EXPECT_EQ(nullptr, item.getResponsible());
@@ -260,7 +260,7 @@ TEST(WorkflowManagerTests, CancelRemovesRunningInstanceWithoutTakingInstanceOwne
     RecordingAssignment* assignment = new RecordingAssignment(&staff);
     manager.setAssignmentStrategy(assignment);
     WorkflowInstance context;
-    TestWorkItem item;
+    StrategyTestWorkItem item;
     manager.startWorkflow(&context);
     manager.cancelWorkflow(&context);
     EXPECT_NE(nullptr, dynamic_cast<Cancelled*>(context.getState()));
@@ -275,7 +275,7 @@ TEST(WorkflowManagerTests, FailedRoutingDoesNotRecordOrAssignItem) {
     manager.setAssignmentStrategy(new RecordingAssignment(&staff));
     manager.setRoutingStrategy(new RecordingRouting(nullptr));
     WorkflowInstance context;
-    TestWorkItem item;
+    StrategyTestWorkItem item;
     manager.executeWorkflow(&context, &item);
     EXPECT_EQ(nullptr, item.getResponsible());
     EXPECT_TRUE(context.getWorkItems().empty());
@@ -288,7 +288,7 @@ TEST(WorkflowManagerTests, ReusingSameStrategyPointerDoesNotDeleteItEarly) {
     manager.setAssignmentStrategy(strategy);
     manager.setAssignmentStrategy(strategy);
     EXPECT_EQ(0, destroyed);
-    TestWorkItem item;
+    StrategyTestWorkItem item;
     WorkflowInstance context;
     EXPECT_EQ(&staff, manager.assignWorkItem(&item, &context));
 }
