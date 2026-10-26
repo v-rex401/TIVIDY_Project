@@ -1,4 +1,5 @@
 #include "Task.h"
+#include "WorkflowVisitor.h"
 
 #include <string>
 #include <iostream>
@@ -15,7 +16,7 @@ std::string Task::getTitle()
 
 void Task::printHierarchy(std::string indent)
 {
-	std::cout << indent << "Task: " << this->name << "\n";
+	std::cout << indent << "Task: " << this->title << "\n";
 }
 
 void Task::handleRequest()
@@ -28,16 +29,17 @@ void Task::setNextHandler(WorkItem *next)
 	WorkItem::setNextHandler(next);
 }
 
-void Task::accept(WorkflowVisitor * /* v */)
+void Task::accept(WorkflowVisitor * v)
 {
-	// TODO: Implement
-	return;
+	if(v != nullptr)
+    {
+        v->visitTask(this);
+    }
 }
 
 WorkItem *Task::clone()
 {
-	// TODO: Implement
-	return nullptr;
+	return new Task(*this);
 }
 
 void Task::setTitle(std::string title)
