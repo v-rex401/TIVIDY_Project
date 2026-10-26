@@ -23,7 +23,14 @@ private:
 	Staff* responsible;
 
 public:
+	/**
+	 * @brief get the responsible staff member in a stage
+	 */
 	Staff* getResponsible() override;
+
+	/**
+	 * @brief set the responsible staff member in a stage
+	 */
 	void setResponsible(Staff* staff) override;
 
 	/**

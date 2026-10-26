@@ -4,6 +4,7 @@
 #include <string>
 
 class WorkflowVisitor;
+class Staff;
 
 /**
  * @brief Abstract base class for tasks and stages in a workflow
