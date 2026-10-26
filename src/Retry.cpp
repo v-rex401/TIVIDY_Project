@@ -23,3 +23,4 @@ void Retry::execute() {
 
 void Retry::undo() {
     restoreSnapshot();
+}
