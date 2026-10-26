@@ -20,7 +20,7 @@ std::string Task::getTitle()
 
 void Task::printHierarchy(std::string indent)
 {
-	std::cout << indent << "Task: " << this->title << "\n";
+	std::cout << indent << "Task: " << this->name << "\n";
 }
 
 void Task::handleRequest()
