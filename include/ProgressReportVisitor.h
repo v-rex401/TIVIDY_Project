@@ -12,6 +12,9 @@ private:
 	std::string report;
 
 public:
+	/** @brief Starts with an empty report and no items counted. */
+	ProgressReportVisitor();
+
 	void visitStage(Stage *s);
 
 	void visitTask(Task *t);

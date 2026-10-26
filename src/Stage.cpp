@@ -6,13 +6,9 @@
 #include <iostream>
 #include <string>
 
-Staff* Task::getResponsible() {
-	return responsible;
-}
-
-void Task::setResponsible(Staff* staff) {
-	responsible = staff;
-}
+Stage::Stage(const std::string& name, const std::string& title)
+    : name(name), title(title), responsible(nullptr)
+{}
 
 void Stage::addMember(WorkItem* c)
 {
@@ -69,8 +65,7 @@ WorkItem* Stage::clone()
     clonedStage->name = this->name;
     clonedStage->title = this->title;
     clonedStage->responsible = this->responsible;
-    clonedStage->requiredPosition = this->requiredPosition;
-    
+
     for(WorkItem* member : members)
     {
         if(member != nullptr)
@@ -104,16 +99,4 @@ void Stage::printHierarchy(std::string indent)
         }
     }
 
-}
-
-std::string Stage::getRequiredPosition() {
-    return this->requiredPosition;
-}
-
-void Stage::setRequiredPosition(const std::string& position) {
-    this->requiredPosition = position;
-}
-
-std::string Stage::getSeverity() {
-	return this->severity;
 }

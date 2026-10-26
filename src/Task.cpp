@@ -1,15 +1,12 @@
 #include "Task.h"
+#include "WorkflowVisitor.h"
 
 #include <string>
 #include <iostream>
 
-Staff* Task::getResponsible() {
-	return responsible;
-}
-
-void Task::setResponsible(Staff* staff) {
-	responsible = staff;
-}
+Task::Task(const std::string& name, const std::string& title)
+	: name(name), title(title), responsible(nullptr)
+{}
 
 std::string Task::getName()
 {
@@ -36,26 +33,41 @@ void Task::setNextHandler(WorkItem *next)
 	WorkItem::setNextHandler(next);
 }
 
-void Task::accept(WorkflowVisitor * /* v */)
+void Task::accept(WorkflowVisitor *v)
 {
-	// TODO: Implement
-	return;
-}
+	if (v == nullptr)
+	{
+		return;
+	}
 
-std::string Task::getRequiredPosition() {
-    return this->requiredPosition;
-}
-
-void Task::setRequiredPosition(const std::string& position) {
-    this->requiredPosition = position;
-}
-
-std::string Task::getSeverity() {
-	return this->severity;
+	v->visitTask(this);
 }
 
 WorkItem *Task::clone()
 {
-	// TODO: Implement
-	return nullptr;
+	return new Task(this->name, this->title);
+}
+Staff* Task::getResponsible()
+{
+    return responsible;
+}
+
+void Task::setResponsible(Staff* staff)
+{
+    responsible = staff;
+}
+
+std::string Task::getSeverity()
+{
+    return severity;
+}
+
+std::string Task::getRequiredPosition()
+{
+    return requiredPosition;
+}
+
+void Task::setRequiredPosition(const std::string& position)
+{
+    requiredPosition = position;
 }
