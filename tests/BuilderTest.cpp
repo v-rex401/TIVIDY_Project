@@ -23,14 +23,14 @@
  */
 TEST(BuilderTest, SequentialWorkflowCreation)
 {
-    SequentialWorkflowBuilder builder;
-    WorkflowDirector director(&builder);
-
     std::vector<std::string> stages = {"Registration", "Assessment", "Approval"};
 
     std::map<std::string, std::vector<std::string>> tasks = {{"Registration", {"Capture details"}}, {"Assessment", {"Review application"}}, {"Approval", {"Approve application"}}};
+    
+    SequentialWorkflowBuilder builder;
+    WorkflowDirector director("Test Workflow", stages, tasks);
 
-    director.construct("Test Workflow", stages, tasks);
+    director.construct(builder);
 
     WorkflowDefinition* workflow = builder.getWorkflowDefinition();
 
@@ -49,14 +49,14 @@ TEST(BuilderTest, SequentialWorkflowCreation)
  */
 TEST(BuilderTest, EscalatingWorkflowCreation)
 {
-    EscalatingWorkflowBuilder builder;
-    WorkflowDirector director(&builder);
-
     std::vector<std::string> stages = {"Senior Doctor", "Doctor", "Nurse"};
 
     std::map<std::string, std::vector<std::string>> tasks = {{"Senior Doctor", {"Review complex case"}}, {"Doctor", {"Assess patient"}}, {"Nurse", {"Record observations"}}};
+    
+    EscalatingWorkflowBuilder builder;
+    WorkflowDirector director("Escalating Workflow", stages, tasks);
 
-    director.construct("Escalating Workflow", stages, tasks);
+    director.construct(builder);
 
     WorkflowDefinition* workflow = builder.getWorkflowDefinition();
 
@@ -76,13 +76,14 @@ TEST(BuilderTest, EscalatingWorkflowCreation)
 TEST(BuilderTest, EmptyWorkflow)
 {
     SequentialWorkflowBuilder builder;
-    WorkflowDirector director(&builder);
 
     //empty stages + tasks
     std::vector<std::string> stages;
     std::map<std::string, std::vector<std::string>> tasks;
 
-    director.construct("Empty Workflow", stages, tasks);
+    WorkflowDirector director("Empty Workflow", stages, tasks);
+
+    director.construct(builder);
 
     WorkflowDefinition* workflow = builder.getWorkflowDefinition();
 
@@ -119,13 +120,14 @@ TEST(BuilderTest, GetWorkflowDefinition)
 TEST(BuilderTest, TasksAddedToCorrectStages)
 {
     SequentialWorkflowBuilder builder;
-    WorkflowDirector director(&builder);
 
     std::vector<std::string> stages = {"Registration", "Approval"};
 
     std::map<std::string, std::vector<std::string>> tasks = {{"Registration", {"Capture details"}}, {"Approval", {"Approve application"}}};
 
-    director.construct("Test Workflow", stages, tasks);
+    WorkflowDirector director("Test Workflow", stages, tasks);
+
+    director.construct(builder);
 
     WorkflowDefinition* workflow = builder.getWorkflowDefinition();
 
