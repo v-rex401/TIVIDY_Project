@@ -9,21 +9,22 @@ class WorkflowEvent;
  * ConcreteSubject and implements all three operations. Observers are only
  * referenced, never owned.
  */
-class WorkFlowSubject {
+class WorkFlowSubject
+{
 public:
-    virtual ~WorkFlowSubject() {}
-    /** @brief Register an observer. */
-    virtual void attach(Observer* o) = 0;
-    /** @brief Unregister an observer. */
-    virtual void detach(Observer* o) = 0;
-    /** @brief Tell every attached observer that something happened. */
-    virtual void notify(WorkflowEvent* e) = 0;
-    /** @brief Return a reference to the observerList. */
-    std::vector<Observer *> getObserverList();
+	virtual ~WorkFlowSubject() {}
+	/** @brief Register an observer. */
+	virtual void attach(Observer *o) = 0;
+	/** @brief Unregister an observer. */
+	virtual void detach(Observer *o) = 0;
+	/** @brief Tell every attached observer that something happened. */
+	virtual void notify(WorkflowEvent *e) = 0;
+	/** @brief Return a reference to the observerList. */
+	std::vector<Observer *> &getObserverList();
+
 protected:
-//changed to protected so concrete subject can implement the methods without getObserverList()
-    std::vector<Observer*> observerList; 
-	
+	// changed to protected so concrete subject can implement the methods without getObserverList()
+	std::vector<Observer *> observerList;
 };
- 
+
 #endif // WORKFLOWSUBJECT_H

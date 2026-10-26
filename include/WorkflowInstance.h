@@ -55,7 +55,7 @@ public:
 
 	void attach(Observer *o) override;
 	void detach(Observer *o) override;
-	void notify();
+	void notify(WorkflowEvent *e);
 
 	void setState(State *s);
 	State *getState();

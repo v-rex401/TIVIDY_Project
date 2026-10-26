@@ -60,7 +60,7 @@ EventLog *WorkflowInstance::getEventLog()
     return nullptr;
 }
 
-void WorkflowInstance::notify()
+void WorkflowInstance::notify(WorkflowEvent *e)
 {
     // most recent entry of log is the announced event.
     EventLog *log = getEventLog();
