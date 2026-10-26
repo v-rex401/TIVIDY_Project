@@ -1,4 +1,5 @@
 #include "Task.h"
+#include "WorkflowVisitor.h"
 
 #include <string>
 #include <iostream>
@@ -32,7 +33,7 @@ void Task::setNextHandler(WorkItem *next)
 	WorkItem::setNextHandler(next);
 }
 
-void Task::accept(WorkflowVisitor * /* v */)
+void Task::accept(WorkflowVisitor *v)
 {
 	if (v == nullptr)
 	{
