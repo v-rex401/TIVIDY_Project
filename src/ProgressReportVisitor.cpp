@@ -1,7 +1,7 @@
 #include "ProgressReportVisitor.h"
 #include <iostream>
 #include <string>
-
+// TODO: Check what the indent is
 void ProgressReportVisitor::visitStage(Stage *s)
 {
 	std::cout << "Stage: ";
@@ -18,13 +18,14 @@ void ProgressReportVisitor::visitWorkItem(WorkItem *w)
 {
 	std::cout << "WorkItem: ";
 	std::cout << w->getName() << std::endl;
-	// TODO: Print Hierarchy
+	w->printHierarchy("Indent");
 }
 
-void ProgressReportVisitor::visitParticipant(Staff * /* p */)
+void ProgressReportVisitor::visitParticipant(Staff *p)
 {
-	std::cout << "Staff: ";
-	// TODO: Need to put functions in the Staff class
+	std::cout << "Participant: ";
+	std::cout << p->getName() << std::endl;
+	p->printHierarchy("Indent");
 }
 
 void ProgressReportVisitor::visitHistoryEntry(WorkflowEvent *e)
