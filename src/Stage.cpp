@@ -92,6 +92,11 @@ std::string Stage::getSeverity()
     return severity;
 }
 
+std::string Stage::getRequiredPosition()
+{
+    return requiredPosition;
+}
+
 void Stage::setRequiredPosition(const std::string& position)
 {
     requiredPosition = position;
