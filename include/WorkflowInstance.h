@@ -11,7 +11,6 @@
 
 class WorkflowDefinition;
 class WorkItem;
-class Stage;
 class CommandHistory;
 class EventLog;
 class Observer;
@@ -30,8 +29,6 @@ private:
 	State *currentState;
 	WorkflowDefinition *definition;
 	std::vector<WorkItem *> workItem;
-	double transactionValue;
-	double eventMetric;
 	std::vector<Staff *> participants;
 	CommandHistory *history;
 	EventLog *eventLog;
@@ -59,20 +56,13 @@ public:
 
 	void attach(Observer *o) override;
 	void detach(Observer *o) override;
-	void notify() override;
+  void notify(WorkflowEvent *e) override;
 
 	void setState(State *s);
 	State *getState();
 	void handle();
 
-	std::vector<WorkItem *> getWorkItem() const;
-	void addWorkItem(WorkItem *item);
-	Stage *getCurrentStage() const;
-	void setCurrentStage(Stage *stage);
-	double getTransactionValue() const;
-	void setTransactionValue(double value);
-	double getEventMetric() const;
-	void setEventMetric(double value);
+	std::vector<WorkItem*> getWorkItem();
 	EventLog *getEventLog();
 
 	void accept(WorkflowVisitor *v);
