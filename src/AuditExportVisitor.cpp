@@ -48,5 +48,5 @@ std::string AuditExportVisitor::getAuditTrail()
 {
 	std::string result = "Audit Trail\n";
 	// TODO: Determine what is being visited
-	return "End of Audit Trail";
+	return "Audit Trail\n" + this->trail + "End of Audit Trail\n";
 }
