@@ -20,14 +20,14 @@ bool WorkflowRepository::saveHistory(const EventLog& log, const std::string& pat
 	rows.push_back(header);
 
 	const std::vector<WorkflowEvent*>& entries = log.getEntries();
-	for (size_t i = 0; i < entries.size(); i++) {
-		if (entries[i] == NULL) {
+	for (WorkflowEvent* e : entries) {
+		if (e == NULL) {
 			continue;
 		}
 		std::vector<std::string> row;
-		row.push_back(entries[i]->getType());
-		row.push_back(entries[i]->getDescription());
-		row.push_back(entries[i]->getTimestamp());
+		row.push_back(e->getType());
+		row.push_back(e->getDescription());
+		row.push_back(e->getTimestamp());
 		rows.push_back(row);
 	}
 
@@ -35,5 +35,24 @@ bool WorkflowRepository::saveHistory(const EventLog& log, const std::string& pat
 }
 
 int WorkflowRepository::loadHistory(EventLog& log, const std::string& path) {
+    std::vector<std::vector<std::string> > rows = CsvStore::read(path);
+	int added = 0;
+	bool firstRow = true;
+
+	for (const std::vector<std::string>& row : rows) {
+		if (firstRow) {
+			firstRow = false;
+			if (!row.empty() && row[0] == "type") {
+				continue;   // header line, not an event
+			}
+		}
+		if (row.size() < 3) {
+			continue;
+		}
+		log.addEntry(new WorkflowEvent(row[0], row[1], row[2]));
+		added++;
+	}
+
+	return added;
 
 }
