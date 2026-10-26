@@ -6,25 +6,16 @@ EventBasedRouting::EventBasedRouting(const std::vector<Threshold> &initialThresh
 }
 
 // TODO: item needs to be used
-Stage *EventBasedRouting::selectItemState(WorkItem * item, WorkflowInstance *context)
+Stage *EventBasedRouting::selectItemState(WorkItem * /*item*/, WorkflowInstance *context)
 {
-	if (item == nullptr || context == nullptr) return nullptr;
+	if (context == nullptr) return nullptr;
 
 	const double metricValue = context->getEventMetric();
 
-	Stage* selectedStage = nullptr;
-	double highestTriggeredLimit = 0.0;
-
 	for (const Threshold& th : thresholds) {
 		if (th.isTriggered(metricValue)) {
-			const double limit = th.getLimit();
-
-			if (selectedStage == nullptr || limit > highestTriggeredLimit) {
-				highestTriggeredLimit = limit;
-				selectedStage = th.getTargetStage();
-			}
-
+			return th.getTargetStage();
 		}
 	}
-	return selectedStage;
+	return nullptr;
 }

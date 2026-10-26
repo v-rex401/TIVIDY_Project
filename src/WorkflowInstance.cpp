@@ -146,6 +146,39 @@ std::vector<WorkItem *> WorkflowInstance::getWorkItem()
     return workItem;
 }
 
+const std::vector<WorkItem*>& WorkflowInstance::getWorkItems() const
+{
+    return workItem;
+}
+
+void WorkflowInstance::addWorkItem(WorkItem* item)
+{
+    if (item != nullptr && std::find(workItem.begin(), workItem.end(), item) == workItem.end())
+    {
+        workItem.push_back(item);
+    }
+}
+
+double WorkflowInstance::getTransactionValue() const
+{
+    return transactionValue;
+}
+
+void WorkflowInstance::setTransactionValue(double value)
+{
+    transactionValue = value;
+}
+
+double WorkflowInstance::getEventMetric() const
+{
+    return eventMetric;
+}
+
+void WorkflowInstance::setEventMetric(double value)
+{
+    eventMetric = value;
+}
+
 /**
  * @brief a getter function
  * @return the event log.

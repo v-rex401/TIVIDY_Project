@@ -68,13 +68,15 @@ void WorkflowManager::executeWorkflow(WorkflowInstance *instance, WorkItem *item
 {
 	if (instance == nullptr || item == nullptr) return;
 
-	startWorkflow(instance);
-
 	Staff* assignedStaff = assignWorkItem(item, instance);
-	if (assignedStaff != nullptr) item->setResponsible(assignedStaff);
-	instance->addWorkItem(item);
+	if (assignedStaff == nullptr) return;
 
-	instance->setCurrentStage(routeWorkItem(item, instance));
+	Stage* destination = routeWorkItem(item, instance);
+	if (destination == nullptr) return;
+
+	item->setResponsible(assignedStaff);
+	destination->addMember(item);
+	instance->addWorkItem(item);
 }
 
 void WorkflowManager::cancelWorkflow(WorkflowInstance *instance)

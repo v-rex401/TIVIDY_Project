@@ -29,6 +29,8 @@ private:
 	State *currentState;
 	WorkflowDefinition *definition;
 	std::vector<WorkItem *> workItem;
+	double transactionValue;
+	double eventMetric;
 	std::vector<Staff *> participants;
 	CommandHistory *history;
 	EventLog *eventLog;
@@ -63,6 +65,12 @@ public:
 	void handle();
 
 	std::vector<WorkItem*> getWorkItem();
+	const std::vector<WorkItem*>& getWorkItems() const;
+	void addWorkItem(WorkItem* item);
+	double getTransactionValue() const;
+	void setTransactionValue(double value);
+	double getEventMetric() const;
+	void setEventMetric(double value);
 	EventLog *getEventLog();
 
 	void accept(WorkflowVisitor *v);

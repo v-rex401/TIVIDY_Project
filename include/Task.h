@@ -23,11 +23,29 @@ private:
 	Staff *responsible;
 
 public:
+	/**
+	 * @brief Construtor for a Task
+	 */
+	Task(const std::string& name = "", const std::string& title = "");
+
+	/**
+	 * @brief Getter for the responsible Staff
+	 */
 	Staff* getResponsible() override;
+
+	/**
+	 * @brief Setter for the resposnible Staff
+	 */
 	void setResponsible(Staff* staff) override;
 	
+	/**
+	 * @brief Getter for the title
+	 */
 	std::string getName() override;
 
+	/**
+	 * @brief Getter for the title
+	 */
 	std::string getTitle() override;
 
 	/**

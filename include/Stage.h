@@ -62,6 +62,11 @@ public:
 	void addMember(WorkItem* c);
 
 	/**
+	 * @brief Getter for all workitems
+	 */
+	const std::vector<WorkItem*>& getMembers() const;
+
+	/**
 	 * @brief Remove a work item from the stage
 	 */
 	void removeMember(WorkItem* c);
