@@ -1,5 +1,6 @@
 #include "Reject.h"
 #include "WorkflowInstance.h"
+#include "Pending.h"
 
 Reject::Reject(WorkflowInstance* receiver) : Command(receiver) {}
 Reject::~Reject() {}
@@ -10,7 +11,7 @@ void Reject::execute() {
         return;
     }
     saveSnapshot();
-    instance->reject();
+    instance->setState(new Pending());  // send back for reassessment
 }
 
 void Reject::undo() {
