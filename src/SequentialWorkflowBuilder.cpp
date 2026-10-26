@@ -3,6 +3,7 @@
 #include "WorkflowDefinition.h"
 #include "Stage.h"
 #include "Task.h"
+#include "WorkItem.h"
 
 void SequentialWorkflowBuilder::buildDefinition(std::string name)
 {
@@ -21,17 +22,50 @@ void SequentialWorkflowBuilder::buildStage(std::string name)
     Stage* stage = new Stage();
     stage->setName(name);
 
-    definition->addStage(stage);
+    this->definition->addStage(stage);
 }
 
 void SequentialWorkflowBuilder::buildTask(std::string stageName, std::string title)
 {
+    if(this->definition == nullptr)
+    {
+        return;
+    }
 
+    for(WorkItem* item : *definition->getStages())
+    {
+        if(item != nullptr && item->getName() == stageName)
+        {
+            Stage* stage = dynamic_cast<Stage*>(item);
+
+            if(stage != nullptr)
+            {
+                Task* task = new Task();
+                task->setTitle(title);
+
+                stage->addMember(task);
+            }
+
+            return;
+        }
+    }
 }
 
 void SequentialWorkflowBuilder::linkHandlers()
 {
+    if(this->definition == nullptr)
+    {
+        return;
+    }
 
+    std::vector<WorkItem*>* stages = this->definition->getStages();
+    for(size_t i = 0; i + 1 < stages->size(); i++)
+    {
+        if((*stages)[i] != nullptr)
+        {
+            (*stages)[i]->setNextHandler((*stages)[i + 1]);
+        }
+    }
 }
 
 void SequentialWorkflowBuilder::buildTransition(std::string from, std::string to)
