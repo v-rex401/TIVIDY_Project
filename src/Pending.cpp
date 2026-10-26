@@ -21,3 +21,8 @@ void Pending::handle(WorkflowInstance* ctx) {
 	std::cout << "[State] Pending -> Active\n";
 	ctx->setState(new Active()); 
 }
+
+std::string Pending::getName() const {
+	return "Pending";
+}
+
