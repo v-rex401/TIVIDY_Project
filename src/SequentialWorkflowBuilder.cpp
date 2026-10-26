@@ -5,8 +5,19 @@
 #include "Task.h"
 #include "WorkItem.h"
 
+SequentialWorkflowBuilder::~SequentialWorkflowBuilder()
+{
+    // Only reached if the caller never took the definition with getWorkflowDefinition()
+    // once taken, ownership has passed on
+    delete this->definition;
+    this->definition = nullptr;
+}
+
 void SequentialWorkflowBuilder::buildDefinition(std::string name)
 {
+    // Starting a new definition discards any part-built one
+    delete this->definition;
+
     definition = new WorkflowDefinition();
 
     definition->setName(name);
@@ -40,10 +51,10 @@ void SequentialWorkflowBuilder::buildTask(std::string stageName, std::string tit
 
             if(stage != nullptr)
             {
-                Task* task = new Task();
-                task->setTitle(title);
-
-                stage->addMember(task);
+                // The definition format carries a single label per task,
+                // so it is used as both the identifier and the display title until
+                // the format carries them separately.
+                stage->addMember(new Task(title, title));
             }
 
             return;

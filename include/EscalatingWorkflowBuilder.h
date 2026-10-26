@@ -20,6 +20,13 @@ public:
 	/**
 	 * @brief Builds a workflow definition
 	 */
+	/**
+	 * @brief Destroys a definition that was built but never collected.
+	 */
+	~EscalatingWorkflowBuilder();
+	/**
+	 * @brief Builds a workflow definition
+	 */
 	void buildDefinition(std::string name) override;
 
 	/**

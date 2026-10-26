@@ -18,6 +18,10 @@ private:
 
 public:
 	/**
+	 * @brief Destroys a definition that was built but never collected.
+	 */
+	~SequentialWorkflowBuilder();
+	/**
 	 * @brief Builds a workflow definition
 	 */
 	void buildDefinition(std::string name) override;
