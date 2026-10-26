@@ -1,6 +1,7 @@
 #ifndef WORKLOADBASEDASSIGNMENT_H
 #define WORKLOADBASEDASSIGNMENT_H
 
+#include <climits>
 #include "AssignmentStrategy.h"
 
 class WorkloadBasedAssignment : public AssignmentStrategy {

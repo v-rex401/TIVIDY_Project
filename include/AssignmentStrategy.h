@@ -5,7 +5,6 @@
 #include "WorkItem.h"
 #include "WorkflowInstance.h"
 
-
 class AssignmentStrategy
 {
 

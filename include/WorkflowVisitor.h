@@ -12,15 +12,15 @@ class WorkflowVisitor
 {
 
 public:
-	virtual void visitStage(Stage *s);
+	virtual void visitStage(Stage *s) = 0;
 
-	virtual void visitTask(Task *Task);
+	virtual void visitTask(Task *Task) = 0;
 
-	virtual void visitWorkItem(WorkItem *w);
+	virtual void visitWorkItem(WorkItem *w) = 0;
 
-	virtual void visitParticipant(Staff *p);
+	virtual void visitParticipant(Staff *p) = 0;
 
-	virtual void visitHistoryEntry(WorkflowEvent *e);
+	virtual void visitHistoryEntry(WorkflowEvent *e) = 0;
 };
 
 #endif

@@ -5,10 +5,12 @@
 #include "WorkflowInstance.h"
 #include "WorkItem.h"
 
-class RuleEngine {
+class RuleEngine
+{
 
 public:
-    bool evaluate(const AssignmentRule& rule, WorkItem* item, WorkflowInstance* instance);
+    // TODO: This is not in the UML this header should be removed
+    bool evaluate(const AssignmentRule &rule, WorkItem *item, WorkflowInstance *instance);
 };
 
 #endif

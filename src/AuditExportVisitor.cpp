@@ -20,7 +20,7 @@ void AuditExportVisitor::visitWorkItem(WorkItem *w)
 	// TODO: Print Hierarchy
 }
 
-void AuditExportVisitor::visitParticipant(Staff *p)
+void AuditExportVisitor::visitParticipant(Staff * /* p */)
 {
 	std::cout << "Staff: ";
 	// TODO: Need to put functions in the Staff class
