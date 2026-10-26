@@ -8,7 +8,7 @@ void AuditExportVisitor::visitStage(Stage *s)
 	std::cout << s->getName() << std::endl;
 	std::cout << "Title: ";
 	std::cout << s->getTitle() << std::endl;
-	s->printHierarchy("Indent");
+	s->printHierarchy("");
 }
 
 void AuditExportVisitor::visitTask(Task *t)
@@ -17,7 +17,7 @@ void AuditExportVisitor::visitTask(Task *t)
 	std::cout << t->getName() << std::endl;
 	std::cout << "Title: ";
 	std::cout << t->getTitle() << std::endl;
-	t->printHierarchy("Indent");
+	t->printHierarchy("");
 }
 
 void AuditExportVisitor::visitWorkItem(WorkItem *w)
@@ -26,7 +26,7 @@ void AuditExportVisitor::visitWorkItem(WorkItem *w)
 	std::cout << w->getName() << std::endl;
 	std::cout << "Title: ";
 	std::cout << w->getTitle() << std::endl;
-	w->printHierarchy("Indent");
+	w->printHierarchy("");
 }
 
 void AuditExportVisitor::visitParticipant(Staff *p)
@@ -35,7 +35,7 @@ void AuditExportVisitor::visitParticipant(Staff *p)
 	std::cout << p->getName() << std::endl;
 	std::cout << "Title: ";
 	std::cout << p->getTitle() << std::endl;
-	p->printHierarchy("Indent");
+	p->printHierarchy("");
 }
 
 void AuditExportVisitor::visitHistoryEntry(WorkflowEvent *e)
@@ -48,5 +48,5 @@ std::string AuditExportVisitor::getAuditTrail()
 {
 	std::string result = "Audit Trail\n";
 	// TODO: Determine what is being visited
-	return "End of Audit Trail";
+	return "Audit Trail\n" + this->trail + "End of Audit Trail\n";
 }
