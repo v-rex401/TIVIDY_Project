@@ -40,6 +40,7 @@ public:
 	 * @brief Constructs a new WorkflowInstance.
 	 */
 	WorkflowInstance();
+	virtual ~WorkflowInstance();
 
 	/**
 	 * @brief Creates a Memento that contains a snapshot of the current state.
@@ -55,13 +56,13 @@ public:
 
 	void attach(Observer *o) override;
 	void detach(Observer *o) override;
-	void notify();
+	void notify() override;
 
 	void setState(State *s);
 	State *getState();
 	void handle();
 
-	WorkItem *getWorkItem();
+	std::vector<WorkItem*> getWorkItem();
 	EventLog *getEventLog();
 
 	void accept(WorkflowVisitor *v);
