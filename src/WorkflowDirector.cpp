@@ -2,47 +2,43 @@
 
 #include "WorkflowBuilder.h"
 
-WorkflowDirector::WorkflowDirector(WorkflowBuilder * b)
+WorkflowDirector::WorkflowDirector(std::string name, std::vector<std::string> stages, std::map<std::string, std::vector<std::string>> tasks)
 {
-	this->builder = b;
+    this->name = name;
+    this->stages = stages;
+    this->tasks = tasks;
 }
 
-void WorkflowDirector::construct(std::string name, std::vector<std::string> stages, std::map<std::string, std::vector<std::string>> tasks)
+void WorkflowDirector::construct(WorkflowBuilder& builder)
 {
-	if(this->builder == nullptr)
+    builder.buildDefinition(this->name);
+
+    //build all stages
+    for(std::string stage : this->stages)
     {
-        return;
+        builder.buildStage(stage);
     }
 
-    //create workflow definition
-    this->builder->buildDefinition(name);
-
-    //add all stages
-    for(std::string stageName : stages)
+    //add tasks to their corresponding stages
+    for(std::string stage : this->stages)
     {
-        this->builder->buildStage(stageName);
-    }
+        auto it = this->tasks.find(stage);
 
-	//add tasks to corresponding stages
-    for(std::string stageName : stages)
-    {
-        auto it = tasks.find(stageName);
-
-        if(it != tasks.end())
+        if(it != this->tasks.end())
         {
-            for(std::string taskTitle : it->second)
+            for(std::string title : it->second)
             {
-                this->builder->buildTask(stageName, taskTitle);
+                builder.buildTask(stage, title);
             }
         }
     }
 
-	//create transitions between consecutive stages
-    for(size_t i = 0; i + 1 < stages.size(); i++)
+    //create transitions between consecutive stages
+    for(size_t i = 0; i + 1 < this->stages.size(); i++)
     {
-        this->builder->buildTransition(stages[i], stages[i + 1]);
+        builder.buildTransition(this->stages[i], this->stages[i + 1]);
     }
 
-    //link Chain of Responsibility handlers
-    this->builder->linkHandlers();
+    //link the handlers
+    builder.linkHandlers();
 }

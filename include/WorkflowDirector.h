@@ -17,19 +17,21 @@ class WorkflowBuilder;
 class WorkflowDirector {
 
 private:
-	WorkflowBuilder* builder;
+	std::string name;
+    std::vector<std::string> stages;
+    std::map<std::string, std::vector<std::string>> tasks;
 
 public:
 	/**
 	 * @brief Construct a director that drives the given builder.
 	 * @param b The builder to issue calls to. Not owned by the director.
 	 */
-	WorkflowDirector(WorkflowBuilder* b);
+	WorkflowDirector(std::string name, std::vector<std::string> stages, std::map<std::string, std::vector<std::string>> tasks);
 
 	/**
 	 * @brief Constructs a workflow with the specified stages and tasks
 	 */
-	void construct(std::string name, std::vector<std::string> stages, std::map<std::string, std::vector<std::string>> tasks);
+	void construct(WorkflowBuilder& builder);
 };
 
 #endif
