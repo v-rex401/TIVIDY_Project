@@ -70,5 +70,35 @@ void SequentialWorkflowBuilder::linkHandlers()
 
 void SequentialWorkflowBuilder::buildTransition(std::string from, std::string to)
 {
+    if(this->definition == nullptr)
+    {
+        return;
+    }
+
+    this->definition->addTransition(from, to);
+}
+
+void SequentialWorkflowBuilder::buildParticipantSlot(std::string stageName, std::string role)
+{
+
+}
+
+void SequentialWorkflowBuilder::setAssignmentStrategyType(std::string type)
+{
+
+}
+
+void SequentialWorkflowBuilder::setRoutingStrategyType(std::string type)
+{
+
+}
+
+void SequentialWorkflowBuilder::setInitialData(std::string key, std::string value)
+{
+
+}
+
+WorkflowDefinition* SequentialWorkflowBuilder::getWorkflowDefinition()
+{
 
 }
