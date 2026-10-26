@@ -4,6 +4,10 @@
 #include <string>
 #include <iostream>
 
+Task::Task(const std::string& name, const std::string& title)
+	: name(name), title(title), responsible(nullptr)
+{}
+
 std::string Task::getName()
 {
 	return this->name;

@@ -22,6 +22,14 @@ private:
 
 public:
 	/**
+	 * @brief Construct a stage.
+	 * @param name Short identifier for the stage.
+	 * @param title Human-readable title shown in reports.
+	 *
+	 * Both default to empty so clone() can build a blank stage and copy into it.
+	 */
+	Stage(const std::string& name = "", const std::string& title = "");
+	/**
 	 * @brief Add a work item to the stage
 	 */
 	void addMember(WorkItem* c);

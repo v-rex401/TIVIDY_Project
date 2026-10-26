@@ -6,6 +6,10 @@
 #include <iostream>
 #include <string>
 
+Stage::Stage(const std::string& name, const std::string& title)
+    : name(name), title(title), responsible(nullptr)
+{}
+
 void Stage::addMember(WorkItem* c)
 {
     if(c == nullptr)
