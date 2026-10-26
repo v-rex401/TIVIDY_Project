@@ -59,6 +59,8 @@ public:
 	 * @brief Print the stage hierarchy
 	 */
 	void printHierarchy(std::string indent) override;
+
+	void setName(std::string name);
 };
 
 #endif

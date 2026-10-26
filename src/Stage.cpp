@@ -96,3 +96,8 @@ void Stage::printHierarchy(std::string indent)
     }
 
 }
+
+void Stage::setName(std::string name)
+{
+    this->name = name;
+}
