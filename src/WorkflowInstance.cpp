@@ -29,11 +29,11 @@ static WorkflowEvent* makeStateChangeEvent(const std::string& id) {
  * @brief Constructs a new WorkflowInstance. Every new instance starts in the Pending state, and it owns its own EventLog and CommandHistory.
  */
 WorkflowInstance::WorkflowInstance()
-    : id(""), 
-      currentState(nullptr),
-      definition(nullptr),
-      history(new CommandHistory()),
-      eventLog(new EventLog()) {
+    : id(""),
+    currentState(nullptr),
+    definition(nullptr),
+    history(new CommandHistory()),
+    eventLog(new EventLog()) {
         State* initial = new Pending(); //not through setState because no observers yet attached, so no event is needed.
         ownedStates.push_back(std::unique_ptr<State>(initial));
         currentState = initial;
@@ -42,8 +42,8 @@ WorkflowInstance::WorkflowInstance()
 /**
  * @brief Captures a snapshot of the current state.
  * The Memento only points at the state, and the instance keeps ownership of it.
- * @return A newly allocated Memento. 
- */    
+ * @return A newly allocated Memento.
+ */
 Memento *WorkflowInstance::createMemento() {
     Memento* m = new Memento();
     m->setState(currentState);
@@ -71,8 +71,10 @@ void WorkflowInstance::setMemento(Memento *m) {
     State* saved = m->getState(); //friend access
     if(saved != nullptr) {
         currentState = saved;
-       // eventLog->addEntry(makeStateChangeEvent(id));
-        notify();
+        
+        WorkflowEvent* e = makeStateChangeEvent(id);
+        eventLog->addEntry(e);
+        notify(e);
     }
 }
 
@@ -114,8 +116,10 @@ void WorkflowInstance::setState(State *s) {
     ownedStates.push_back(std::unique_ptr<State>(s));
     currentState = s;
 
-   // eventLog->addEntry(makeStateChangeEvent(id)); //the log owns the event
-    notify(); //this now logs the event once, and tells the observers
+    WorkflowEvent* e = makeStateChangeEvent(id);
+    eventLog->addEntry(e);   // the log owns the event
+
+    notify(e); //this now logs the event once, and tells the observers
 }
 
 /**
@@ -142,17 +146,18 @@ EventLog *WorkflowInstance::getEventLog() {
     return eventLog;
 }
 
-/**
- * @brief Records a state change event
- */
-void WorkflowInstance::notify() {
-    WorkflowEvent* event = makeStateChangeEvent(id);
-    eventLog->addEntry(event); //add it to the log that takes ownership
-
+void WorkflowInstance::notify(WorkflowEvent *e){
+    if (e == nullptr){
+        return;
+    }
+    // Iterate a copy: an observer may detach itself during update().
     std::vector<Observer *> snapshot = getObserverList();
-    for (std::size_t i = 0; i < snapshot.size(); ++i)
+    for (Observer *o : snapshot)
     {
-        snapshot[i]->update(event, this);
+        if (o != nullptr)
+        {
+            o->update(e, this);
+        }
     }
 }
 
