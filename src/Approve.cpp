@@ -9,7 +9,7 @@ void Approve::execute() {
         return;
     }
     saveSnapshot();
-    instance->approve();
+    instance->handle();  // delegates the forward transition to the current state
 }
 
 void Approve::undo() {
