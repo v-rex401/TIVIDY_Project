@@ -3,6 +3,10 @@
 #include <string>
 #include <iostream>
 
+Task::Task(const std::string& name, const std::string& title)
+	: name(name), title(title), responsible(nullptr)
+{}
+
 std::string Task::getName()
 {
 	return this->name;
@@ -30,12 +34,15 @@ void Task::setNextHandler(WorkItem *next)
 
 void Task::accept(WorkflowVisitor * /* v */)
 {
-	// TODO: Implement
-	return;
+	if (v == nullptr)
+	{
+		return;
+	}
+
+	v->visitTask(this);
 }
 
 WorkItem *Task::clone()
 {
-	// TODO: Implement
-	return nullptr;
+	return new Task(this->name, this->title);
 }

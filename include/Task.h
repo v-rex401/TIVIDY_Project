@@ -21,6 +21,14 @@ private:
 	Staff *responsible;
 
 public:
+
+	/**
+	 * @brief Construct a task.
+	 * @param name Short identifier for the task.
+	 * @param title Human-readable title shown in reports.
+	 */
+	Task(const std::string& name = "", const std::string& title = "");
+	
 	std::string getName() override;
 
 	std::string getTitle() override;
