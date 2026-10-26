@@ -39,3 +39,8 @@ WorkItem *Task::clone()
 	// TODO: Implement
 	return nullptr;
 }
+
+void Task::setTitle(std::string title)
+{
+	this->title = title;
+}

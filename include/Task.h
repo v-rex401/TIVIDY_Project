@@ -49,6 +49,8 @@ public:
 	 * @brief Accept a workflow visitor
 	 */
 	void accept(WorkflowVisitor *v) override;
+
+	void setTitle(std::string title);
 };
 
 #endif
