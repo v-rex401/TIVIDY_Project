@@ -1,39 +1,52 @@
 #include "AuditExportVisitor.h"
 #include <iostream>
 
+// TODO: Check on the indent
 void AuditExportVisitor::visitStage(Stage *s)
 {
 	std::cout << "Stage: ";
 	std::cout << s->getName() << std::endl;
+	std::cout << "Title: ";
+	std::cout << s->getTitle() << std::endl;
+	s->printHierarchy("");
 }
 
 void AuditExportVisitor::visitTask(Task *t)
 {
 	std::cout << "Task: ";
 	std::cout << t->getName() << std::endl;
+	std::cout << "Title: ";
+	std::cout << t->getTitle() << std::endl;
+	t->printHierarchy("");
 }
 
 void AuditExportVisitor::visitWorkItem(WorkItem *w)
 {
 	std::cout << "WorkItem: ";
 	std::cout << w->getName() << std::endl;
-	// TODO: Print Hierarchy
+	std::cout << "Title: ";
+	std::cout << w->getTitle() << std::endl;
+	w->printHierarchy("");
 }
 
-void AuditExportVisitor::visitParticipant(Staff * /* p */)
+void AuditExportVisitor::visitParticipant(Staff *p)
 {
-	std::cout << "Staff: ";
-	// TODO: Need to put functions in the Staff class
+	std::cout << "Participant: ";
+	std::cout << p->getName() << std::endl;
+	std::cout << "Title: ";
+	std::cout << p->getTitle() << std::endl;
+	p->printHierarchy("");
 }
 
 void AuditExportVisitor::visitHistoryEntry(WorkflowEvent *e)
 {
+	std::cout << e->getTimestamp() << std::endl;
+	std::cout << e->getType() << std::endl;
 	std::cout << e->getDescription() << std::endl;
 }
 std::string AuditExportVisitor::getAuditTrail()
 {
 	std::string result = "Audit Trail\n";
-	result += trail;
-
-	return result;
+	// TODO: Determine what is being visited
+	return "Audit Trail\n" + this->trail + "End of Audit Trail\n";
 }

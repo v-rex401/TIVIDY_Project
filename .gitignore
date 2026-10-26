@@ -5,3 +5,5 @@ build/
 docs/html/
 html/
 latex/
+*.lck
+*.bak_*

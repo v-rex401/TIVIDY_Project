@@ -22,3 +22,10 @@ Memento* CommandHistory::restore() {
     }
     return history.back();
 }
+
+CommandHistory::CommandHistory()
+{
+}
+CommandHistory::~CommandHistory()
+{
+}
