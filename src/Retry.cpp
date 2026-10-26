@@ -1,6 +1,6 @@
 #include "Retry.h"
 #include "WorkflowInstance.h"
-
+#include "Pending.h"
 Retry::Retry(WorkflowInstance* receiver) : Command(receiver) {}
 Retry::~Retry() {}
 
@@ -10,7 +10,8 @@ void Retry::execute() {
         return;
     }
     saveSnapshot();
-    instance->retry();
+    instance->setState(new Pending());  // reset to Pending
+    instance->handle();                 // then immediately drive the state forward
 }
 
 void Retry::undo() {
