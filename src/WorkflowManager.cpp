@@ -1,5 +1,11 @@
 #include "WorkflowManager.h"
 
+WorkflowManager::WorkflowManager(){
+	this->assignmentStrategy = nullptr;
+	this->routingStrategy = nullptr;
+	this->externalSystem = nullptr;
+}
+
 void WorkflowManager::setAssignmentStrategy(AssignmentStrategy *as)
 {
 	this->assignmentStrategy = as;
@@ -10,14 +16,39 @@ void WorkflowManager::setRoutingStrategy(RoutingStrategy *rs)
 	this->routingStrategy = rs;
 }
 
-Staff *WorkflowManager::assignWorkItem(WorkItem *wi, WorkflowInstance *wc)
+void WorkflowManager::setExternalSystem(ExternalSystem *es)
 {
-	return this->assignmentStrategy->selectAssignmentItem(wi, wc);
+	this->externalSystem = es;
 }
 
-Stage *WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc)
+void WorkflowManager::notifyExternal()
 {
-	return this->routingStrategy->selectItemState(wi, wc);
+	if (this->externalSystem != nullptr){
+		this->externalSystem->request();
+	}
+}
+
+Staff *WorkflowManager::assignWorkItem(WorkItem *wi, WorkflowInstance *wc)
+{
+	if (this->assignmentStrategy == nullptr){
+		return nullptr;
+	}
+
+	Staff *assignee = this->assignmentStrategy->selectAssignmentItem(wi, wc);
+	this->notifyExternal();
+
+	return assignee;
+}
+
+Stage *WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc){
+	if (this->routingStrategy == nullptr){
+		return nullptr;
+	}
+
+	Stage *next = this->routingStrategy->selectItemState(wi, wc);
+	this->notifyExternal();
+
+	return next;
 }
 
 WorkflowInstance *WorkflowManager::createInstance(WorkflowDefinition *def, std::string id)

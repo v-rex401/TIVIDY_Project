@@ -15,14 +15,14 @@
 #include "Observer.h"
 #include "EventLog.h"
 #include "CommandHistory.h"
+#include "Clock.h"
 #include <ctime>
 
-//Added a helper for the time
-static WorkflowEvent* makeStateChangeEvent(const std::string& id) {
-    char buf[32];
-    std::time_t now = std::time(nullptr);
-    std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
-    return new WorkflowEvent("STATE_CHANGE", "Workflow instance " + id + " changed state", buf);
+//Added a helper for the time (that now uses Clock.cpp)
+static WorkflowEvent* makeStateChangeEvent(const std::string& id, const std::string& from, const std::string& to) {
+    
+    std::string where = id.empty() ? "" : " [" + id + "]";
+    return new WorkflowEvent("STATE_CHANGE", from + " -> " + to + where, Clock::now());
 }
 
 /**
@@ -70,9 +70,10 @@ void WorkflowInstance::setMemento(Memento *m) {
 
     State* saved = m->getState(); //friend access
     if(saved != nullptr) {
+        std::string from = (currentState != nullptr) ? currentState->getName() : "none";
         currentState = saved;
         
-        WorkflowEvent* e = makeStateChangeEvent(id);
+        WorkflowEvent* e = makeStateChangeEvent(id, from, saved->getName() + " (restored)");
         eventLog->addEntry(e);
         notify(e);
     }
@@ -113,10 +114,13 @@ void WorkflowInstance::setState(State *s) {
     if(s == nullptr) {
         return;
     }
+
+    std::string from = (currentState != nullptr) ? currentState->getName() : "none";
+
     ownedStates.push_back(std::unique_ptr<State>(s));
     currentState = s;
 
-    WorkflowEvent* e = makeStateChangeEvent(id);
+    WorkflowEvent* e = makeStateChangeEvent(id, from, s->getName());
     eventLog->addEntry(e);   // the log owns the event
 
     notify(e); //this now logs the event once, and tells the observers
