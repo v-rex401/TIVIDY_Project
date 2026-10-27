@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 Stage::Stage(const std::string &name, const std::string &title)
     : name(name), title(title), responsible(nullptr)
@@ -20,36 +21,58 @@ Stage::~Stage()
     members.clear();
 }
 
-void Stage::addMember(WorkItem *c)
+void Stage::addMember(WorkItem* c)
 {
-    if (c == nullptr)
+    if(c == nullptr)
     {
         return;
     }
 
-    members.push_back(c);
+    //prevents same pointer from being inserted more than once
+    //this helps prevent a potential double deletion
+    if(std::find(this->members.begin(), this->members.end(), c) != this->members.end())
+    {
+        return;
+    }
+
+    this->members.push_back(c);
 }
 
-void Stage::removeMember(WorkItem *c)
+void Stage::removeMember(WorkItem* c)
 {
-    if (c == nullptr)
+    if(c == nullptr)
     {
         return;
     }
 
-    for (auto it = members.begin(); it != members.end(); ++it)
+    for(auto it = this->members.begin(); it != this->members.end(); ++it)
     {
-        if (*it == c)
+        if(*it == c)
         {
-            members.erase(it);
-            break;
+            delete *it;
+            this->members.erase(it);
+
+            return;
         }
     }
 }
 
-void Stage::handleRequest()
+bool Stage::handleRequest(int rank)
 {
-    // to be implemented with Chain of Responsibility
+    if(this->responsible != nullptr)
+    {
+        if(this->responsible->handleRequest(rank))
+        {
+            return true;
+        }
+    }
+
+    if(getNextHandler() != nullptr)
+    {
+        return getNextHandler()->handleRequest(rank);
+    }
+
+    return false;
 }
 
 void Stage::setNextHandler(WorkItem *next)
@@ -73,6 +96,8 @@ WorkItem *Stage::clone()
 
     clonedStage->name = this->name;
     clonedStage->title = this->title;
+    clonedStage->severity = this->severity;
+    clonedStage->requiredPosition = this->requiredPosition;
     clonedStage->responsible = this->responsible;
 
     for (WorkItem *member : members)

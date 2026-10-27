@@ -8,6 +8,7 @@
 #include "Team.h"
 #include "Employee.h"
 #include <iostream>
+#include <algorithm>
 
 Team::Team(std::string name, std::string title, int rank) {
     this->name = name;
@@ -53,10 +54,20 @@ int Team::getRank() {
  */
 void Team::addMember(Staff* member)
 {
-    if(member != nullptr)
+    if(member == nullptr)
     {
-        this->members.push_back(member);
+        return;
     }
+
+    //prevents same pointer from being inserted more than once
+    //this helps prevent a potential double deletion
+    if(std::find(this->members.begin(), this->members.end(), member)
+       != this->members.end())
+    {
+        return;
+    }
+
+    this->members.push_back(member);
 }
 
 /**

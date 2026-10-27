@@ -14,8 +14,10 @@ private:
 
 public:
 	/**
-	 * @brief This constructs a Team.
-	 * It initializes an empty team ready to have members added to it.
+	 * @brief Constructs a Team with a name, title and rank
+	 * @param name Name of the team
+	 * @param title Title of the team
+	 * @param rank Rank assigned to the team
 	 */
 	Team(std::string name, std::string title, int rank);
 	~Team() override;

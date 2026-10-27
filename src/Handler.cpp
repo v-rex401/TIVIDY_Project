@@ -1,6 +1,7 @@
 #include "Handler.h"
 
 #include <iostream>
+#include <algorithm>
 
 Handler::Handler(std::string name, std::string title)
 {
@@ -25,16 +26,28 @@ void Handler::printHierarchy(std::string indent)
 
     for(WorkItem* member : this->members)
     {
-        member->printHierarchy(indent + "  ");
+        if(member != nullptr)
+        {
+            member->printHierarchy(indent + "  ");
+        }
     }
 }
 
 void Handler::addMember(WorkItem* Component)
 {
-	if(Component != nullptr)
+    if(Component == nullptr)
     {
-        this->members.push_back(Component);
+        return;
     }
+
+    //prevents same pointer from being inserted more than once
+    //this helps prevent a potential double deletion
+    if(std::find(this->members.begin(), this->members.end(), Component) != this->members.end())
+    {
+        return;
+    }
+
+    this->members.push_back(Component);
 }
 
 void Handler::removeMember(WorkItem* Component)
@@ -78,10 +91,10 @@ WorkItem* Handler::clone()
 {
     Handler* clonedHandler = new Handler(this->name, this->title);
 
-	//copy responsible staff pointer
+    clonedHandler->severity = this->severity;
+    clonedHandler->requiredPosition = this->requiredPosition;
     clonedHandler->responsible = this->responsible;
 
-	//clone each member
     for(WorkItem* member : this->members)
     {
         if(member != nullptr)
@@ -91,6 +104,26 @@ WorkItem* Handler::clone()
     }
 
     return clonedHandler;
+}
+
+std::string Handler::getSeverity()
+{
+    return this->severity;
+}
+
+std::string Handler::getRequiredPosition()
+{
+    return this->requiredPosition;
+}
+
+void Handler::setRequiredPosition(const std::string& position)
+{
+    this->requiredPosition = position;
+}
+
+Staff* Handler::getResponsible()
+{
+    return this->responsible;
 }
 
 Handler::~Handler()
