@@ -19,12 +19,10 @@
 #include <ctime>
 
 // Added a helper for the time
-static WorkflowEvent *makeStateChangeEvent(const std::string &id)
+static WorkflowEvent *makeStateChangeEvent(const std::string &id, const std::string &from, const std::string &to)
 {
-    char buf[32];
-    std::time_t now = std::time(nullptr);
-    std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
-    return new WorkflowEvent("STATE_CHANGE", "Workflow instance " + id + " changed state", buf);
+    std::string where = id.empty() ? "" : " [" + id + "]";
+    return new WorkflowEvent("STATE_CHANGE", from + " -> " + to + where, Clock::now());
 }
 
 /**
@@ -32,13 +30,14 @@ static WorkflowEvent *makeStateChangeEvent(const std::string &id)
  */
 WorkflowInstance::WorkflowInstance()
     : id(""),
-    currentState(nullptr),
-    definition(nullptr),
-    history(new CommandHistory()),
-    eventLog(new EventLog()) {
-        State* initial = new Pending(); //not through setState because no observers yet attached, so no event is needed.
-        ownedStates.push_back(std::unique_ptr<State>(initial));
-        currentState = initial;
+      currentState(nullptr),
+      definition(nullptr),
+      history(new CommandHistory()),
+      eventLog(new EventLog())
+{
+    State *initial = new Pending(); // not through setState because no observers yet attached, so no event is needed.
+    ownedStates.push_back(std::unique_ptr<State>(initial));
+    currentState = initial;
 }
 
 /**
@@ -46,8 +45,9 @@ WorkflowInstance::WorkflowInstance()
  * The Memento only points at the state, and the instance keeps ownership of it.
  * @return A newly allocated Memento.
  */
-Memento *WorkflowInstance::createMemento() {
-    Memento* m = new Memento();
+Memento *WorkflowInstance::createMemento()
+{
+    Memento *m = new Memento();
     m->setState(currentState);
     m->workItem = workItem.empty() ? nullptr : workItem.front();
     return m;
@@ -76,9 +76,10 @@ void WorkflowInstance::setMemento(Memento *m)
     State *saved = m->getState(); // friend access
     if (saved != nullptr)
     {
+        std::string from = (currentState != nullptr) ? currentState->getName() : "none";
         currentState = saved;
-        
-        WorkflowEvent* e = makeStateChangeEvent(id, from, saved->getName() + " (restored)");
+
+        WorkflowEvent *e = makeStateChangeEvent(id, from, saved->getName() + " (restored)");
         eventLog->addEntry(e);
         notify(e);
     }
@@ -126,10 +127,10 @@ void WorkflowInstance::setState(State *s)
     ownedStates.push_back(std::unique_ptr<State>(s));
     currentState = s;
 
-    WorkflowEvent* e = makeStateChangeEvent(id, from, s->getName());
-    eventLog->addEntry(e);   // the log owns the event
+    WorkflowEvent *e = makeStateChangeEvent(id, from, s->getName());
+    eventLog->addEntry(e); // the log owns the event
 
-    notify(e); //this now logs the event once, and tells the observers
+    notify(e); // this now logs the event once, and tells the observers
 }
 
 /**
@@ -150,12 +151,12 @@ std::vector<WorkItem *> WorkflowInstance::getWorkItem()
     return workItem;
 }
 
-const std::vector<WorkItem*>& WorkflowInstance::getWorkItems() const
+const std::vector<WorkItem *> &WorkflowInstance::getWorkItems() const
 {
     return workItem;
 }
 
-void WorkflowInstance::addWorkItem(WorkItem* item)
+void WorkflowInstance::addWorkItem(WorkItem *item)
 {
     if (item != nullptr && std::find(workItem.begin(), workItem.end(), item) == workItem.end())
     {
@@ -163,12 +164,12 @@ void WorkflowInstance::addWorkItem(WorkItem* item)
     }
 }
 
-void WorkflowInstance::setData(const std::string& key, double value)
+void WorkflowInstance::setData(const std::string &key, double value)
 {
     this->data[key] = value;
 }
 
-double WorkflowInstance::getData(const std::string& key, double fallback) const
+double WorkflowInstance::getData(const std::string &key, double fallback) const
 {
     std::map<std::string, double>::const_iterator it = this->data.find(key);
     if (it == this->data.end())
@@ -187,8 +188,10 @@ EventLog *WorkflowInstance::getEventLog()
     return eventLog;
 }
 
-void WorkflowInstance::notify(WorkflowEvent *e){
-    if (e == nullptr){
+void WorkflowInstance::notify(WorkflowEvent *e)
+{
+    if (e == nullptr)
+    {
         return;
     }
     // Iterate a copy: an observer may detach itself during update().
