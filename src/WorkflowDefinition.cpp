@@ -48,6 +48,16 @@ WorkflowDefinition *WorkflowDefinition::clone()
     return clonedDefinition;
 }
 
+WorkflowDefinition::~WorkflowDefinition()
+{
+    for(WorkItem* stage : stages)
+    {
+        delete stage;
+    }
+
+    stages.clear();
+}
+
 void WorkflowDefinition::addStage(WorkItem* s)
 {
 	if(s == nullptr)

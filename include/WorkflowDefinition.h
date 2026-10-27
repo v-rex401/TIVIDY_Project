@@ -30,6 +30,10 @@ private:
 
 public:
 	/**
+	 * @brief Destroys the definition and every stage it holds.
+	 */
+	~WorkflowDefinition();
+	/**
 	 * @brief Accept a workflow visitor
 	 */
 	void accept(WorkflowVisitor* wv);

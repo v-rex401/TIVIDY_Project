@@ -22,6 +22,10 @@ private:
 
 public:
 	/**
+	 * @brief Destroys the stage and every work item it still holds.
+	 */
+	~Stage();
+	/**
 	 * @brief Construct a stage.
 	 * @param name Short identifier for the stage.
 	 * @param title Human-readable title shown in reports.

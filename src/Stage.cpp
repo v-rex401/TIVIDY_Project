@@ -9,6 +9,15 @@
 Stage::Stage(const std::string& name, const std::string& title)
     : name(name), title(title), responsible(nullptr)
 {}
+Stage::~Stage()
+{
+    for(WorkItem* member : members)
+    {
+        delete member;
+    }
+
+    members.clear();
+}
 
 void Stage::addMember(WorkItem* c)
 {
