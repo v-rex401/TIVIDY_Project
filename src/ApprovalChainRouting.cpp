@@ -1,7 +1,8 @@
 #include "ApprovalChainRouting.h"
 
-ApprovalChainRouting::ApprovalChainRouting(double limitThreshold, Stage *standard, Stage *escalation)
+ApprovalChainRouting::ApprovalChainRouting(const std::string &metricKey, double limitThreshold, Stage *standard, Stage *escalation)
 {
+	this->metricKey = metricKey;
 	this->threshold = limitThreshold;
 	this->standardStage = standard;
 	this->escalationStage = escalation;
@@ -10,7 +11,7 @@ ApprovalChainRouting::ApprovalChainRouting(double limitThreshold, Stage *standar
 Stage *ApprovalChainRouting::selectItemState(WorkItem *item, WorkflowInstance *context) {
 	if (item == nullptr || context == nullptr) return nullptr;
 
-	if (context->getTransactionValue() > threshold) {
+	if (context->getData(this->metricKey) > this->threshold) {
 		return escalationStage;
 	}
 
