@@ -2,7 +2,20 @@
 #include "Cancelled.h"
 #include <algorithm>
 
-WorkflowManager::WorkflowManager() : assignmentStrategy(nullptr), routingStrategy(nullptr) {}
+WorkflowManager::WorkflowManager() : assignmentStrategy(nullptr), routingStrategy(nullptr), externalSystem(nullptr) {}
+
+void WorkflowManager::setExternalSystem(ExternalSystem *es)
+{
+	this->externalSystem = es;
+}
+
+void WorkflowManager::notifyExternal()
+{
+	if (this->externalSystem != nullptr)
+	{
+		this->externalSystem->request();
+	}
+}
 
 void WorkflowManager::setAssignmentStrategy(AssignmentStrategy *as)
 {
@@ -27,13 +40,21 @@ void WorkflowManager::setRoutingStrategy(RoutingStrategy *rs)
 Staff *WorkflowManager::assignWorkItem(WorkItem *wi, WorkflowInstance *wc)
 {
 	if (assignmentStrategy == nullptr || wi == nullptr || wc == nullptr) return nullptr;
-	return this->assignmentStrategy->selectAssignmentItem(wi, wc, runningInstances);
+
+	Staff *assignee = this->assignmentStrategy->selectAssignmentItem(wi, wc, runningInstances);
+	this->notifyExternal();
+
+	return assignee;
 }
 
 Stage *WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc)
 {
 	if (routingStrategy == nullptr || wi == nullptr || wc == nullptr) return nullptr;
-	return this->routingStrategy->selectItemState(wi, wc);
+
+	Stage *next = this->routingStrategy->selectItemState(wi, wc);
+	this->notifyExternal();
+
+	return next;
 }
 
 WorkflowInstance *WorkflowManager::createInstance(WorkflowDefinition *def, std::string id)

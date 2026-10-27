@@ -8,6 +8,7 @@
 
 #include <gtest/gtest.h>
 #include <string>
+#include <vector>
 
 #include "Active.h"
 #include "AssignmentStrategy.h"
@@ -22,16 +23,33 @@
 #include "WorkflowEvent.h"
 #include "WorkflowInstance.h"
 #include "WorkflowManager.h"
+#include "WorkItem.h"
 
 namespace {
 
-/** Lets the manager run without a real assignment strategy. */
-class StubAssignment : public AssignmentStrategy {
-public:
-    Staff* selectAssignmentItem(WorkItem*, WorkflowInstance*) { return NULL; }
-};
+    /** A minimal work item, so the manager's null guards do not short-circuit. */
+    class StubWorkItem : public WorkItem {
+    public:
+        std::string getName() override { return "item"; }
+        std::string getTitle() override { return "task"; }
+        std::string getSeverity() override { return "Normal"; }
+        std::string getRequiredPosition() override { return ""; }
+        void setRequiredPosition(const std::string&) override {}
+        void printHierarchy(std::string) override {}
+        void handleRequest() override {}
+        WorkItem* clone() override { return new StubWorkItem(); }
+    };
 
-}  // namespace
+        /** Lets the manager run without a real assignment strategy. */
+    class StubAssignment : public AssignmentStrategy {
+    public:
+        Staff* selectAssignmentItem(WorkItem*, WorkflowInstance*,
+                                    const std::vector<WorkflowInstance*>&) {
+            return NULL;
+        }
+    };
+
+}
 
 // Clock
 
@@ -155,10 +173,13 @@ TEST(ManagerAdapterTest, AssigningWorkNotifiesThroughTheAdapter) {
     manager.setAssignmentStrategy(new StubAssignment());  // manager deletes it
     manager.setExternalSystem(&adapter);
 
-    manager.assignWorkItem(NULL, NULL);
+    StubWorkItem item;
+    WorkflowInstance context;
+
+    manager.assignWorkItem(&item, &context);
     EXPECT_EQ(1, service.getSentCount());
 
-    manager.assignWorkItem(NULL, NULL);
+    manager.assignWorkItem(&item, &context);
     EXPECT_EQ(2, service.getSentCount());
 }
 
@@ -168,7 +189,9 @@ TEST(ManagerAdapterTest, RunsWithoutAnExternalSystem) {
     manager.setAssignmentStrategy(new StubAssignment());
     manager.setExternalSystem(NULL);
 
-    EXPECT_NO_THROW(manager.assignWorkItem(NULL, NULL));
+    StubWorkItem item;
+    WorkflowInstance context;
+    EXPECT_NO_THROW(manager.assignWorkItem(&item, &context));
 }
 
 /** Invalid operation: no strategy configured must not crash. */
