@@ -65,7 +65,7 @@ WorkItem* Stage::clone()
     clonedStage->name = this->name;
     clonedStage->title = this->title;
     clonedStage->responsible = this->responsible;
-    
+
     for(WorkItem* member : members)
     {
         if(member != nullptr)
@@ -75,6 +75,36 @@ WorkItem* Stage::clone()
     }
 
     return clonedStage;
+}
+
+Staff* Stage::getResponsible()
+{
+    return responsible;
+}
+
+void Stage::setResponsible(Staff* staff)
+{
+    responsible = staff;
+}
+
+std::string Stage::getSeverity()
+{
+    return severity;
+}
+
+std::string Stage::getRequiredPosition()
+{
+    return requiredPosition;
+}
+
+void Stage::setRequiredPosition(const std::string& position)
+{
+    requiredPosition = position;
+}
+
+const std::vector<WorkItem*>& Stage::getMembers() const
+{
+    return members;
 }
 
 std::string Stage::getName()

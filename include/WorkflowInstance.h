@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <map>
 
 #include "WorkFlowSubject.h"
 #include "State.h"
@@ -29,6 +30,14 @@ private:
 	State *currentState;
 	WorkflowDefinition *definition;
 	std::vector<WorkItem *> workItem;
+
+	// These members aren't following genericness rules
+	// double transactionValue;
+	// double eventMetric;
+
+	//hence I'm adding Scenario values, keyed by name
+	std::map<std::string, double> data;
+
 	std::vector<Staff *> participants;
 	CommandHistory *history;
 	EventLog *eventLog;
@@ -63,6 +72,32 @@ public:
 	void handle();
 
 	std::vector<WorkItem*> getWorkItem();
+	const std::vector<WorkItem*>& getWorkItems() const;
+	void addWorkItem(WorkItem* item);
+	// double getTransactionValue() const;
+	// void setTransactionValue(double value);
+	// double getEventMetric() const;
+	// void setEventMetric(double value);
+
+	/**
+	 * @brief Record a named numeric value on this instance.
+	 * @param key Name of the value, supplied by the scenario.
+	 * @param value The value to store.
+	 *
+	 * The engine never interprets the key, so an industry can carry whatever
+	 * values its rules need without this class knowing about them.
+	 */
+	void setData(const std::string& key, double value);
+
+	/**
+	 * @brief Read a named numeric value.
+	 * @param key Name of the value to read.
+	 * @param fallback Returned when the key has not been set.
+	 * @return The stored value, or @p fallback.
+	 */
+	double getData(const std::string& key, double fallback = 0.0) const;
+
+
 	EventLog *getEventLog();
 
 	void accept(WorkflowVisitor *v);

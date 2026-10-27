@@ -12,3 +12,7 @@ bool Threshold::isTriggered(double incomingValue) const {
 Stage* Threshold::getTargetStage() const {
     return this->targetStage;
 }
+
+double Threshold::getLimit() const {
+    return this->limit;
+}
