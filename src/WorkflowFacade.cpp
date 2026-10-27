@@ -107,6 +107,11 @@ void WorkflowFacade::setRoutingStrategy(RoutingStrategy *strategy)
 	manager->setRoutingStrategy(strategy);
 }
 
+void WorkflowFacade::setExternalSystem(ExternalSystem *system)
+{
+	manager->setExternalSystem(system);
+}
+
 void WorkflowFacade::addDefinition(WorkflowDefinition *definition)
 {
 	if (definition == nullptr ||

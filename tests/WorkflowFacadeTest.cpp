@@ -13,6 +13,8 @@
 
 #include "AssignmentStrategy.h"
 #include "EventLog.h"
+#include "NotificationAdapter.h"
+#include "NotificationSystem.h"
 #include "RoutingStrategy.h"
 #include "SequentialWorkflowBuilder.h"
 #include "Stage.h"
@@ -257,6 +259,23 @@ TEST(WorkflowFacadeTest, SubmitWithoutStrategiesLeavesTheItemWithTheCaller) {
     EXPECT_EQ(2u, instance->getWorkItems().size());
     EXPECT_EQ(nullptr, item->getResponsible());
     delete item;
+}
+
+TEST(WorkflowFacadeTest, ExternalSystemHearsAboutSubmittedWork) {
+    TestStaff staff;
+    NotificationSystem service;
+    NotificationAdapter adapter(&service);
+    WorkflowFacade facade;
+    facade.setExternalSystem(&adapter);
+    facade.setAssignmentStrategy(new FixedAssignment(&staff));
+    facade.setRoutingStrategy(new FirstStageRouting());
+    WorkflowDefinition* definition = makeDefinition("Request");
+    facade.addDefinition(definition);
+    facade.startWorkflow(definition);
+
+    facade.submitWorkItem(facade.getInstances().back(), new Task("Check", "Check"));
+
+    EXPECT_EQ(2, service.getSentCount());  // once for assignment, once for routing
 }
 
 // Instance isolation

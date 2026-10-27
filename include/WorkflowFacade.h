@@ -17,6 +17,7 @@ class WorkflowInstance;
 class WorkItem;
 class AssignmentStrategy;
 class RoutingStrategy;
+class ExternalSystem;
 
 /**
  * @brief Facade participant of the Facade pattern.
@@ -120,6 +121,12 @@ public:
 	 * @param strategy The strategy to use; the manager takes ownership and deletes the previous one.
 	 */
 	void setRoutingStrategy(RoutingStrategy* strategy);
+
+	/**
+	 * @brief Choose the outside service told about every assignment and routing.
+	 * @param system The service, usually an adapter (not owned; must outlive the facade). Null turns it off.
+	 */
+	void setExternalSystem(ExternalSystem* system);
 
 	/**
 	 * @brief Register a definition the client can start instances from.
