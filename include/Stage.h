@@ -17,14 +17,37 @@ class Stage : public WorkItem {
 private:
 	std::string name;
 	std::string title;
+	std::string requiredPosition;
+	std::string severity;
 	std::vector<WorkItem*> members;
 	Staff* responsible;
 
 public:
 	/**
-	 * @brief Destroys the stage and every work item it still holds.
+	 * @brief get the responsible staff member in a stage
 	 */
-	~Stage();
+	Staff* getResponsible() override;
+
+	/**
+	 * @brief set the responsible staff member in a stage
+	 */
+	void setResponsible(Staff* staff) override;
+
+	/**
+	 * @brief get the severity of a Stage
+	 */
+	virtual std::string getSeverity() override;
+
+	/**
+	 * @brief get the required Staff position of a Stage
+	 */
+	virtual std::string getRequiredPosition() override;
+
+	/**
+	 * @brief set the required Staff position of a Stage
+	 */
+	virtual void setRequiredPosition(const std::string& position) override;
+
 	/**
 	 * @brief Construct a stage.
 	 * @param name Short identifier for the stage.
@@ -39,6 +62,11 @@ public:
 	void addMember(WorkItem* c);
 
 	/**
+	 * @brief Getter for all workitems
+	 */
+	const std::vector<WorkItem*>& getMembers() const;
+
+	/**
 	 * @brief Remove a work item from the stage
 	 */
 	void removeMember(WorkItem* c);
@@ -47,7 +75,7 @@ public:
 	 * @brief Handle a workflow request in the chain
 	 */
 	void handleRequest() override;
-	
+
 	/**
 	 * @brief Set the next handler in the chain
 	 */
@@ -71,8 +99,6 @@ public:
 	 * @brief Print the stage hierarchy
 	 */
 	void printHierarchy(std::string indent) override;
-
-	void setName(std::string name);
 };
 
 #endif

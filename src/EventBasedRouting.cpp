@@ -1,29 +1,22 @@
 #include "EventBasedRouting.h"
 
-EventBasedRouting::EventBasedRouting(const std::vector<Threshold> &initialThresholds)
+EventBasedRouting::EventBasedRouting(const std::string &metricKey, const std::vector<Threshold> &initialThresholds)
 {
+	this->metricKey = metricKey;
 	this->thresholds = initialThresholds;
 }
 
-// TODO: item needs to be used
-Stage *EventBasedRouting::selectItemState(WorkItem * /* item */, WorkflowInstance *context)
+
+Stage *EventBasedRouting::selectItemState(WorkItem *item, WorkflowInstance *context)
 {
-	if (!context)
-		return nullptr;
+	if (item == nullptr || context == nullptr) return nullptr;
 
-	double runtimeMetricValue = 85.0;
+	const double metricValue = context->getData(this->metricKey);
 
-	Stage *highestTriggeredStage = nullptr;
-
-	// TODO: Was an unused variable
-	//  double maximumLimitMet = -1.0;
-
-	for (const auto &th : thresholds)
-	{
-		if (th.isTriggered(runtimeMetricValue))
-		{
-			highestTriggeredStage = th.getTargetStage();
+	for (const Threshold& th : thresholds) {
+		if (th.isTriggered(metricValue)) {
+			return th.getTargetStage();
 		}
 	}
-	return highestTriggeredStage;
+	return nullptr;
 }

@@ -18,20 +18,50 @@ class Task : public WorkItem
 private:
 	std::string name;
 	std::string title;
+	std::string requiredPosition;
+	std::string severity;
 	Staff *responsible;
 
 public:
-
 	/**
-	 * @brief Construct a task.
-	 * @param name Short identifier for the task.
-	 * @param title Human-readable title shown in reports.
+	 * @brief Construtor for a Task
 	 */
 	Task(const std::string& name = "", const std::string& title = "");
+
+	/**
+	 * @brief Getter for the responsible Staff
+	 */
+	Staff* getResponsible() override;
+
+	/**
+	 * @brief Setter for the resposnible Staff
+	 */
+	void setResponsible(Staff* staff) override;
 	
+	/**
+	 * @brief Getter for the title
+	 */
 	std::string getName() override;
 
+	/**
+	 * @brief Getter for the title
+	 */
 	std::string getTitle() override;
+
+	/**
+	 * @brief get the severity of a Stage
+	 */
+	virtual std::string getSeverity() override;
+
+	/**
+	 * @brief get the required Staff position of a Stage
+	 */
+	virtual std::string getRequiredPosition() override;
+
+	/**
+	 * @brief set the required Staff position of a Stage
+	 */
+	virtual void setRequiredPosition(const std::string& position) override;
 
 	/**
 	 * @brief Print the tasks in a workflow hierarchy
@@ -57,8 +87,6 @@ public:
 	 * @brief Accept a workflow visitor
 	 */
 	void accept(WorkflowVisitor *v) override;
-
-	void setTitle(std::string title);
 };
 
 #endif

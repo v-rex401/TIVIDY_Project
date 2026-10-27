@@ -33,20 +33,41 @@ void Task::setNextHandler(WorkItem *next)
 	WorkItem::setNextHandler(next);
 }
 
-void Task::accept(WorkflowVisitor * v)
+void Task::accept(WorkflowVisitor *v)
 {
-	if(v != nullptr)
-    {
-        v->visitTask(this);
-    }
+	if (v == nullptr)
+	{
+		return;
+	}
+
+	v->visitTask(this);
 }
 
 WorkItem *Task::clone()
 {
-	return new Task(*this);
+	return new Task(this->name, this->title);
+}
+Staff* Task::getResponsible()
+{
+    return responsible;
 }
 
-void Task::setTitle(std::string title)
+void Task::setResponsible(Staff* staff)
 {
-	this->title = title;
+    responsible = staff;
+}
+
+std::string Task::getSeverity()
+{
+    return severity;
+}
+
+std::string Task::getRequiredPosition()
+{
+    return requiredPosition;
+}
+
+void Task::setRequiredPosition(const std::string& position)
+{
+    requiredPosition = position;
 }

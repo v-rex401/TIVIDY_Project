@@ -1,19 +1,17 @@
 #include "ApprovalChainRouting.h"
 
-ApprovalChainRouting::ApprovalChainRouting(double limitThreshold, Stage *standard, Stage *escalation)
+ApprovalChainRouting::ApprovalChainRouting(const std::string &metricKey, double limitThreshold, Stage *standard, Stage *escalation)
 {
+	this->metricKey = metricKey;
 	this->threshold = limitThreshold;
 	this->standardStage = standard;
 	this->escalationStage = escalation;
 }
 
-// TODO: Why are the parameters never used???
-Stage *ApprovalChainRouting::selectItemState(WorkItem * /* item */, WorkflowInstance * /* context */)
-{
-	double currentTransactionValue = 15000.0;
+Stage *ApprovalChainRouting::selectItemState(WorkItem *item, WorkflowInstance *context) {
+	if (item == nullptr || context == nullptr) return nullptr;
 
-	if (currentTransactionValue > threshold)
-	{
+	if (context->getData(this->metricKey) > this->threshold) {
 		return escalationStage;
 	}
 

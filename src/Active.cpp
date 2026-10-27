@@ -22,3 +22,7 @@ void Active::handle(WorkflowInstance* ctx) {
 	std::cout << "[State] Active -> Completed\n";
 	ctx->setState(new Completed()); //the instance takes ownership now.
 }
+
+std::string Active::getName() const {
+	return "Active";
+}

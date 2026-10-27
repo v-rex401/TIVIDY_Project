@@ -60,6 +60,9 @@ public:
     }
     void handleRequest() override {}
     WorkItem *clone() override { return new FakeItem(name_, title_); }
+    std::string getSeverity() override { return ""; }
+    std::string getRequiredPosition() override { return ""; }
+    void setRequiredPosition(const std::string&) override {}
 
 private:
     std::string name_, title_;
