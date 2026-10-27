@@ -1,7 +1,8 @@
 #include "EventBasedRouting.h"
 
-EventBasedRouting::EventBasedRouting(const std::vector<Threshold> &initialThresholds)
+EventBasedRouting::EventBasedRouting(const std::string &metricKey, const std::vector<Threshold> &initialThresholds)
 {
+	this->metricKey = metricKey;
 	this->thresholds = initialThresholds;
 }
 
@@ -10,7 +11,7 @@ Stage *EventBasedRouting::selectItemState(WorkItem * /*item*/, WorkflowInstance 
 {
 	if (context == nullptr) return nullptr;
 
-	const double metricValue = context->getEventMetric();
+	const double metricValue = context->getData(this->metricKey);
 
 	for (const Threshold& th : thresholds) {
 		if (th.isTriggered(metricValue)) {
