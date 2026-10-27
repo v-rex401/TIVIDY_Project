@@ -1,19 +1,24 @@
 #include "CommandHistory.h"
+#include "Memento.h"
 
-void CommandHistory::save(Memento * /* m */)
-{
-	// TODO - implement CommandHistory::save
+CommandHistory::CommandHistory() {}
+
+CommandHistory::~CommandHistory() {
+    for (std::size_t i = 0; i < history.size(); ++i) {
+        delete history[i];
+    }
 }
 
-Memento *CommandHistory::restore()
-{
-	// TODO - implement CommandHistory::restore
-	return nullptr;
+void CommandHistory::save(Memento* m) {
+    if (m == nullptr) {
+        return;
+    }
+    history.push_back(m);
 }
 
-CommandHistory::CommandHistory()
-{
-}
-CommandHistory::~CommandHistory()
-{
+Memento* CommandHistory::restore() {
+    if (history.empty()) {
+        return nullptr;
+    }
+    return history.back();
 }
