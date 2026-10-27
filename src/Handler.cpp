@@ -1,5 +1,14 @@
 #include "Handler.h"
 
+#include <iostream>
+
+Handler::Handler(std::string name, std::string title)
+{
+    this->name = name;
+    this->title = title;
+    this->responsible = nullptr;
+}
+
 std::string Handler::getName()
 {
 	return this->name;
@@ -10,27 +19,84 @@ std::string Handler::getTitle()
 	return this->title;
 }
 
-void Handler::printHierarchy(std::string /* indent */)
+void Handler::printHierarchy(std::string indent)
 {
-	// TODO - implement Handler::printHierarchy
+	std::cout << indent << this->name << "\n";
+
+    for(WorkItem* member : this->members)
+    {
+        member->printHierarchy(indent + "  ");
+    }
 }
 
-void Handler::addMember(int /* Component */)
+void Handler::addMember(WorkItem* Component)
 {
-	// TODO - implement Handler::addMember
+	if(Component != nullptr)
+    {
+        this->members.push_back(Component);
+    }
 }
 
-void Handler::removeMember(int /* Component */)
+void Handler::removeMember(WorkItem* Component)
 {
-	// TODO - implement Handler::removeMember
+	for(auto it = this->members.begin(); it != this->members.end(); ++it)
+    {
+        if(*it == Component)
+        {
+            delete *it;
+            this->members.erase(it);
+
+            return;
+        }
+    }
 }
 
-void Handler::setNextHandler(Handler * /* next */)
+void Handler::setResponsible(Staff* staff)
 {
-	// TODO - implement Handler::setNextHandler
+	this->responsible = staff;
 }
 
-void Handler::handleRequest()
+bool Handler::handleRequest(int rank)
 {
-	// TODO - implement Handler::handleRequest
+	if(this->responsible != nullptr)
+    {
+        if(this->responsible->handleRequest(rank))
+        {
+            return true;
+        }
+    }
+
+    if(getNextHandler() != nullptr)
+    {
+        return getNextHandler()->handleRequest(rank);
+    }
+
+    return false;
+}
+
+WorkItem* Handler::clone()
+{
+    Handler* clonedHandler = new Handler(this->name, this->title);
+
+	//copy responsible staff pointer
+    clonedHandler->responsible = this->responsible;
+
+	//clone each member
+    for(WorkItem* member : this->members)
+    {
+        if(member != nullptr)
+        {
+            clonedHandler->addMember(member->clone());
+        }
+    }
+
+    return clonedHandler;
+}
+
+Handler::~Handler()
+{
+	for(WorkItem* member : this->members)
+    {
+        delete member;
+    }
 }

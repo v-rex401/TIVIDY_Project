@@ -14,6 +14,15 @@ class WorkItem {
 private:
 	WorkItem* successor = nullptr;
 
+protected:
+    /**
+     * @brief Get the next handler in the chain
+     */
+    WorkItem* getNextHandler() const
+    {
+        return this->successor;
+    }
+
 public:
 	virtual std::string getName() = 0;
 
