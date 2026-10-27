@@ -20,6 +20,7 @@ class SpyState : public State {
 public:
     explicit SpyState(int* handled) : handled(handled) {}
     void handle(WorkflowInstance*) override { ++*handled; }
+    std::string getName() const override { return "Spy"; }
 private:
     int* handled;
 };
