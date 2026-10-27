@@ -144,10 +144,10 @@ TEST(ApprovalChainRoutingTests, ThresholdIsStrictAndUsesContextTransactionValue)
     Stage standard, escalation;
     WorkflowInstance context;
     StrategyTestWorkItem item;
-    ApprovalChainRouting strategy(100.0, &standard, &escalation);
-    context.setTransactionValue(99.99); EXPECT_EQ(&standard, strategy.selectItemState(&item, &context));
-    context.setTransactionValue(100.0); EXPECT_EQ(&standard, strategy.selectItemState(&item, &context));
-    context.setTransactionValue(100.01); EXPECT_EQ(&escalation, strategy.selectItemState(&item, &context));
+    ApprovalChainRouting strategy("transactionValue", 100.0, &standard, &escalation);
+    context.setData("transactionValue", 99.99); EXPECT_EQ(&standard, strategy.selectItemState(&item, &context));
+    context.setData("transactionValue", 100.0); EXPECT_EQ(&standard, strategy.selectItemState(&item, &context));
+    context.setData("transactionValue", 100.01); EXPECT_EQ(&escalation, strategy.selectItemState(&item, &context));
     EXPECT_EQ(nullptr, strategy.selectItemState(nullptr, &context));
     EXPECT_EQ(nullptr, strategy.selectItemState(&item, nullptr));
     SeverityBasedRouting noEmergency(nullptr, nullptr);
@@ -157,25 +157,25 @@ TEST(ApprovalChainRoutingTests, ThresholdIsStrictAndUsesContextTransactionValue)
 TEST(ApprovalChainRoutingTests, NullDestinationStagesAreReturnedAsConfigured) {
     WorkflowInstance context;
     StrategyTestWorkItem item;
-    ApprovalChainRouting standardMissing(100.0, nullptr, nullptr);
+    ApprovalChainRouting standardMissing("transactionValue", 100.0, nullptr, nullptr);
     EXPECT_EQ(nullptr, standardMissing.selectItemState(&item, &context));
-    context.setTransactionValue(101.0);
+    context.setData("transactionValue", 101.0);
     EXPECT_EQ(nullptr, standardMissing.selectItemState(&item, &context));
 }
 TEST(EventBasedRoutingTests, FirstTriggeredThresholdWinsInConfiguredOrder) {
     Stage first, second, third;
     WorkflowInstance context;
     StrategyTestWorkItem item;
-    context.setEventMetric(90.0);
-    EventBasedRouting strategy({Threshold(50.0, &first), Threshold(80.0, &second), Threshold(20.0, &third)});
+    context.setData("eventMetric", 90.0);
+    EventBasedRouting strategy("eventMetric", {Threshold(50.0, &first), Threshold(80.0, &second), Threshold(20.0, &third)});
     EXPECT_EQ(&first, strategy.selectItemState(&item, &context));
-    context.setEventMetric(40.0);
+    context.setData("eventMetric", 40.0);
     EXPECT_EQ(&third, strategy.selectItemState(&item, &context));
-    context.setEventMetric(10.0);
+    context.setData("eventMetric", 10.0);
     EXPECT_EQ(nullptr, strategy.selectItemState(&item, &context));
     EXPECT_EQ(nullptr, strategy.selectItemState(nullptr, &context));
     EXPECT_EQ(nullptr, strategy.selectItemState(&item, nullptr));
-    EventBasedRouting empty({});
+    EventBasedRouting empty("eventMetric", {});
     EXPECT_EQ(nullptr, empty.selectItemState(&item, &context));
 }
 
@@ -306,4 +306,12 @@ TEST(WorkflowManagerTests, DestructorDeletesConfiguredStrategiesButNotInstances)
     EXPECT_EQ(1, assignmentDestroyed);
     EXPECT_EQ(1, routingDestroyed);
     EXPECT_NE(nullptr, instance.getState()); // manager did not delete the instance
+}
+
+TEST(WorkflowInstanceDataTests, UnsetKeysReadAsTheFallback) {
+    WorkflowInstance context;
+    EXPECT_EQ(0.0, context.getData("nothing"));
+    EXPECT_EQ(7.5, context.getData("nothing", 7.5));
+    context.setData("x", 3.0);
+    EXPECT_EQ(3.0, context.getData("x"));
 }
