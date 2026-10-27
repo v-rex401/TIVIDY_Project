@@ -1,52 +1,146 @@
 #include "EscalatingWorkflowBuilder.h"
 
-void EscalatingWorkflowBuilder::buildDefinition(std::string /* name */)
+#include "WorkflowDefinition.h"
+#include "Stage.h"
+#include "Task.h"
+#include "WorkItem.h"
+
+#include <vector>
+
+EscalatingWorkflowBuilder::~EscalatingWorkflowBuilder()
 {
-	// TODO - implement EscalatingWorkflowBuilder::buildDefinition
+    // Only reached if the caller never took the definition with getWorkflowDefinition()
+    // once taken ownership has passed on.
+    delete this->definition;
+    this->definition = nullptr;
 }
 
-void EscalatingWorkflowBuilder::buildStage(std::string /* name */)
+void EscalatingWorkflowBuilder::buildDefinition(std::string name)
 {
-	// TODO - implement EscalatingWorkflowBuilder::buildStage
+	definition = new WorkflowDefinition();
+
+    definition->setName(name);
 }
 
-void EscalatingWorkflowBuilder::buildTask(std::string /* stageName */, std::string /* title */)
+void EscalatingWorkflowBuilder::buildStage(std::string name)
 {
-	// TODO - implement EscalatingWorkflowBuilder::buildTask
+	if(this->definition == nullptr)
+    {
+        return;
+    }
+
+    Stage* stage = new Stage();
+    stage->setName(name);
+
+    this->definition->addStage(stage);
+}
+
+void EscalatingWorkflowBuilder::buildTask(std::string stageName, std::string title)
+{
+	if(this->definition == nullptr)
+    {
+        return;
+    }
+
+	for(WorkItem* item : *this->definition->getStages())
+    {
+        if(item != nullptr && item->getName() == stageName)
+        {
+            Stage* stage = dynamic_cast<Stage*>(item);
+
+            if(stage != nullptr)
+            {
+                // The definition format carries a single label per task,
+                // so it is used as both the identifier and the display title until
+                // the format carries them separately.
+                stage->addMember(new Task(title, title));
+            }
+
+            return;
+        }
+    }
 }
 
 void EscalatingWorkflowBuilder::linkHandlers()
 {
-	// TODO - implement EscalatingWorkflowBuilder::linkHandlers
+	if(this->definition == nullptr)
+    {
+        return;
+    }
+
+    std::vector<WorkItem*>* stages = this->definition->getStages();
+
+    for(size_t i = stages->size(); i > 1; i--)
+    {
+        if((*stages)[i - 1] != nullptr && (*stages)[i - 2] != nullptr)
+        {
+            (*stages)[i - 1]->setNextHandler((*stages)[i - 2]);
+        }
+    }
 }
 
-void EscalatingWorkflowBuilder::buildTransition(std::string /* from */, std::string /* to */)
+void EscalatingWorkflowBuilder::buildTransition(std::string from, std::string to)
 {
-	// TODO - implement EscalatingWorkflowBuilder::buildTransition
+	if(this->definition == nullptr)
+    {
+        return;
+    }
+
+    this->definition->addTransition(from, to);
 }
 
-void EscalatingWorkflowBuilder::buildParticipantSlot(std::string /* stageName */, std::string /* role */)
+void EscalatingWorkflowBuilder::buildParticipantSlot(std::string stageName, std::string role)
 {
-	// TODO - implement EscalatingWorkflowBuilder::buildParticipantSlot
+	if(this->definition == nullptr)
+    {
+        return;
+    }
+
+    for(WorkItem* stage : *this->definition->getStages())
+    {
+        if(stage != nullptr && stage->getName() == stageName)
+        {
+            this->definition->addParticipantSlot(stageName, role);
+            return;
+        }
+    }
 }
 
-void EscalatingWorkflowBuilder::setAssignmentStrategyType(std::string /* type */)
+void EscalatingWorkflowBuilder::setAssignmentStrategyType(std::string type)
 {
-	// TODO - implement EscalatingWorkflowBuilder::setAssignmentStrategyType
+	if(this->definition == nullptr)
+    {
+        return;
+    }
+
+    this->definition->setAssignmentStrategyType(type);
 }
 
-void EscalatingWorkflowBuilder::setRoutingStrategyType(std::string /* type */)
+void EscalatingWorkflowBuilder::setRoutingStrategyType(std::string type)
 {
-	// TODO - implement EscalatingWorkflowBuilder::setRoutingStrategyType
+	if(this->definition == nullptr)
+    {
+        return;
+    }
+
+    this->definition->setRoutingStrategyType(type);
 }
 
-void EscalatingWorkflowBuilder::setInitialData(std::string /* key */, std::string /* value */)
+void EscalatingWorkflowBuilder::setInitialData(std::string key, std::string value)
 {
-	// TODO - implement EscalatingWorkflowBuilder::setInitialData
+	if(this->definition == nullptr)
+    {
+        return;
+    }
+
+    this->definition->addInitialData(key, value);
 }
 
 WorkflowDefinition *EscalatingWorkflowBuilder::getWorkflowDefinition()
 {
-	// TODO - implement EscalatingWorkflowBuilder::getWorkflowDefinition
-	return nullptr;
+	 WorkflowDefinition* result = this->definition;
+
+    this->definition = nullptr;
+
+    return result;
 }

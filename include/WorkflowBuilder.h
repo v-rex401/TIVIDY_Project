@@ -3,6 +3,8 @@
 
 #include <string>
 
+class WorkflowDefinition;
+
 /**
  * @brief Abstract builder for constructing workflow definitions
  */
@@ -29,32 +31,37 @@ public:
 	/**
 	 * @brief Builds a transition between workflow stages
 	 */
-	void buildTransition(std::string from, std::string to);
+	virtual void buildTransition(std::string from, std::string to) = 0;
 
 	/**
 	 * @brief Builds a participant slot for a stage in the workflow
 	 */
-	void buildParticipantSlot(std::string stageName, std::string role);
+	virtual void buildParticipantSlot(std::string stageName, std::string role) = 0;
 
 	/**
 	 * @brief Sets the assignment strategy type for the workflow
 	 */
-	void setAssignmentStrategyType(std::string type);
+	virtual void setAssignmentStrategyType(std::string type) = 0;
 
 	/**
 	 * @brief Sets the routing strategy type for the workflow
 	 */
-	void setRoutingStrategyType(std::string type);
+	virtual void setRoutingStrategyType(std::string type) = 0;
 
 	/**
 	 * @brief Sets the initial data for the workflow
 	 */
-	void setInitialData(std::string key, std::string value);
+	virtual void setInitialData(std::string key, std::string value) = 0;
 
 	/**
 	 * @brief Builds a workflow definition
 	 */
-	void buildDefinition(std::string name);
+	virtual void buildDefinition(std::string name) = 0;
+
+	/**
+	 * @brief Returns workflow definition
+	 */
+	virtual WorkflowDefinition* getWorkflowDefinition() = 0;
 
 	virtual ~WorkflowBuilder()  = default;
 };

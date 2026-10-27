@@ -6,13 +6,23 @@
 #include <iostream>
 #include <string>
 
-Stage::Stage(const std::string& name, const std::string& title)
+Stage::Stage(const std::string &name, const std::string &title)
     : name(name), title(title), responsible(nullptr)
-{}
-
-void Stage::addMember(WorkItem* c)
 {
-    if(c == nullptr)
+}
+Stage::~Stage()
+{
+    for (WorkItem *member : members)
+    {
+        delete member;
+    }
+
+    members.clear();
+}
+
+void Stage::addMember(WorkItem *c)
+{
+    if (c == nullptr)
     {
         return;
     }
@@ -20,16 +30,16 @@ void Stage::addMember(WorkItem* c)
     members.push_back(c);
 }
 
-void Stage::removeMember(WorkItem* c)
+void Stage::removeMember(WorkItem *c)
 {
-    if(c == nullptr)
+    if (c == nullptr)
     {
         return;
     }
 
-    for(auto it = members.begin(); it != members.end(); ++it)
+    for (auto it = members.begin(); it != members.end(); ++it)
     {
-        if(*it == c)
+        if (*it == c)
         {
             members.erase(it);
             break;
@@ -39,18 +49,17 @@ void Stage::removeMember(WorkItem* c)
 
 void Stage::handleRequest()
 {
-    //to be implemented with Chain of Responsibility 
+    // to be implemented with Chain of Responsibility
 }
 
-void Stage::setNextHandler(WorkItem* next)
+void Stage::setNextHandler(WorkItem *next)
 {
     WorkItem::setNextHandler(next);
-
 }
 
-void Stage::accept(WorkflowVisitor* v)
+void Stage::accept(WorkflowVisitor *v)
 {
-    if(v == nullptr)
+    if (v == nullptr)
     {
         return;
     }
@@ -58,17 +67,17 @@ void Stage::accept(WorkflowVisitor* v)
     v->visitStage(this);
 }
 
-WorkItem* Stage::clone()
+WorkItem *Stage::clone()
 {
-    Stage* clonedStage = new Stage();
+    Stage *clonedStage = new Stage();
 
     clonedStage->name = this->name;
     clonedStage->title = this->title;
     clonedStage->responsible = this->responsible;
 
-    for(WorkItem* member : members)
+    for (WorkItem *member : members)
     {
-        if(member != nullptr)
+        if (member != nullptr)
         {
             clonedStage->addMember(member->clone());
         }
@@ -77,12 +86,12 @@ WorkItem* Stage::clone()
     return clonedStage;
 }
 
-Staff* Stage::getResponsible()
+Staff *Stage::getResponsible()
 {
     return responsible;
 }
 
-void Stage::setResponsible(Staff* staff)
+void Stage::setResponsible(Staff *staff)
 {
     responsible = staff;
 }
@@ -97,12 +106,12 @@ std::string Stage::getRequiredPosition()
     return requiredPosition;
 }
 
-void Stage::setRequiredPosition(const std::string& position)
+void Stage::setRequiredPosition(const std::string &position)
 {
     requiredPosition = position;
 }
 
-const std::vector<WorkItem*>& Stage::getMembers() const
+const std::vector<WorkItem *> &Stage::getMembers() const
 {
     return members;
 }
@@ -121,12 +130,16 @@ void Stage::printHierarchy(std::string indent)
 {
     std::cout << indent << "Stage: " << this->name << "\n";
 
-    for(WorkItem* member : members)
+    for (WorkItem *member : members)
     {
-        if(member != nullptr)
+        if (member != nullptr)
         {
             member->printHierarchy(indent + "  ");
         }
     }
+}
 
+void Stage::setName(std::string name)
+{
+    this->name = name;
 }

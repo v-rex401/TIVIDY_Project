@@ -8,15 +8,22 @@
 class WorkflowBuilder;
 
 /**
- * @brief Constructs a workflow director with a builder
+ * @brief Director participant of the Builder pattern.
+ *
+ * Owns the construction algorithm and issues buildX() calls to a
+ * WorkflowBuilder in the correct order
+ * The builder is referenced, not owned
  */
-
 class WorkflowDirector {
 
 private:
 	WorkflowBuilder* builder;
 
 public:
+	/**
+	 * @brief Construct a director that drives the given builder.
+	 * @param b The builder to issue calls to. Not owned by the director.
+	 */
 	WorkflowDirector(WorkflowBuilder* b);
 
 	/**
