@@ -20,3 +20,7 @@ void Cancelled::handle(WorkflowInstance* ctx) {
 
 	std::cout << "[State] Workflow cancelled, no further transitions\n";
 }
+
+std::string Cancelled::getName() const {
+	return "Cancelled";
+}

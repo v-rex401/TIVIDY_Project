@@ -47,3 +47,27 @@ WorkItem *Task::clone()
 {
 	return new Task(this->name, this->title);
 }
+Staff* Task::getResponsible()
+{
+    return responsible;
+}
+
+void Task::setResponsible(Staff* staff)
+{
+    responsible = staff;
+}
+
+std::string Task::getSeverity()
+{
+    return severity;
+}
+
+std::string Task::getRequiredPosition()
+{
+    return requiredPosition;
+}
+
+void Task::setRequiredPosition(const std::string& position)
+{
+    requiredPosition = position;
+}

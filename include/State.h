@@ -14,6 +14,12 @@ public:
 	 * @brief The virtual destructor for the State interface.
 	 */
 	virtual ~State() = default;
+
+	/**
+	 * @brief The name of this state, used in history and reports.
+	 * @return The ConcreteState's name, e.g. "Pending".
+	 */
+	virtual std::string getName() const = 0;
 	
 	/**
 	 * @brief Executes the behaviour associated with this specific state.

@@ -5,16 +5,16 @@ RoleBasedAssignment::RoleBasedAssignment(const std::vector<Staff *> &pool)
     this->roster = pool;
 }
 
-// TODO: Context must be used
-Staff *RoleBasedAssignment::selectAssignmentItem(WorkItem *item, WorkflowInstance * /* context */)
-{
-    if (!item)
-        return nullptr;
+Staff* RoleBasedAssignment::selectAssignmentItem(WorkItem* item, WorkflowInstance* context, const std::vector<WorkflowInstance*>& runningInstances) {
+    if (item == nullptr) return nullptr;
+    (void)runningInstances;
 
-    for (auto *staff : roster)
-    {
-        if (staff && staff->getTitle() == item->getTitle())
+    (void)context;
+
+    for (Staff* staff : roster) {
+        if (staff != nullptr && staff->getTitle() == item->getRequiredPosition()) {
             return staff;
+        }
     }
     return nullptr;
 }
