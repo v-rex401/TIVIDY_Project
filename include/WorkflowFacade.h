@@ -15,6 +15,8 @@ class WorkflowManager;
 class WorkflowDefinition;
 class WorkflowInstance;
 class WorkItem;
+class AssignmentStrategy;
+class RoutingStrategy;
 
 /**
  * @brief Facade participant of the Facade pattern.
@@ -106,6 +108,18 @@ public:
 	 * @param instance The instance to cancel. Null or not created by this facade is ignored.
 	 */
 	void cancelWorkflow(WorkflowInstance* instance);
+
+	/**
+	 * @brief Choose how submitted work is assigned to staff.
+	 * @param strategy The strategy to use; the manager takes ownership and deletes the previous one.
+	 */
+	void setAssignmentStrategy(AssignmentStrategy* strategy);
+
+	/**
+	 * @brief Choose how submitted work is routed to a Stage.
+	 * @param strategy The strategy to use; the manager takes ownership and deletes the previous one.
+	 */
+	void setRoutingStrategy(RoutingStrategy* strategy);
 
 	/**
 	 * @brief Register a definition the client can start instances from.

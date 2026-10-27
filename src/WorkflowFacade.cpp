@@ -97,6 +97,16 @@ void WorkflowFacade::cancelWorkflow(WorkflowInstance *instance)
 	manager->cancelWorkflow(instance);
 }
 
+void WorkflowFacade::setAssignmentStrategy(AssignmentStrategy *strategy)
+{
+	manager->setAssignmentStrategy(strategy);
+}
+
+void WorkflowFacade::setRoutingStrategy(RoutingStrategy *strategy)
+{
+	manager->setRoutingStrategy(strategy);
+}
+
 void WorkflowFacade::addDefinition(WorkflowDefinition *definition)
 {
 	if (definition == nullptr ||
