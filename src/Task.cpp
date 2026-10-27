@@ -1,5 +1,6 @@
 #include "Task.h"
 #include "WorkflowVisitor.h"
+#include "Staff.h"
 
 #include <string>
 #include <iostream>
@@ -23,9 +24,22 @@ void Task::printHierarchy(std::string indent)
 	std::cout << indent << "Task: " << this->name << "\n";
 }
 
-void Task::handleRequest()
+bool Task::handleRequest(int rank)
 {
-	// TODO: to be implemented with Chain of Responsibility
+    if(this->responsible != nullptr)
+    {
+        if(this->responsible->handleRequest(rank))
+        {
+            return true;
+        }
+    }
+
+    if(getNextHandler() != nullptr)
+    {
+        return getNextHandler()->handleRequest(rank);
+    }
+
+    return false;
 }
 
 void Task::setNextHandler(WorkItem *next)
@@ -43,10 +57,17 @@ void Task::accept(WorkflowVisitor *v)
 	v->visitTask(this);
 }
 
-WorkItem *Task::clone()
+WorkItem* Task::clone()
 {
-	return new Task(this->name, this->title);
+    Task* clonedTask = new Task(this->name, this->title);
+
+    clonedTask->severity = this->severity;
+    clonedTask->requiredPosition = this->requiredPosition;
+    clonedTask->responsible = this->responsible;
+
+    return clonedTask;
 }
+
 Staff* Task::getResponsible()
 {
     return responsible;

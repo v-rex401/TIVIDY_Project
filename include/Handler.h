@@ -4,6 +4,7 @@
 #include "WorkItem.h"
 #include "Staff.h"
 #include <vector>
+#include <string>
 
 class Handler : public WorkItem
 {
@@ -12,25 +13,38 @@ private:
 	std::vector<WorkItem *> members;
 	std::string name;
 	std::string title;
-	Handler *successor;
 	Staff *responsible;
+	std::string severity;
+	std::string requiredPosition;
 
 public:
-	std::string getName();
+	Handler(std::string name, std::string title);
 
-	std::string getTitle();
+	std::string getName() override;
 
-	void printHierarchy(std::string indent);
+	std::string getTitle() override;
 
-	void addMember(int Component);
+	void printHierarchy(std::string indent) override;
 
-	void removeMember(int Component);
+	void addMember(WorkItem* Component);
 
-	void setNextHandler(Handler *next);
+	void removeMember(WorkItem* Component);
 
-	void handleRequest();
+	void setResponsible(Staff* staff) override;
 
-	void setNextHandler(WorkItem *next);
+	bool handleRequest(int rank) override;
+
+	WorkItem* clone() override;
+
+	std::string getSeverity() override;
+
+	std::string getRequiredPosition() override;
+
+	void setRequiredPosition(const std::string& position) override;
+
+	Staff* getResponsible() override;
+
+	~Handler() override;
 };
 
 #endif

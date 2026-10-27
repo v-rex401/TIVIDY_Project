@@ -6,7 +6,13 @@ class Staff
 {
 
 private:
-	Staff *successor;
+	Staff *successor = nullptr;
+
+protected:
+    Staff* getNextHandler() const
+    {
+        return this->successor;
+    }
 
 public:
 	/**
@@ -18,6 +24,22 @@ public:
 	virtual std::string getTitle() = 0;
 	virtual int getRank() = 0;
 	virtual void printHierarchy(std::string) {}
+
+	/**
+     * @brief Sets the next staff member in the chain
+     * @param next Pointer to the next Staff handler
+     */
+    void setNextHandler(Staff* next)
+    {
+        this->successor = next;
+    }
+
+	/**
+     * @brief Attempts to handle a request based on required rank
+     * @param rank Minimum rank required to handle the request
+     * @return true if handled, otherwise false.
+     */
+    virtual bool handleRequest(int rank) = 0;
 };
 
 #endif

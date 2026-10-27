@@ -15,6 +15,15 @@ class WorkItem {
 private:
 	WorkItem* successor = nullptr;
 
+protected:
+    /**
+     * @brief Get the next handler in the chain
+     */
+    WorkItem* getNextHandler() const
+    {
+        return this->successor;
+    }
+
 public:
 	virtual std::string getName() = 0;
 
@@ -41,9 +50,11 @@ public:
 	virtual void printHierarchy(std::string indent) = 0;
 
 	/**
-	 * @brief Handle a request in the chain
+	 * @brief Attempts to handle a request based on the required staff rank
+	 * @param rank Minimum staff rank required to handle the request
+	 * @return true if the request was handled, otherwise false
 	 */
-	virtual void handleRequest() = 0;
+	virtual bool handleRequest(int rank) = 0;
 
 	/**
 	 * @brief Set the next handler in the chain

@@ -49,19 +49,19 @@ public:
 	std::string getTitle() override;
 
 	/**
-	 * @brief get the severity of a Stage
+	 * @brief get the severity of a Task
 	 */
-	virtual std::string getSeverity() override;
+	std::string getSeverity() override;
 
 	/**
-	 * @brief get the required Staff position of a Stage
+	 * @brief get the required Staff position of a Task
 	 */
-	virtual std::string getRequiredPosition() override;
+	std::string getRequiredPosition() override;
 
 	/**
-	 * @brief set the required Staff position of a Stage
+	 * @brief set the required Staff position of a Task
 	 */
-	virtual void setRequiredPosition(const std::string& position) override;
+	void setRequiredPosition(const std::string& position) override;
 
 	/**
 	 * @brief Print the tasks in a workflow hierarchy
@@ -69,9 +69,11 @@ public:
 	void printHierarchy(std::string indent) override;
 
 	/**
-	 * @brief Handle a workflow request in the chain
+	 * @brief Attempts to handle a workflow request based on required staff rank
+	 * @param rank Minimum staff rank required
+	 * @return true if handled, otherwise false
 	 */
-	void handleRequest() override;
+	bool handleRequest(int rank) override;
 
 	/**
 	 * @brief Set the next handler in the chain

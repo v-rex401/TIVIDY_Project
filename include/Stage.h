@@ -73,9 +73,11 @@ public:
 	void removeMember(WorkItem *c);
 
 	/**
-	 * @brief Handle a workflow request in the chain
+	 * @brief Attempts to handle a workflow request based on required staff rank
+	 * @param rank Minimum staff rank required to handle the request
+	 * @return true if the request was handled, otherwise false
 	 */
-	void handleRequest() override;
+	bool handleRequest(int rank) override;
 
 	/**
 	 * @brief Set the next handler in the chain
