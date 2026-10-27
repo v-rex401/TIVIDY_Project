@@ -19,3 +19,7 @@ void Completed::handle(WorkflowInstance* ctx) {
 
 	std::cout << "[State] Workflow already completed, no further transitions\n";
 }
+
+std::string Completed::getName() const {
+	return "Completed";
+}

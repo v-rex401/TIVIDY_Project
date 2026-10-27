@@ -15,6 +15,7 @@
 #include "Observer.h"
 #include "EventLog.h"
 #include "CommandHistory.h"
+#include "Clock.h"
 #include <ctime>
 
 // Added a helper for the time
@@ -77,7 +78,7 @@ void WorkflowInstance::setMemento(Memento *m)
     {
         currentState = saved;
         
-        WorkflowEvent* e = makeStateChangeEvent(id);
+        WorkflowEvent* e = makeStateChangeEvent(id, from, saved->getName() + " (restored)");
         eventLog->addEntry(e);
         notify(e);
     }
@@ -119,10 +120,13 @@ void WorkflowInstance::setState(State *s)
     {
         return;
     }
+
+    std::string from = (currentState != nullptr) ? currentState->getName() : "none";
+
     ownedStates.push_back(std::unique_ptr<State>(s));
     currentState = s;
 
-    WorkflowEvent* e = makeStateChangeEvent(id);
+    WorkflowEvent* e = makeStateChangeEvent(id, from, s->getName());
     eventLog->addEntry(e);   // the log owns the event
 
     notify(e); //this now logs the event once, and tells the observers
