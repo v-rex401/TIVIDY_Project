@@ -56,8 +56,11 @@ public:
 	~WorkflowFacade();
 
 	/**
-	 * @brief Start a workflow from a definition.
-	 * @param definition The definition to run (not owned).
+	 * @brief Create a new instance of a definition and start it (Pending -> Active).
+	 *
+	 * The new instance is the last one in getInstances().
+	 *
+	 * @param definition The definition to run (not owned). Null is ignored.
 	 */
 	void startWorkflow(WorkflowDefinition* definition);
 
@@ -82,13 +85,18 @@ public:
 
 	/**
 	 * @brief Run an instance forward through its definition.
-	 * @param w The instance to execute.
+	 *
+	 * Starts the instance if it has not been started yet, then lets its
+	 * current State move it on. A Pending or Active instance ends up
+	 * Completed; a Completed or Cancelled one does not change.
+	 *
+	 * @param w The instance to execute. Null or not created by this facade is ignored.
 	 */
 	void executeWorkflow(WorkflowInstance* w);
 
 	/**
 	 * @brief Cancel a running instance.
-	 * @param instance The instance to cancel.
+	 * @param instance The instance to cancel. Null or not created by this facade is ignored.
 	 */
 	void cancelWorkflow(WorkflowInstance* instance);
 

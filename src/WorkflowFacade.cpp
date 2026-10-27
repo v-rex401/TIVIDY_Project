@@ -32,10 +32,14 @@ WorkflowFacade::~WorkflowFacade()
 	delete manager;
 }
 
-void WorkflowFacade::startWorkflow(WorkflowDefinition * /* definition */)
+void WorkflowFacade::startWorkflow(WorkflowDefinition *definition)
 {
-	// manager->startWorkflow(definition);
-	// TODO: This needs to use the correct arguments or use a different function
+	WorkflowInstance *instance = createWorkflowInstance(definition);
+	if (instance == nullptr)
+	{
+		return;
+	}
+	manager->startWorkflow(instance);
 }
 
 WorkflowInstance *WorkflowFacade::createWorkflowInstance(WorkflowDefinition *definition)
@@ -70,14 +74,23 @@ void WorkflowFacade::submitWorkItem(WorkflowInstance *instance, WorkItem *workit
 	manager->routeWorkItem(workitem, instance);
 }
 
-void WorkflowFacade::executeWorkflow(WorkflowInstance * /* w */)
+void WorkflowFacade::executeWorkflow(WorkflowInstance *w)
 {
-	// manager->executeWorkflow(w);
-	// TODO: This needs to use the correct arguments or use a different function
+	if (!owns(w))
+	{
+		return;
+	}
+	// Does nothing if the manager is already running w.
+	manager->startWorkflow(w);
+	w->handle();
 }
 
 void WorkflowFacade::cancelWorkflow(WorkflowInstance *instance)
 {
+	if (!owns(instance))
+	{
+		return;
+	}
 	manager->cancelWorkflow(instance);
 }
 
