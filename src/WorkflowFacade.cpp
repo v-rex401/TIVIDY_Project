@@ -7,11 +7,18 @@
 
 #include "WorkflowFacade.h"
 #include "WorkflowManager.h"
+#include "WorkflowDefinition.h"
+
+#include <algorithm>
 
 WorkflowFacade::WorkflowFacade() : manager(new WorkflowManager()) {}
 
 WorkflowFacade::~WorkflowFacade()
 {
+	for (WorkflowDefinition *definition : definitions)
+	{
+		delete definition;
+	}
 	delete manager;
 }
 
@@ -45,18 +52,19 @@ void WorkflowFacade::cancelWorkflow(WorkflowInstance *instance)
 	manager->cancelWorkflow(instance);
 }
 
-void WorkflowFacade::addDefinition(WorkflowDefinition * /* definition */)
+void WorkflowFacade::addDefinition(WorkflowDefinition *definition)
 {
-	// manager->addDefinition(definition);
-	// TODO: This needs to use the correct arguments or use a different function
+	if (definition == nullptr ||
+		std::find(definitions.begin(), definitions.end(), definition) != definitions.end())
+	{
+		return;
+	}
+	definitions.push_back(definition);
 }
 
 std::vector<WorkflowDefinition *> WorkflowFacade::getDefinitions()
 {
-	// TODO : Add method in WorkflowManager to return definitions
-	//  return manager->getDefinitions();
-	std::vector<WorkflowDefinition *> results;
-	return results;
+	return definitions;
 }
 
 std::vector<WorkflowInstance *> WorkflowFacade::getInstances()
