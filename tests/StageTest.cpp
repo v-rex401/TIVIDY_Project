@@ -19,7 +19,7 @@ TEST(CompositeTest, AddMember)
     Stage stage;
     Task task;
 
-    stage.addMember(&task);
+    stage.addMember(new Task()); //the stage owns it
 
     testing::internal::CaptureStdout();
     stage.printHierarchy("");
@@ -34,16 +34,18 @@ TEST(CompositeTest, AddMember)
 TEST(CompositeTest, RemoveMember)
 {
     Stage stage;
-    Task task;
+    Task* task = new Task();
 
-    stage.addMember(&task);
-    stage.removeMember(&task);
+    stage.addMember(task);
+    stage.removeMember(task); //detached, so this test owns it again
 
     testing::internal::CaptureStdout();
     stage.printHierarchy("");
     std::string output = testing::internal::GetCapturedStdout();
 
     EXPECT_EQ(output.find("Task:"), std::string::npos);
+
+    delete task;
 }
 
 /**

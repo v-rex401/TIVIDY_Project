@@ -60,6 +60,9 @@ public:
     }
     void handleRequest() override {}
     WorkItem *clone() override { return new FakeItem(name_, title_); }
+    std::string getSeverity() override { return ""; }
+    std::string getRequiredPosition() override { return ""; }
+    void setRequiredPosition(const std::string&) override {}
 
 private:
     std::string name_, title_;
@@ -245,10 +248,9 @@ TEST(StageTest, GettersReturnConstructorValues)
 TEST(StageTest, PrintHierarchyIndentsNestedChildren)
 {
     Stage root("Root", "");
-    Stage child("Child", "");
-    Task t("T1", "");
-    child.addMember(&t);
-    root.addMember(&child);
+    Stage* child = new Stage("Child", "");   // root owns it
+    child->addMember(new Task("T1", ""));    // child owns that
+    root.addMember(child);
     EXPECT_EQ(capture([&]
                       { root.printHierarchy(""); }),
               "Stage: Root\n  Stage: Child\n    Task: T1\n");
@@ -266,13 +268,15 @@ TEST(StageTest, AddNullMemberIsIgnored)
 TEST(StageTest, RemoveMemberRemovesOnlyThatMember)
 {
     Stage s("S", "");
-    Task a("A", ""), b("B", "");
-    s.addMember(&a);
-    s.addMember(&b);
-    s.removeMember(&a);
+    Task* a = new Task("A", "");
+    Task* b = new Task("B", "");   // s owns b
+    s.addMember(a);
+    s.addMember(b);
+    s.removeMember(a);             // detached, so this test owns a again
     EXPECT_EQ(capture([&]
                       { s.printHierarchy(""); }),
               "Stage: S\n  Task: B\n");
+    delete a;
 }
 
 TEST(StageTest, RemoveUnknownOrNullMemberIsSafe)
@@ -295,17 +299,16 @@ TEST(StageTest, CloneCopiesNameTitleAndIsNewObject)
 }
 
 TEST(StageTest, CloneDeepCopiesTasks)
-{ // fails: Task::clone returns nullptr
+{
     Stage s("S", "Title");
-    Task t("T1", "");
-    s.addMember(&t);
+    s.addMember(new Task("T1", ""));
     WorkItem *copy = s.clone();
     ASSERT_NE(copy, nullptr);
     EXPECT_EQ(capture([&]
                       { copy->printHierarchy(""); }),
               capture([&]
                       { s.printHierarchy(""); }));
-    delete copy; // note: the cloned children are leaked (Stage never deletes members)
+    delete copy; // the clone owns its copied children and free them
 }
 
 // ---------- Task ----------

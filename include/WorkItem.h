@@ -4,6 +4,7 @@
 #include <string>
 
 class WorkflowVisitor;
+class Staff;
 
 /**
  * @brief Abstract base class for tasks and stages in a workflow
@@ -29,6 +30,21 @@ public:
 	virtual std::string getTitle() = 0;
 
 	/**
+	 * @brief get the severity of a Stage
+	 */
+	virtual std::string getSeverity() = 0;
+
+	/**
+	 * @brief get the required Staff position of a Stage
+	 */
+	virtual std::string getRequiredPosition() = 0;
+
+	/**
+	 * @brief set the required Staff position of a Stage
+	 */
+	virtual void setRequiredPosition(const std::string& position) = 0;
+
+	/**
 	 * @brief Print the hierarchy of work items
 	 */
 	virtual void printHierarchy(std::string indent) = 0;
@@ -52,6 +68,9 @@ public:
 	 * @brief Accept a workflow visitor
 	 */
 	virtual void accept(WorkflowVisitor* v);
+
+	virtual Staff* getResponsible() { return nullptr; }
+	virtual void setResponsible(Staff*) {}
 
 	virtual ~WorkItem() = default;
 };

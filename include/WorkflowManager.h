@@ -13,6 +13,8 @@ private:
 	RoutingStrategy *routingStrategy;
 	ExternalSystem *externalSystem;
 
+	std::vector<WorkflowInstance*> runningInstances;
+
 public:
 
 	/** @brief Starts with no strategies and no external system configured. */

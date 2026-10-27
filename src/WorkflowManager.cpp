@@ -1,20 +1,8 @@
 #include "WorkflowManager.h"
+#include "Cancelled.h"
+#include <algorithm>
 
-WorkflowManager::WorkflowManager(){
-	this->assignmentStrategy = nullptr;
-	this->routingStrategy = nullptr;
-	this->externalSystem = nullptr;
-}
-
-void WorkflowManager::setAssignmentStrategy(AssignmentStrategy *as)
-{
-	this->assignmentStrategy = as;
-}
-
-void WorkflowManager::setRoutingStrategy(RoutingStrategy *rs)
-{
-	this->routingStrategy = rs;
-}
+WorkflowManager::WorkflowManager() : assignmentStrategy(nullptr), routingStrategy(nullptr), externalSystem(nullptr) {}
 
 void WorkflowManager::setExternalSystem(ExternalSystem *es)
 {
@@ -23,27 +11,45 @@ void WorkflowManager::setExternalSystem(ExternalSystem *es)
 
 void WorkflowManager::notifyExternal()
 {
-	if (this->externalSystem != nullptr){
+	if (this->externalSystem != nullptr)
+	{
 		this->externalSystem->request();
 	}
 }
 
-Staff *WorkflowManager::assignWorkItem(WorkItem *wi, WorkflowInstance *wc)
+void WorkflowManager::setAssignmentStrategy(AssignmentStrategy *as)
 {
-	if (this->assignmentStrategy == nullptr){
-		return nullptr;
+	if (assignmentStrategy == as) {
+		return;
 	}
 
-	Staff *assignee = this->assignmentStrategy->selectAssignmentItem(wi, wc);
+	delete assignmentStrategy;
+	this->assignmentStrategy = as;
+}
+
+void WorkflowManager::setRoutingStrategy(RoutingStrategy *rs)
+{
+	if (routingStrategy == rs) {
+		return;
+	}
+
+	delete routingStrategy;
+	this->routingStrategy = rs;
+}
+
+Staff *WorkflowManager::assignWorkItem(WorkItem *wi, WorkflowInstance *wc)
+{
+	if (assignmentStrategy == nullptr || wi == nullptr || wc == nullptr) return nullptr;
+
+	Staff *assignee = this->assignmentStrategy->selectAssignmentItem(wi, wc, runningInstances);
 	this->notifyExternal();
 
 	return assignee;
 }
 
-Stage *WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc){
-	if (this->routingStrategy == nullptr){
-		return nullptr;
-	}
+Stage *WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc)
+{
+	if (routingStrategy == nullptr || wi == nullptr || wc == nullptr) return nullptr;
 
 	Stage *next = this->routingStrategy->selectItemState(wi, wc);
 	this->notifyExternal();
@@ -61,48 +67,52 @@ WorkflowInstance *WorkflowManager::createInstance(WorkflowDefinition *def, std::
 	temp->setId(id); // Add setter to WorkflowInstance
 	temp->setDefinition(def);
 
-	// TODO: Why is temp calling attach???????????
-	// temp->attach();
-
 	return temp;
 }
 
 void WorkflowManager::startWorkflow(WorkflowInstance *instance)
 {
-	if (!instance)
+	if (instance == nullptr) return;
+
+	auto it = std::find(runningInstances.begin(), runningInstances.end(), instance);
+
+	if (it != runningInstances.end()) {
 		return;
-	//
+	}
+
+	runningInstances.push_back(instance);
+
+	instance->handle();
 }
 
 void WorkflowManager::executeWorkflow(WorkflowInstance *instance, WorkItem *item)
 {
-	// TODO : This function does not work at all
+	if (instance == nullptr || item == nullptr) return;
 
-	// TODO: There is not function called getRootHandlerChain
-	if (!instance || !item)
-		return;
+	Staff* assignedStaff = assignWorkItem(item, instance);
+	if (assignedStaff == nullptr) return;
 
-	/*
-	instance->wi.push_back(item);
+	Stage* destination = routeWorkItem(item, instance);
+	if (destination == nullptr) return;
 
-	Handler *rootProcessorChain = this->getRootHandlerChain();
-
-	if (rootProcessorChain)
-	{
-		rootProcessorChain->handleRequest(item, instance);
-	} */
+	item->setResponsible(assignedStaff);
+	destination->addMember(item);
+	instance->addWorkItem(item);
 }
 
 void WorkflowManager::cancelWorkflow(WorkflowInstance *instance)
 {
-	if (!instance)
+	if (instance == nullptr) return;
+
+	auto it = std::find(runningInstances.begin(), runningInstances.end(), instance);
+
+	if (it == runningInstances.end()) {
 		return;
+	}
 
-	/* instance->wi.clear();
+	instance->setState(new Cancelled());
 
-	instance->detach(this); */
-
-	// TODO: WorkflowManager is not an observer so it can't detach itself
+	runningInstances.erase(it);
 }
 
 WorkflowManager::~WorkflowManager()
