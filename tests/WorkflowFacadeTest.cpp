@@ -27,62 +27,72 @@
 #include "WorkflowFacade.h"
 #include "WorkflowInstance.h"
 
-namespace {
+namespace
+{
 
-/** Staff member with a fixed name, for assignment checks. */
-class TestStaff : public Staff {
-public:
-    std::string getName() { return "Sam"; }
-    std::string getTitle() { return "Reviewer"; }
-    int getRank() { return 1; }
-};
+    /** Staff member with a fixed name, for assignment checks. */
+    class TestStaff : public Staff
+    {
+    public:
+        std::string getName() { return "Sam"; }
+        std::string getTitle() { return "Reviewer"; }
+        int getRank() { return 1; }
+        bool handleRequest(int) { return true; }
+    };
 
-/** Always assigns the same staff member. */
-class FixedAssignment : public AssignmentStrategy {
-public:
-    explicit FixedAssignment(Staff* staff) : staff(staff) {}
-    Staff* selectAssignmentItem(WorkItem*, WorkflowInstance*, const std::vector<WorkflowInstance*>&) { return staff; }
-private:
-    Staff* staff;
-};
+    /** Always assigns the same staff member. */
+    class FixedAssignment : public AssignmentStrategy
+    {
+    public:
+        explicit FixedAssignment(Staff *staff) : staff(staff) {}
+        Staff *selectAssignmentItem(WorkItem *, WorkflowInstance *, const std::vector<WorkflowInstance *> &) { return staff; }
 
-/** Routes every item to the first stage of the instance it belongs to. */
-class FirstStageRouting : public RoutingStrategy {
-public:
-    Stage* selectItemState(WorkItem*, WorkflowInstance* context) override {
-        return dynamic_cast<Stage*>(context->getWorkItems().front());
+    private:
+        Staff *staff;
+    };
+
+    /** Routes every item to the first stage of the instance it belongs to. */
+    class FirstStageRouting : public RoutingStrategy
+    {
+    public:
+        Stage *selectItemState(WorkItem *, WorkflowInstance *context) override
+        {
+            return dynamic_cast<Stage *>(context->getWorkItems().front());
+        }
+    };
+
+    /** Builds a two-stage definition the same way the TUI does, through the Director. */
+    WorkflowDefinition *makeDefinition(const std::string &name)
+    {
+        SequentialWorkflowBuilder builder;
+        WorkflowDirector director(&builder);
+        std::map<std::string, std::vector<std::string>> tasks;
+        tasks["Intake"].push_back("Log request");
+        director.construct(name, {"Intake", "Review"}, tasks);
+        return builder.getWorkflowDefinition();
     }
-};
 
-/** Builds a two-stage definition the same way the TUI does, through the Director. */
-WorkflowDefinition* makeDefinition(const std::string& name) {
-    SequentialWorkflowBuilder builder;
-    WorkflowDirector director(&builder);
-    std::map<std::string, std::vector<std::string>> tasks;
-    tasks["Intake"].push_back("Log request");
-    director.construct(name, {"Intake", "Review"}, tasks);
-    return builder.getWorkflowDefinition();
-}
+    std::string stateOf(WorkflowInstance *instance)
+    {
+        return instance->getState()->getName();
+    }
 
-std::string stateOf(WorkflowInstance* instance) {
-    return instance->getState()->getName();
-}
-
-}  // namespace
+} // namespace
 
 // Definitions
 
-TEST(WorkflowFacadeTest, AddDefinitionKeepsOrderAndIgnoresNullAndDuplicates) {
+TEST(WorkflowFacadeTest, AddDefinitionKeepsOrderAndIgnoresNullAndDuplicates)
+{
     WorkflowFacade facade;
-    WorkflowDefinition* first = makeDefinition("First");
-    WorkflowDefinition* second = makeDefinition("Second");
+    WorkflowDefinition *first = makeDefinition("First");
+    WorkflowDefinition *second = makeDefinition("Second");
 
     facade.addDefinition(first);
     facade.addDefinition(nullptr);
     facade.addDefinition(second);
     facade.addDefinition(first);
 
-    std::vector<WorkflowDefinition*> definitions = facade.getDefinitions();
+    std::vector<WorkflowDefinition *> definitions = facade.getDefinitions();
     ASSERT_EQ(2u, definitions.size());
     EXPECT_EQ(first, definitions[0]);
     EXPECT_EQ(second, definitions[1]);
@@ -90,13 +100,14 @@ TEST(WorkflowFacadeTest, AddDefinitionKeepsOrderAndIgnoresNullAndDuplicates) {
 
 // Creating and finding instances
 
-TEST(WorkflowFacadeTest, CreateInstanceStartsPendingWithNumberedIds) {
+TEST(WorkflowFacadeTest, CreateInstanceStartsPendingWithNumberedIds)
+{
     WorkflowFacade facade;
-    WorkflowDefinition* definition = makeDefinition("Request");
+    WorkflowDefinition *definition = makeDefinition("Request");
     facade.addDefinition(definition);
 
-    WorkflowInstance* a = facade.createWorkflowInstance(definition);
-    WorkflowInstance* b = facade.createWorkflowInstance(definition);
+    WorkflowInstance *a = facade.createWorkflowInstance(definition);
+    WorkflowInstance *b = facade.createWorkflowInstance(definition);
 
     ASSERT_NE(nullptr, a);
     ASSERT_NE(nullptr, b);
@@ -108,30 +119,33 @@ TEST(WorkflowFacadeTest, CreateInstanceStartsPendingWithNumberedIds) {
     EXPECT_EQ(b, facade.getInstances()[1]);
 }
 
-TEST(WorkflowFacadeTest, CreateInstanceRejectsNullDefinition) {
+TEST(WorkflowFacadeTest, CreateInstanceRejectsNullDefinition)
+{
     WorkflowFacade facade;
     EXPECT_EQ(nullptr, facade.createWorkflowInstance(nullptr));
     EXPECT_TRUE(facade.getInstances().empty());
 }
 
-TEST(WorkflowFacadeTest, InstanceGetsTheStagesOfItsDefinition) {
+TEST(WorkflowFacadeTest, InstanceGetsTheStagesOfItsDefinition)
+{
     WorkflowFacade facade;
-    WorkflowDefinition* definition = makeDefinition("Request");
+    WorkflowDefinition *definition = makeDefinition("Request");
     facade.addDefinition(definition);
 
-    WorkflowInstance* instance = facade.createWorkflowInstance(definition);
+    WorkflowInstance *instance = facade.createWorkflowInstance(definition);
 
     ASSERT_EQ(2u, instance->getWorkItems().size());
     EXPECT_EQ("Intake", instance->getWorkItems()[0]->getName());
     EXPECT_EQ("Review", instance->getWorkItems()[1]->getName());
 }
 
-TEST(WorkflowFacadeTest, GetInstanceFindsByIdAndReturnsNullOtherwise) {
+TEST(WorkflowFacadeTest, GetInstanceFindsByIdAndReturnsNullOtherwise)
+{
     WorkflowFacade facade;
-    WorkflowDefinition* definition = makeDefinition("Request");
+    WorkflowDefinition *definition = makeDefinition("Request");
     facade.addDefinition(definition);
-    WorkflowInstance* a = facade.createWorkflowInstance(definition);
-    WorkflowInstance* b = facade.createWorkflowInstance(definition);
+    WorkflowInstance *a = facade.createWorkflowInstance(definition);
+    WorkflowInstance *b = facade.createWorkflowInstance(definition);
 
     EXPECT_EQ(a, facade.getInstance("WF-1"));
     EXPECT_EQ(b, facade.getInstance("WF-2"));
@@ -141,9 +155,10 @@ TEST(WorkflowFacadeTest, GetInstanceFindsByIdAndReturnsNullOtherwise) {
 
 // Lifecycle
 
-TEST(WorkflowFacadeTest, StartWorkflowCreatesAnActiveInstance) {
+TEST(WorkflowFacadeTest, StartWorkflowCreatesAnActiveInstance)
+{
     WorkflowFacade facade;
-    WorkflowDefinition* definition = makeDefinition("Request");
+    WorkflowDefinition *definition = makeDefinition("Request");
     facade.addDefinition(definition);
 
     facade.startWorkflow(definition);
@@ -152,19 +167,21 @@ TEST(WorkflowFacadeTest, StartWorkflowCreatesAnActiveInstance) {
     EXPECT_EQ("Active", stateOf(facade.getInstances().back()));
 }
 
-TEST(WorkflowFacadeTest, StartWorkflowIgnoresNullDefinition) {
+TEST(WorkflowFacadeTest, StartWorkflowIgnoresNullDefinition)
+{
     WorkflowFacade facade;
     facade.startWorkflow(nullptr);
     EXPECT_TRUE(facade.getInstances().empty());
 }
 
-TEST(WorkflowFacadeTest, ExecuteRunsPendingAndActiveInstancesToCompletion) {
+TEST(WorkflowFacadeTest, ExecuteRunsPendingAndActiveInstancesToCompletion)
+{
     WorkflowFacade facade;
-    WorkflowDefinition* definition = makeDefinition("Request");
+    WorkflowDefinition *definition = makeDefinition("Request");
     facade.addDefinition(definition);
-    WorkflowInstance* pending = facade.createWorkflowInstance(definition);
+    WorkflowInstance *pending = facade.createWorkflowInstance(definition);
     facade.startWorkflow(definition);
-    WorkflowInstance* active = facade.getInstances().back();
+    WorkflowInstance *active = facade.getInstances().back();
 
     facade.executeWorkflow(pending);
     facade.executeWorkflow(active);
@@ -176,12 +193,13 @@ TEST(WorkflowFacadeTest, ExecuteRunsPendingAndActiveInstancesToCompletion) {
     EXPECT_EQ("Completed", stateOf(active));
 }
 
-TEST(WorkflowFacadeTest, CancelStopsARunningInstanceForGood) {
+TEST(WorkflowFacadeTest, CancelStopsARunningInstanceForGood)
+{
     WorkflowFacade facade;
-    WorkflowDefinition* definition = makeDefinition("Request");
+    WorkflowDefinition *definition = makeDefinition("Request");
     facade.addDefinition(definition);
     facade.startWorkflow(definition);
-    WorkflowInstance* instance = facade.getInstances().back();
+    WorkflowInstance *instance = facade.getInstances().back();
 
     facade.cancelWorkflow(instance);
     EXPECT_EQ("Cancelled", stateOf(instance));
@@ -190,12 +208,13 @@ TEST(WorkflowFacadeTest, CancelStopsARunningInstanceForGood) {
     EXPECT_EQ("Cancelled", stateOf(instance));
 }
 
-TEST(WorkflowFacadeTest, StateChangesRecordHistory) {
+TEST(WorkflowFacadeTest, StateChangesRecordHistory)
+{
     WorkflowFacade facade;
-    WorkflowDefinition* definition = makeDefinition("Request");
+    WorkflowDefinition *definition = makeDefinition("Request");
     facade.addDefinition(definition);
     facade.startWorkflow(definition);
-    WorkflowInstance* instance = facade.getInstances().back();
+    WorkflowInstance *instance = facade.getInstances().back();
 
     facade.executeWorkflow(instance);
 
@@ -206,10 +225,11 @@ TEST(WorkflowFacadeTest, StateChangesRecordHistory) {
 
 // Invalid operations
 
-TEST(WorkflowFacadeTest, IgnoresNullAndInstancesItDidNotCreate) {
+TEST(WorkflowFacadeTest, IgnoresNullAndInstancesItDidNotCreate)
+{
     WorkflowFacade facade;
     WorkflowInstance foreign;
-    Task* item = new Task("Check", "Check");
+    Task *item = new Task("Check", "Check");
 
     facade.executeWorkflow(nullptr);
     facade.cancelWorkflow(nullptr);
@@ -220,39 +240,41 @@ TEST(WorkflowFacadeTest, IgnoresNullAndInstancesItDidNotCreate) {
 
     EXPECT_EQ("Pending", stateOf(&foreign));
     EXPECT_TRUE(foreign.getWorkItems().empty());
-    delete item;  // never accepted, so the caller still owns it
+    delete item; // never accepted, so the caller still owns it
 }
 
 // Submitting work
 
-TEST(WorkflowFacadeTest, SubmitAssignsAndRoutesTheItemIntoItsInstance) {
+TEST(WorkflowFacadeTest, SubmitAssignsAndRoutesTheItemIntoItsInstance)
+{
     TestStaff staff;
     WorkflowFacade facade;
     facade.setAssignmentStrategy(new FixedAssignment(&staff));
     facade.setRoutingStrategy(new FirstStageRouting());
-    WorkflowDefinition* definition = makeDefinition("Request");
+    WorkflowDefinition *definition = makeDefinition("Request");
     facade.addDefinition(definition);
     facade.startWorkflow(definition);
-    WorkflowInstance* instance = facade.getInstances().back();
-    Task* item = new Task("Check", "Check");
+    WorkflowInstance *instance = facade.getInstances().back();
+    Task *item = new Task("Check", "Check");
 
     facade.submitWorkItem(instance, item);
 
     EXPECT_EQ(&staff, item->getResponsible());
     ASSERT_EQ(3u, instance->getWorkItems().size());
     EXPECT_EQ(item, instance->getWorkItems().back());
-    Stage* intake = dynamic_cast<Stage*>(instance->getWorkItems().front());
+    Stage *intake = dynamic_cast<Stage *>(instance->getWorkItems().front());
     ASSERT_NE(nullptr, intake);
     EXPECT_EQ(item, intake->getMembers().back());
 }
 
-TEST(WorkflowFacadeTest, SubmitWithoutStrategiesLeavesTheItemWithTheCaller) {
+TEST(WorkflowFacadeTest, SubmitWithoutStrategiesLeavesTheItemWithTheCaller)
+{
     WorkflowFacade facade;
-    WorkflowDefinition* definition = makeDefinition("Request");
+    WorkflowDefinition *definition = makeDefinition("Request");
     facade.addDefinition(definition);
     facade.startWorkflow(definition);
-    WorkflowInstance* instance = facade.getInstances().back();
-    Task* item = new Task("Check", "Check");
+    WorkflowInstance *instance = facade.getInstances().back();
+    Task *item = new Task("Check", "Check");
 
     facade.submitWorkItem(instance, item);
 
@@ -261,7 +283,8 @@ TEST(WorkflowFacadeTest, SubmitWithoutStrategiesLeavesTheItemWithTheCaller) {
     delete item;
 }
 
-TEST(WorkflowFacadeTest, ExternalSystemHearsAboutSubmittedWork) {
+TEST(WorkflowFacadeTest, ExternalSystemHearsAboutSubmittedWork)
+{
     TestStaff staff;
     NotificationSystem service;
     NotificationAdapter adapter(&service);
@@ -269,42 +292,45 @@ TEST(WorkflowFacadeTest, ExternalSystemHearsAboutSubmittedWork) {
     facade.setExternalSystem(&adapter);
     facade.setAssignmentStrategy(new FixedAssignment(&staff));
     facade.setRoutingStrategy(new FirstStageRouting());
-    WorkflowDefinition* definition = makeDefinition("Request");
+    WorkflowDefinition *definition = makeDefinition("Request");
     facade.addDefinition(definition);
     facade.startWorkflow(definition);
 
     facade.submitWorkItem(facade.getInstances().back(), new Task("Check", "Check"));
 
-    EXPECT_EQ(2, service.getSentCount());  // once for assignment, once for routing
+    EXPECT_EQ(2, service.getSentCount()); // once for assignment, once for routing
 }
 
 // Instance isolation
 
-TEST(WorkflowFacadeTest, InstancesOfOneDefinitionDoNotShareStages) {
+TEST(WorkflowFacadeTest, InstancesOfOneDefinitionDoNotShareStages)
+{
     WorkflowFacade facade;
-    WorkflowDefinition* definition = makeDefinition("Request");
+    WorkflowDefinition *definition = makeDefinition("Request");
     facade.addDefinition(definition);
 
-    WorkflowInstance* a = facade.createWorkflowInstance(definition);
-    WorkflowInstance* b = facade.createWorkflowInstance(definition);
+    WorkflowInstance *a = facade.createWorkflowInstance(definition);
+    WorkflowInstance *b = facade.createWorkflowInstance(definition);
 
-    for (std::size_t i = 0; i < 2; ++i) {
+    for (std::size_t i = 0; i < 2; ++i)
+    {
         EXPECT_NE(a->getWorkItems()[i], b->getWorkItems()[i]);
         EXPECT_NE((*definition->getStages())[i], a->getWorkItems()[i]);
     }
 }
 
-TEST(WorkflowFacadeTest, ChangingOneInstanceLeavesTheOtherAlone) {
+TEST(WorkflowFacadeTest, ChangingOneInstanceLeavesTheOtherAlone)
+{
     TestStaff staff;
     WorkflowFacade facade;
     facade.setAssignmentStrategy(new FixedAssignment(&staff));
     facade.setRoutingStrategy(new FirstStageRouting());
-    WorkflowDefinition* definition = makeDefinition("Request");
+    WorkflowDefinition *definition = makeDefinition("Request");
     facade.addDefinition(definition);
     facade.startWorkflow(definition);
     facade.startWorkflow(definition);
-    WorkflowInstance* a = facade.getInstances()[0];
-    WorkflowInstance* b = facade.getInstances()[1];
+    WorkflowInstance *a = facade.getInstances()[0];
+    WorkflowInstance *b = facade.getInstances()[1];
 
     facade.submitWorkItem(a, new Task("Check", "Check"));
     facade.cancelWorkflow(a);
@@ -313,8 +339,8 @@ TEST(WorkflowFacadeTest, ChangingOneInstanceLeavesTheOtherAlone) {
     EXPECT_EQ("Active", stateOf(b));
     EXPECT_EQ(3u, a->getWorkItems().size());
     EXPECT_EQ(2u, b->getWorkItems().size());
-    Stage* intakeB = dynamic_cast<Stage*>(b->getWorkItems().front());
+    Stage *intakeB = dynamic_cast<Stage *>(b->getWorkItems().front());
     ASSERT_NE(nullptr, intakeB);
-    EXPECT_EQ(1u, intakeB->getMembers().size());  // only its own "Log request" task
+    EXPECT_EQ(1u, intakeB->getMembers().size()); // only its own "Log request" task
     EXPECT_EQ(1u, b->getEventLog()->getEntries().size());
 }
