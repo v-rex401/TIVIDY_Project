@@ -159,24 +159,19 @@ void WorkflowInstance::addWorkItem(WorkItem* item)
     }
 }
 
-double WorkflowInstance::getTransactionValue() const
+void WorkflowInstance::setData(const std::string& key, double value)
 {
-    return transactionValue;
+    this->data[key] = value;
 }
 
-void WorkflowInstance::setTransactionValue(double value)
+double WorkflowInstance::getData(const std::string& key, double fallback) const
 {
-    transactionValue = value;
-}
-
-double WorkflowInstance::getEventMetric() const
-{
-    return eventMetric;
-}
-
-void WorkflowInstance::setEventMetric(double value)
-{
-    eventMetric = value;
+    std::map<std::string, double>::const_iterator it = this->data.find(key);
+    if (it == this->data.end())
+    {
+        return fallback;
+    }
+    return it->second;
 }
 
 /**
