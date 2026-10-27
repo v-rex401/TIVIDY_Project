@@ -166,15 +166,22 @@ TEST(EventBasedRoutingTests, FirstTriggeredThresholdWinsInConfiguredOrder) {
     Stage first, second, third;
     WorkflowInstance context;
     StrategyTestWorkItem item;
-    context.setData("eventMetric", 90.0);
     EventBasedRouting strategy("eventMetric", {Threshold(50.0, &first), Threshold(80.0, &second), Threshold(20.0, &third)});
+
+    context.setData("eventMetric", 90.0);
     EXPECT_EQ(&first, strategy.selectItemState(&item, &context));
-    context.setData("eventMetric", 40.0);
-    EXPECT_EQ(&third, strategy.selectItemState(&item, &context));
-    context.setData("eventMetric", 10.0);
-    EXPECT_EQ(nullptr, strategy.selectItemState(&item, &context));
+
+    // Checked while a threshold is triggered, so a null argument can only be
+    // rejected deliberately rather than because nothing matched.
     EXPECT_EQ(nullptr, strategy.selectItemState(nullptr, &context));
     EXPECT_EQ(nullptr, strategy.selectItemState(&item, nullptr));
+
+    context.setData("eventMetric", 40.0);
+    EXPECT_EQ(&third, strategy.selectItemState(&item, &context));
+
+    context.setData("eventMetric", 10.0);
+    EXPECT_EQ(nullptr, strategy.selectItemState(&item, &context));
+
     EventBasedRouting empty("eventMetric", {});
     EXPECT_EQ(nullptr, empty.selectItemState(&item, &context));
 }

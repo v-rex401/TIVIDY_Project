@@ -6,10 +6,10 @@ EventBasedRouting::EventBasedRouting(const std::string &metricKey, const std::ve
 	this->thresholds = initialThresholds;
 }
 
-// TODO: item needs to be used
-Stage *EventBasedRouting::selectItemState(WorkItem * /*item*/, WorkflowInstance *context)
+
+Stage *EventBasedRouting::selectItemState(WorkItem *item, WorkflowInstance *context)
 {
-	if (context == nullptr) return nullptr;
+	if (item == nullptr || context == nullptr) return nullptr;
 
 	const double metricValue = context->getData(this->metricKey);
 
