@@ -8,7 +8,8 @@
 #include <gtest/gtest.h>
 #include "RuleEngine.h"
 
-class TestWorkItem : public WorkItem {
+class TestWorkItem : public WorkItem
+{
 public:
     std::string name = "Review request";
     std::string title = "Review";
@@ -19,14 +20,15 @@ public:
     std::string getTitle() override { return title; }
     std::string getSeverity() override { return severity; }
     std::string getRequiredPosition() override { return requiredPosition; }
-    void setRequiredPosition(const std::string& position) override { requiredPosition = position; }
+    void setRequiredPosition(const std::string &position) override { requiredPosition = position; }
     void printHierarchy(std::string) override {}
-    void handleRequest() override {}
-    WorkItem* clone() override { return new TestWorkItem(*this); }
+    bool handleRequest(int /*rank*/) override { return true; }
+    WorkItem *clone() override { return new TestWorkItem(*this); }
 };
 
-//Check that the field name == 'Review Request'
-TEST(RuleEngineTests, MatchesNameField) {
+// Check that the field name == 'Review Request'
+TEST(RuleEngineTests, MatchesNameField)
+{
     RuleEngine engine;
     TestWorkItem item;
     AssignmentRule rule;
@@ -35,8 +37,9 @@ TEST(RuleEngineTests, MatchesNameField) {
     EXPECT_TRUE(engine.evaluate(rule, &item, nullptr));
 }
 
-//Check that the field title == 'Review'
-TEST(RuleEngineTests, MatchesTitleField) {
+// Check that the field title == 'Review'
+TEST(RuleEngineTests, MatchesTitleField)
+{
     RuleEngine engine;
     TestWorkItem item;
     AssignmentRule rule;
@@ -45,8 +48,9 @@ TEST(RuleEngineTests, MatchesTitleField) {
     EXPECT_TRUE(engine.evaluate(rule, &item, nullptr));
 }
 
-//Check that the field requiredPosition == 'Senior Reviewer'
-TEST(RuleEngineTests, MatchesRequiredPositionField) {
+// Check that the field requiredPosition == 'Senior Reviewer'
+TEST(RuleEngineTests, MatchesRequiredPositionField)
+{
     RuleEngine engine;
     TestWorkItem item;
     AssignmentRule rule;
@@ -55,8 +59,9 @@ TEST(RuleEngineTests, MatchesRequiredPositionField) {
     EXPECT_TRUE(engine.evaluate(rule, &item, nullptr));
 }
 
-//Check that the field title != 'Review' so it should fail (return false)
-TEST(RuleEngineTests, RejectWrongValueUnknwonFieldOrNullItem) {
+// Check that the field title != 'Review' so it should fail (return false)
+TEST(RuleEngineTests, RejectWrongValueUnknwonFieldOrNullItem)
+{
     RuleEngine engine;
     TestWorkItem item;
     AssignmentRule rule;

@@ -40,6 +40,7 @@ public:
     std::string getName() override { return name_; }
     std::string getTitle() override { return title_; }
     int getRank() override { return rank_; }
+    bool handleRequest(int /*rank*/) override { return true; }
 
 private:
     std::string name_, title_;
@@ -58,11 +59,11 @@ public:
     {
         std::cout << indent << "Fake: " << name_ << "\n";
     }
-    void handleRequest() override {}
+    bool handleRequest(int /*rank*/) override { return true; }
     WorkItem *clone() override { return new FakeItem(name_, title_); }
     std::string getSeverity() override { return ""; }
     std::string getRequiredPosition() override { return ""; }
-    void setRequiredPosition(const std::string&) override {}
+    void setRequiredPosition(const std::string &) override {}
 
 private:
     std::string name_, title_;
@@ -248,8 +249,8 @@ TEST(StageTest, GettersReturnConstructorValues)
 TEST(StageTest, PrintHierarchyIndentsNestedChildren)
 {
     Stage root("Root", "");
-    Stage* child = new Stage("Child", "");   // root owns it
-    child->addMember(new Task("T1", ""));    // child owns that
+    Stage *child = new Stage("Child", ""); // root owns it
+    child->addMember(new Task("T1", ""));  // child owns that
     root.addMember(child);
     EXPECT_EQ(capture([&]
                       { root.printHierarchy(""); }),
@@ -268,11 +269,11 @@ TEST(StageTest, AddNullMemberIsIgnored)
 TEST(StageTest, RemoveMemberRemovesOnlyThatMember)
 {
     Stage s("S", "");
-    Task* a = new Task("A", "");
-    Task* b = new Task("B", "");   // s owns b
+    Task *a = new Task("A", "");
+    Task *b = new Task("B", ""); // s owns b
     s.addMember(a);
     s.addMember(b);
-    s.removeMember(a);             // detached, so this test owns a again
+    s.removeMember(a); // detached, so this test owns a again
     EXPECT_EQ(capture([&]
                       { s.printHierarchy(""); }),
               "Stage: S\n  Task: B\n");

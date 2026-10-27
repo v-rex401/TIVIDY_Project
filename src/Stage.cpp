@@ -21,16 +21,16 @@ Stage::~Stage()
     members.clear();
 }
 
-void Stage::addMember(WorkItem* c)
+void Stage::addMember(WorkItem *c)
 {
-    if(c == nullptr)
+    if (c == nullptr)
     {
         return;
     }
 
-    //prevents same pointer from being inserted more than once
-    //this helps prevent a potential double deletion
-    if(std::find(this->members.begin(), this->members.end(), c) != this->members.end())
+    // prevents same pointer from being inserted more than once
+    // this helps prevent a potential double deletion
+    if (std::find(this->members.begin(), this->members.end(), c) != this->members.end())
     {
         return;
     }
@@ -38,18 +38,19 @@ void Stage::addMember(WorkItem* c)
     this->members.push_back(c);
 }
 
-void Stage::removeMember(WorkItem* c)
+void Stage::removeMember(WorkItem *c)
 {
-    if(c == nullptr)
+    if (c == nullptr)
     {
         return;
     }
 
-    for(auto it = this->members.begin(); it != this->members.end(); ++it)
+    for (auto it = this->members.begin(); it != this->members.end(); ++it)
     {
-        if(*it == c)
+        if (*it == c)
         {
-            delete *it;
+            // Removed becase it is a double free causing segfault
+            //  delete *it;
             this->members.erase(it);
 
             return;
@@ -59,15 +60,15 @@ void Stage::removeMember(WorkItem* c)
 
 bool Stage::handleRequest(int rank)
 {
-    if(this->responsible != nullptr)
+    if (this->responsible != nullptr)
     {
-        if(this->responsible->handleRequest(rank))
+        if (this->responsible->handleRequest(rank))
         {
             return true;
         }
     }
 
-    if(getNextHandler() != nullptr)
+    if (getNextHandler() != nullptr)
     {
         return getNextHandler()->handleRequest(rank);
     }

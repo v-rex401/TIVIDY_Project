@@ -25,26 +25,30 @@
 #include "WorkflowManager.h"
 #include "WorkItem.h"
 
-namespace {
+namespace
+{
 
     /** A minimal work item, so the manager's null guards do not short-circuit. */
-    class StubWorkItem : public WorkItem {
+    class StubWorkItem : public WorkItem
+    {
     public:
         std::string getName() override { return "item"; }
         std::string getTitle() override { return "task"; }
         std::string getSeverity() override { return "Normal"; }
         std::string getRequiredPosition() override { return ""; }
-        void setRequiredPosition(const std::string&) override {}
+        void setRequiredPosition(const std::string &) override {}
         void printHierarchy(std::string) override {}
-        void handleRequest() override {}
-        WorkItem* clone() override { return new StubWorkItem(); }
+        bool handleRequest(int /*rank*/) override { return true; }
+        WorkItem *clone() override { return new StubWorkItem(); }
     };
 
-        /** Lets the manager run without a real assignment strategy. */
-    class StubAssignment : public AssignmentStrategy {
+    /** Lets the manager run without a real assignment strategy. */
+    class StubAssignment : public AssignmentStrategy
+    {
     public:
-        Staff* selectAssignmentItem(WorkItem*, WorkflowInstance*,
-                                    const std::vector<WorkflowInstance*>&) {
+        Staff *selectAssignmentItem(WorkItem *, WorkflowInstance *,
+                                    const std::vector<WorkflowInstance *> &)
+        {
             return NULL;
         }
     };
@@ -53,9 +57,10 @@ namespace {
 
 // Clock
 
-TEST(ClockTest, ProducesATimestampOfTheExpectedShape) {
+TEST(ClockTest, ProducesATimestampOfTheExpectedShape)
+{
     const std::string stamp = Clock::now();
-    EXPECT_EQ(19u, stamp.size());      // YYYY-MM-DD HH:MM:SS
+    EXPECT_EQ(19u, stamp.size()); // YYYY-MM-DD HH:MM:SS
     EXPECT_EQ('-', stamp[4]);
     EXPECT_EQ(' ', stamp[10]);
     EXPECT_EQ(':', stamp[13]);
@@ -63,7 +68,8 @@ TEST(ClockTest, ProducesATimestampOfTheExpectedShape) {
 
 // state names
 
-TEST(StateNameTest, EachConcreteStateKnowsItsName) {
+TEST(StateNameTest, EachConcreteStateKnowsItsName)
+{
     Pending pending;
     Active active;
     Completed completed;
@@ -77,14 +83,16 @@ TEST(StateNameTest, EachConcreteStateKnowsItsName) {
 
 // transitions
 
-TEST(StateTransitionTest, StartsPendingWithNoHistory) {
+TEST(StateTransitionTest, StartsPendingWithNoHistory)
+{
     WorkflowInstance wi;
     ASSERT_TRUE(wi.getState() != NULL);
     EXPECT_EQ("Pending", wi.getState()->getName());
     EXPECT_TRUE(wi.getEventLog()->getEntries().empty());
 }
 
-TEST(StateTransitionTest, PendingBecomesActiveThenCompleted) {
+TEST(StateTransitionTest, PendingBecomesActiveThenCompleted)
+{
     WorkflowInstance wi;
     wi.handle();
     EXPECT_EQ("Active", wi.getState()->getName());
@@ -93,7 +101,8 @@ TEST(StateTransitionTest, PendingBecomesActiveThenCompleted) {
 }
 
 /** Invalid operation: an end state must not transition or log. */
-TEST(StateTransitionTest, CompletedRefusesToMove) {
+TEST(StateTransitionTest, CompletedRefusesToMove)
+{
     WorkflowInstance wi;
     wi.handle();
     wi.handle();
@@ -105,7 +114,8 @@ TEST(StateTransitionTest, CompletedRefusesToMove) {
     EXPECT_EQ(before, wi.getEventLog()->getEntries().size());
 }
 
-TEST(StateTransitionTest, CancelledRefusesToMove) {
+TEST(StateTransitionTest, CancelledRefusesToMove)
+{
     WorkflowInstance wi;
     wi.setState(new Cancelled());
     wi.handle();
@@ -113,7 +123,8 @@ TEST(StateTransitionTest, CancelledRefusesToMove) {
 }
 
 /** Invalid operation: a null state is ignored and changes nothing. */
-TEST(StateTransitionTest, NullStateIsIgnored) {
+TEST(StateTransitionTest, NullStateIsIgnored)
+{
     WorkflowInstance wi;
     wi.setState(NULL);
     EXPECT_EQ("Pending", wi.getState()->getName());
@@ -122,18 +133,20 @@ TEST(StateTransitionTest, NullStateIsIgnored) {
 
 // event firing
 
-TEST(StateEventTest, EveryTransitionNamesWhereItCameFromAndWentTo) {
+TEST(StateEventTest, EveryTransitionNamesWhereItCameFromAndWentTo)
+{
     WorkflowInstance wi;
     wi.handle();
     wi.handle();
 
-    const std::vector<WorkflowEvent*>& log = wi.getEventLog()->getEntries();
+    const std::vector<WorkflowEvent *> &log = wi.getEventLog()->getEntries();
     ASSERT_EQ(2u, log.size());
     EXPECT_EQ(0u, log[0]->getDescription().find("Pending -> Active"));
     EXPECT_EQ(0u, log[1]->getDescription().find("Active -> Completed"));
 }
 
-TEST(StateEventTest, EventsAreTypedAndTimestamped) {
+TEST(StateEventTest, EventsAreTypedAndTimestamped)
+{
     WorkflowInstance wi;
     wi.handle();
 
@@ -142,7 +155,8 @@ TEST(StateEventTest, EventsAreTypedAndTimestamped) {
     EXPECT_EQ(19u, wi.getEventLog()->getEntries()[0]->getTimestamp().size());
 }
 
-TEST(StateEventTest, TheInstanceIdAppearsInItsHistory) {
+TEST(StateEventTest, TheInstanceIdAppearsInItsHistory)
+{
     WorkflowInstance wi;
     wi.setId("WF-1");
     wi.handle();
@@ -152,7 +166,8 @@ TEST(StateEventTest, TheInstanceIdAppearsInItsHistory) {
 }
 
 /** Instance isolation: one instance's transitions must not affect another. */
-TEST(StateEventTest, EachInstanceHasItsOwnHistory) {
+TEST(StateEventTest, EachInstanceHasItsOwnHistory)
+{
     WorkflowInstance a;
     WorkflowInstance b;
     a.handle();
@@ -165,12 +180,13 @@ TEST(StateEventTest, EachInstanceHasItsOwnHistory) {
 // Adapter through the manager
 
 /** The engine reaches the concrete service only through ExternalSystem. */
-TEST(ManagerAdapterTest, AssigningWorkNotifiesThroughTheAdapter) {
+TEST(ManagerAdapterTest, AssigningWorkNotifiesThroughTheAdapter)
+{
     NotificationSystem service;
     NotificationAdapter adapter(&service);
 
     WorkflowManager manager;
-    manager.setAssignmentStrategy(new StubAssignment());  // manager deletes it
+    manager.setAssignmentStrategy(new StubAssignment()); // manager deletes it
     manager.setExternalSystem(&adapter);
 
     StubWorkItem item;
@@ -184,7 +200,8 @@ TEST(ManagerAdapterTest, AssigningWorkNotifiesThroughTheAdapter) {
 }
 
 /** Without an external system the engine still runs. */
-TEST(ManagerAdapterTest, RunsWithoutAnExternalSystem) {
+TEST(ManagerAdapterTest, RunsWithoutAnExternalSystem)
+{
     WorkflowManager manager;
     manager.setAssignmentStrategy(new StubAssignment());
     manager.setExternalSystem(NULL);
@@ -195,7 +212,8 @@ TEST(ManagerAdapterTest, RunsWithoutAnExternalSystem) {
 }
 
 /** Invalid operation: no strategy configured must not crash. */
-TEST(ManagerAdapterTest, ReturnsNullWithoutAStrategy) {
+TEST(ManagerAdapterTest, ReturnsNullWithoutAStrategy)
+{
     WorkflowManager manager;
     EXPECT_TRUE(manager.assignWorkItem(NULL, NULL) == NULL);
     EXPECT_TRUE(manager.routeWorkItem(NULL, NULL) == NULL);
