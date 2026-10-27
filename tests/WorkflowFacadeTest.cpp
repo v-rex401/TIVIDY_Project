@@ -35,6 +35,7 @@ public:
     std::string getName() { return "Sam"; }
     std::string getTitle() { return "Reviewer"; }
     int getRank() { return 1; }
+    bool handleRequest(int) { return false; }
 };
 
 /** Always assigns the same staff member. */
