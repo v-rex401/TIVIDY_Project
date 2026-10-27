@@ -2,43 +2,46 @@
 
 #include "WorkflowBuilder.h"
 
-WorkflowDirector::WorkflowDirector(std::string name, std::vector<std::string> stages, std::map<std::string, std::vector<std::string>> tasks)
+WorkflowDirector::WorkflowDirector(WorkflowBuilder* b)
 {
-    this->name = name;
-    this->stages = stages;
-    this->tasks = tasks;
+    this->builder = b;
 }
 
-void WorkflowDirector::construct(WorkflowBuilder& builder)
+void WorkflowDirector::construct(std::string name, std::vector<std::string> stages, std::map<std::string, std::vector<std::string>> tasks)
 {
-    builder.buildDefinition(this->name);
+    if(builder == nullptr)
+    {
+        return;
+    }
+
+    builder->buildDefinition(name);
 
     //build all stages
-    for(std::string stage : this->stages)
+    for(std::string stage : stages)
     {
-        builder.buildStage(stage);
+        builder->buildStage(stage);
     }
 
     //add tasks to their corresponding stages
-    for(std::string stage : this->stages)
+    for(std::string stage : stages)
     {
-        auto it = this->tasks.find(stage);
+        auto it = tasks.find(stage);
 
-        if(it != this->tasks.end())
+        if(it != tasks.end())
         {
             for(std::string title : it->second)
             {
-                builder.buildTask(stage, title);
+                builder->buildTask(stage, title);
             }
         }
     }
 
     //create transitions between consecutive stages
-    for(size_t i = 0; i + 1 < this->stages.size(); i++)
+    for(size_t i = 0; i + 1 < stages.size(); i++)
     {
-        builder.buildTransition(this->stages[i], this->stages[i + 1]);
+        builder->buildTransition(stages[i], stages[i + 1]);
     }
 
     //link the handlers
-    builder.linkHandlers();
+    builder->linkHandlers();
 }
