@@ -233,20 +233,22 @@ TEST(WorkflowManagerTests, StartIsIdempotentAndExecuteAssignsRoutesAndRecordsIte
     manager.setAssignmentStrategy(assignment);
     manager.setRoutingStrategy(routing);
     WorkflowInstance context;
-    StrategyTestWorkItem item;
+    // Routing hands the item to a Stage, which owns its members and destroys
+    // them, so it must be heap-allocated.
+    StrategyTestWorkItem* item = new StrategyTestWorkItem();
     manager.startWorkflow(nullptr);
     manager.startWorkflow(&context);
     manager.startWorkflow(&context);
-    manager.executeWorkflow(&context, &item);
-    EXPECT_EQ(&staff, item.getResponsible());
+    manager.executeWorkflow(&context, item);
+    EXPECT_EQ(&staff, item->getResponsible());
     ASSERT_EQ(1u, context.getWorkItems().size());
-    EXPECT_EQ(&item, context.getWorkItems().front());
+    EXPECT_EQ(item, context.getWorkItems().front());
     ASSERT_EQ(1u, destination.getMembers().size());
-    EXPECT_EQ(&item, destination.getMembers().front());
+    EXPECT_EQ(item, destination.getMembers().front());
     EXPECT_EQ(1, assignment->calls);
     EXPECT_EQ(1, routing->calls);
     EXPECT_EQ(1u, assignment->lastRunningCount);
-    manager.executeWorkflow(nullptr, &item);
+    manager.executeWorkflow(nullptr, item);
     manager.executeWorkflow(&context, nullptr);
     EXPECT_EQ(1, assignment->calls);
 }
