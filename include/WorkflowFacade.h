@@ -78,8 +78,15 @@ public:
 
 	/**
 	 * @brief Submit a work item of an instance for assignment and routing.
-	 * @param instance The instance the item belongs to.
-	 * @param workitem The item to submit.
+	 *
+	 * The assignment strategy picks who is responsible and the routing
+	 * strategy picks the Stage it goes to. On success the item is in
+	 * instance->getWorkItems() and the destination Stage owns it. If no one
+	 * is assigned or no Stage is chosen, nothing changes and the caller
+	 * still owns the item.
+	 *
+	 * @param instance The instance the item belongs to. Null or not created by this facade is ignored.
+	 * @param workitem The item to submit (must be heap-allocated).
 	 */
 	void submitWorkItem(WorkflowInstance* instance, WorkItem* workitem);
 

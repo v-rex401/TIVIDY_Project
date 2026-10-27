@@ -70,8 +70,11 @@ WorkflowInstance *WorkflowFacade::createWorkflowInstance(WorkflowDefinition *def
 
 void WorkflowFacade::submitWorkItem(WorkflowInstance *instance, WorkItem *workitem)
 {
-	manager->assignWorkItem(workitem, instance);
-	manager->routeWorkItem(workitem, instance);
+	if (!owns(instance))
+	{
+		return;
+	}
+	manager->executeWorkflow(instance, workitem);
 }
 
 void WorkflowFacade::executeWorkflow(WorkflowInstance *w)
