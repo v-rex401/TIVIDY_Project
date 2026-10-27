@@ -225,7 +225,6 @@ TEST(WorkflowManagerTests, CreateInstanceSetsIdentifierAndRejectsNullDefinition)
     delete instance; // caller owns the returned instance
 }
 TEST(WorkflowManagerTests, StartIsIdempotentAndExecuteAssignsRoutesAndRecordsItem) {
-    TEST(WorkflowManagerTests, StartIsIdempotentAndExecuteAssignsRoutesAndRecordsItem) {
     TestStaff staff("A", "Doctor");
     Stage destination;
     WorkflowManager manager;
@@ -252,7 +251,6 @@ TEST(WorkflowManagerTests, StartIsIdempotentAndExecuteAssignsRoutesAndRecordsIte
     manager.executeWorkflow(nullptr, item);
     manager.executeWorkflow(&context, nullptr);
     EXPECT_EQ(1, assignment->calls);
-}
 }
 TEST(WorkflowManagerTests, FailedAssignmentOrRouteDoesNotRecordItem) {
     Stage destination;
