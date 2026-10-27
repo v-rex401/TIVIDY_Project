@@ -8,13 +8,23 @@
 #include "WorkflowFacade.h"
 #include "WorkflowManager.h"
 #include "WorkflowDefinition.h"
+#include "WorkflowInstance.h"
 
 #include <algorithm>
 
-WorkflowFacade::WorkflowFacade() : manager(new WorkflowManager()) {}
+WorkflowFacade::WorkflowFacade() : manager(new WorkflowManager()), nextInstanceNumber(1) {}
 
 WorkflowFacade::~WorkflowFacade()
 {
+	// Instances only point at their definition copy's stages, so they go first.
+	for (WorkflowInstance *instance : instances)
+	{
+		delete instance;
+	}
+	for (WorkflowDefinition *copy : instanceDefinitions)
+	{
+		delete copy;
+	}
 	for (WorkflowDefinition *definition : definitions)
 	{
 		delete definition;
@@ -28,11 +38,30 @@ void WorkflowFacade::startWorkflow(WorkflowDefinition * /* definition */)
 	// TODO: This needs to use the correct arguments or use a different function
 }
 
-WorkflowInstance *WorkflowFacade::createWorkflowInstance(WorkflowDefinition * /* definition */)
+WorkflowInstance *WorkflowFacade::createWorkflowInstance(WorkflowDefinition *definition)
 {
-	// return manager->createInstance(definition);
-	// TODO: This needs to use the correct arguments or use a different function
-	return nullptr;
+	if (definition == nullptr)
+	{
+		return nullptr;
+	}
+
+	WorkflowDefinition *copy = definition->clone();
+	WorkflowInstance *instance = manager->createInstance(copy, "WF-" + std::to_string(nextInstanceNumber));
+	if (instance == nullptr)
+	{
+		delete copy;
+		return nullptr;
+	}
+	++nextInstanceNumber;
+
+	for (WorkItem *stage : *copy->getStages())
+	{
+		instance->addWorkItem(stage);
+	}
+
+	instances.push_back(instance);
+	instanceDefinitions.push_back(copy);
+	return instance;
 }
 
 void WorkflowFacade::submitWorkItem(WorkflowInstance *instance, WorkItem *workitem)
@@ -69,15 +98,23 @@ std::vector<WorkflowDefinition *> WorkflowFacade::getDefinitions()
 
 std::vector<WorkflowInstance *> WorkflowFacade::getInstances()
 {
-	// TODO : Add method in WorkflowManager to return instances
-	// return manager->getInstances();
-	std::vector<WorkflowInstance *> results;
-	return results;
+	return instances;
 }
 
-WorkflowInstance *WorkflowFacade::getInstance(const std::string & /* id */)
+WorkflowInstance *WorkflowFacade::getInstance(const std::string &id)
 {
-	// TODO : Add method in WorkflowManager to return an instance
-	// return manager->getInstance(id);
+	for (WorkflowInstance *instance : instances)
+	{
+		if (instance->getId() == id)
+		{
+			return instance;
+		}
+	}
 	return nullptr;
+}
+
+bool WorkflowFacade::owns(WorkflowInstance *instance) const
+{
+	return instance != nullptr &&
+		   std::find(instances.begin(), instances.end(), instance) != instances.end();
 }

@@ -37,12 +37,22 @@ class WorkflowFacade {
 private:
 	WorkflowManager* manager;                      ///< Subsystem every call is delegated to (owned).
 	std::vector<WorkflowDefinition*> definitions;  ///< Registered definitions (owned).
+	std::vector<WorkflowInstance*> instances;      ///< Every instance created so far (owned).
+	std::vector<WorkflowDefinition*> instanceDefinitions; ///< Each instance's private copy of its definition (owned), same index as instances.
+	int nextInstanceNumber;                        ///< Number used in the next instance id ("WF-<n>").
+
+	/**
+	 * @brief Whether an instance was created by this facade.
+	 * @param instance The instance to look for.
+	 * @return True if the facade owns it.
+	 */
+	bool owns(WorkflowInstance* instance) const;
 
 public:
 	/** @brief Create the facade together with the WorkflowManager it owns. */
 	WorkflowFacade();
 
-	/** @brief Delete the owned WorkflowManager and every owned definition. */
+	/** @brief Delete the owned WorkflowManager and every owned definition and instance. */
 	~WorkflowFacade();
 
 	/**
@@ -53,8 +63,13 @@ public:
 
 	/**
 	 * @brief Create a new, independent instance of a definition.
+	 *
+	 * The instance works on its own clone of the definition (Prototype), so
+	 * work done in one instance never shows up in another. It starts in
+	 * Pending with the id "WF-<n>", numbered from 1.
+	 *
 	 * @param definition The definition to instantiate (not owned).
-	 * @return The new instance; the manager owns it.
+	 * @return The new instance (owned by the facade), or nullptr if definition is null.
 	 */
 	WorkflowInstance* createWorkflowInstance(WorkflowDefinition* definition);
 
@@ -91,13 +106,13 @@ public:
 	std::vector<WorkflowDefinition*> getDefinitions();
 
 	/**
-	 * @brief Live instances, for the TUI to list and pick from (UML-018).
-	 * @return All instances (owned by the manager).
+	 * @brief Every instance created so far, for the TUI to list and pick from.
+	 * @return All instances in creation order, including finished ones (owned by the facade).
 	 */
 	std::vector<WorkflowInstance*> getInstances();
 
 	/**
-	 * @brief Find an instance by its id (UML-018).
+	 * @brief Find an instance by its id.
 	 * @param id The instance id.
 	 * @return The instance, or nullptr if there is none with that id.
 	 */
