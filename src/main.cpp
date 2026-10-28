@@ -18,7 +18,7 @@ int main()
 
     //*Set up external connections
 
-    //*Choose the rules (asssignments)
+    //*Choose the rules (assignments)
 
     //*Create workflow manager
 
