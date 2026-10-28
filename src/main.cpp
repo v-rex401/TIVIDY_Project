@@ -7,13 +7,15 @@
 #include "WorkItem.h"
 #include "Team.h"
 #include "Employee.h"
+#include "Task.h"
+#include "Handler.h"
 
 int main()
 {
     //* Create the Director
     WorkflowDirector *NickFury;
 
-    /**
+    /*
      * Staff Comprising of:
      * Employees (Leaves)
      * Teams:
@@ -31,19 +33,28 @@ int main()
     techSupport->addMember(new Employee("John Doe", "Head of I.T", 4));
 
     command->addMember(techSupport);
-    //*Make the builder then instantiate NickFury(director)
+
+    //*Set up the chain of Responsibility
+
+    //* fieldTeam -> command -> techSupport
+    fieldTeam->setNextHandler(command);
+    command->setNextHandler(techSupport);
+
+    //* Make the Stages
+    Stage *intel = new Stage("Intel Gathering");
+    Stage *assessment = new Stage("Threat Assessment");
+    Stage *deploy = new Stage("Deploy Team");
+    Stage *emergency = new Stage("Assemble Avengers");
+    Stage *debrief = new Stage("Mission Debrief");
 
     //*Create the tasks
+    intel->addMember(new Task("Scan for threat"));
 
-    //* Make the Teams / Employees
+    //*Make the builder then instantiate NickFury(director)
 
     //*Set up external connections
 
     //*Choose the rules (assignments)
-    //* Create the Stages
-    Stage *review = new Stage("Planning");
-    Stage *draft = new Stage("Draft");
-    Stage *last = new Stage("Final");
 
     //*Create workflow manager
 
