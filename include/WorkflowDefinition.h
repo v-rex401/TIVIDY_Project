@@ -11,11 +11,12 @@ class WorkflowVisitor;
  * @brief Defines the structure and stages of a workflow
  */
 
-class WorkflowDefinition {
+class WorkflowDefinition
+{
 
 private:
 	std::string name;
-	std::vector<WorkItem*> stages;
+	std::vector<WorkItem *> stages;
 	std::vector<std::string> transitionFrom;
 	std::vector<std::string> transitionTo;
 
@@ -36,22 +37,22 @@ public:
 	/**
 	 * @brief Accept a workflow visitor
 	 */
-	void accept(WorkflowVisitor* wv);
+	void accept(WorkflowVisitor *wv);
 
 	/**
 	 * @brief Create a clone of the workflow definition
 	 */
-	WorkflowDefinition* clone();
+	WorkflowDefinition *clone();
 
 	/**
 	 * @brief Add a stage to the workflow definition
 	 */
-	void addStage(WorkItem* s);
+	void addStage(WorkItem *s);
 
 	/**
 	 * @brief Get the stages of the workflow
 	 */
-	std::vector<WorkItem*>* getStages();
+	std::vector<WorkItem *> *getStages();
 
 	/**
 	 * @brief Set name for workflow
@@ -83,6 +84,10 @@ public:
 	 */
 	void addInitialData(std::string key, std::string value);
 
+	/**
+	 * @brief searches and returns the correct stage based on name of the stage
+	 */
+	Stage *findStage(const std::string &stageName);
 };
 
 #endif

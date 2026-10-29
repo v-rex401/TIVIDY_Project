@@ -3,16 +3,16 @@
 #include "WorkItem.h"
 #include "WorkflowVisitor.h"
 
-void WorkflowDefinition::accept(WorkflowVisitor* wv)
+void WorkflowDefinition::accept(WorkflowVisitor *wv)
 {
-	if(wv == nullptr)
+    if (wv == nullptr)
     {
         return;
     }
 
-    for(WorkItem* stage : this->stages)
+    for (WorkItem *stage : this->stages)
     {
-        if(stage != nullptr)
+        if (stage != nullptr)
         {
             stage->accept(wv);
         }
@@ -21,7 +21,7 @@ void WorkflowDefinition::accept(WorkflowVisitor* wv)
 
 WorkflowDefinition *WorkflowDefinition::clone()
 {
-    WorkflowDefinition* clonedDefinition = new WorkflowDefinition();
+    WorkflowDefinition *clonedDefinition = new WorkflowDefinition();
 
     clonedDefinition->name = this->name;
 
@@ -37,9 +37,9 @@ WorkflowDefinition *WorkflowDefinition::clone()
     clonedDefinition->initialDataKeys = this->initialDataKeys;
     clonedDefinition->initialDataValues = this->initialDataValues;
 
-    for(WorkItem* stage : this->stages)
+    for (WorkItem *stage : this->stages)
     {
-        if(stage != nullptr)
+        if (stage != nullptr)
         {
             clonedDefinition->addStage(stage->clone());
         }
@@ -50,7 +50,7 @@ WorkflowDefinition *WorkflowDefinition::clone()
 
 WorkflowDefinition::~WorkflowDefinition()
 {
-    for(WorkItem* stage : stages)
+    for (WorkItem *stage : stages)
     {
         delete stage;
     }
@@ -58,9 +58,9 @@ WorkflowDefinition::~WorkflowDefinition()
     stages.clear();
 }
 
-void WorkflowDefinition::addStage(WorkItem* s)
+void WorkflowDefinition::addStage(WorkItem *s)
 {
-	if(s == nullptr)
+    if (s == nullptr)
     {
         return;
     }
@@ -70,7 +70,7 @@ void WorkflowDefinition::addStage(WorkItem* s)
 
 std::vector<WorkItem *> *WorkflowDefinition::getStages()
 {
-	return &this->stages;
+    return &this->stages;
 }
 
 void WorkflowDefinition::setName(std::string name)
@@ -104,4 +104,17 @@ void WorkflowDefinition::addInitialData(std::string key, std::string value)
 {
     this->initialDataKeys.push_back(key);
     this->initialDataValues.push_back(value);
+}
+
+Stage *WorkflowDefinition::findStage(const std::string &stageName)
+{
+
+    for (WorkItem *item : stages)
+    {
+        if (item != nullptr && item->getName() == stageName)
+        {
+            return static_cast<Stage *>(item);
+        }
+    }
+    return nullptr;
 }
