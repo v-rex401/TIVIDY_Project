@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "Stage.h"
 
 class WorkItem;
 class WorkflowVisitor;
