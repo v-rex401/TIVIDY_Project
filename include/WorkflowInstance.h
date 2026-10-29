@@ -35,7 +35,7 @@ private:
 	// double transactionValue;
 	// double eventMetric;
 
-	//hence I'm adding Scenario values, keyed by name
+	// hence I'm adding Scenario values, keyed by name
 	std::map<std::string, double> data;
 
 	std::vector<Staff *> participants;
@@ -65,15 +65,15 @@ public:
 
 	void attach(Observer *o) override;
 	void detach(Observer *o) override;
-  void notify(WorkflowEvent *e) override;
+	void notify(WorkflowEvent *e) override;
 
 	void setState(State *s);
 	State *getState();
 	void handle();
 
-	std::vector<WorkItem*> getWorkItem();
-	const std::vector<WorkItem*>& getWorkItems() const;
-	void addWorkItem(WorkItem* item);
+	std::vector<WorkItem *> getWorkItem();
+	const std::vector<WorkItem *> &getWorkItems() const;
+	void addWorkItem(WorkItem *item);
 	// double getTransactionValue() const;
 	// void setTransactionValue(double value);
 	// double getEventMetric() const;
@@ -87,7 +87,7 @@ public:
 	 * The engine never interprets the key, so an industry can carry whatever
 	 * values its rules need without this class knowing about them.
 	 */
-	void setData(const std::string& key, double value);
+	void setData(const std::string &key, double value);
 
 	/**
 	 * @brief Read a named numeric value.
@@ -95,8 +95,7 @@ public:
 	 * @param fallback Returned when the key has not been set.
 	 * @return The stored value, or @p fallback.
 	 */
-	double getData(const std::string& key, double fallback = 0.0) const;
-
+	double getData(const std::string &key, double fallback = 0.0) const;
 
 	EventLog *getEventLog();
 
@@ -110,6 +109,7 @@ public:
 
 	void setId(const std::string &newId);
 	void setDefinition(WorkflowDefinition *def);
+	WorkflowDefinition *getDefinition();
 };
 
 #endif
