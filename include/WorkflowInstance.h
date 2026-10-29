@@ -109,6 +109,11 @@ public:
 
 	void setId(const std::string &newId);
 	void setDefinition(WorkflowDefinition *def);
+
+	/**
+	 * @brief Returns the WorkflowDefintion associated with this particular instance
+	 * @return the workflow defintion
+	 */
 	WorkflowDefinition *getDefinition();
 };
 
