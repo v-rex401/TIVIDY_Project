@@ -9,7 +9,14 @@
 #include "Employee.h"
 #include "Task.h"
 #include "Handler.h"
+#include "RoleBasedAssignment.h"
+#include "SeverityBasedRouting.h"
+#include "WorkflowManager.h"
+#include "WorkflowFacade.h"
+#include "AuditLogObserver.h"
+#include "WorkflowDefinition.h"
 
+//? Note that some of this functionality will be moving to facade
 int main()
 {
     //* Create the Director
@@ -41,26 +48,79 @@ int main()
     command->setNextHandler(techSupport);
 
     //* Make the Stages
-    Stage *intel = new Stage("Intel Gathering");
-    Stage *assessment = new Stage("Threat Assessment");
-    Stage *deploy = new Stage("Deploy Team");
-    Stage *emergency = new Stage("Assemble Avengers");
-    Stage *debrief = new Stage("Mission Debrief");
+    std::vector<std::string> stages;
+    stages.push_back("Intel Gathering");
+    stages.push_back("Threat Assessment");
+    stages.push_back("Deploy Team");
+    stages.push_back("Assemble Avengers");
+    stages.push_back("Mission Debrief");
 
-    //*Create the tasks
-    intel->addMember(new Task("Scan for threat"));
+    //*Create the tasks that can be used in a workflow
+    std::map<std::string, std::vector<std::string>> tasks;
+    std::vector<std::string> intelTasks;
+    intelTasks.push_back("Scan for threat");
+    intelTasks.push_back("Threat Assessment");
+
+    tasks.insert({"Intel Gathering", intelTasks});
+
+    std::vector<std::string> assessTasks;
+    assessTasks.push_back("Rate threat level");
+    tasks.insert({"Threat Assessment", assessTasks});
+
+    std::vector<std::string> deployTasks;
+    deployTasks.push_back("Send field team");
+    tasks.insert({"Deploy Team", deployTasks});
+
+    std::vector<std::string> emergencyTasks;
+    emergencyTasks.push_back("Call Avengers");
+    tasks.insert({"Assemble Avengers", emergencyTasks});
+
+    std::vector<std::string> debriefTasks;
+    debriefTasks.push_back("File mission report");
+    tasks.insert({"Mission Debrief", debriefTasks});
+
+    //*Build the definition by which our workflows will work
+    SequentialWorkflowBuilder *buildThreat = new SequentialWorkflowBuilder();
+    NickFury = new WorkflowDirector(buildThreat);
 
     //*Make the builder then instantiate NickFury(director)
+    NickFury->construct("Threat Response", stages, tasks);
 
-    //*Set up external connections
+    buildThreat->setAssignmentStrategyType("RoleBased");
+    buildThreat->setRoutingStrategyType("SeverityBased");
 
-    //*Choose the rules (assignments)
+    //*We now use builder to get our product -> WorkflowDefinition
+    WorkflowDefinition *threatResponse = buildThreat->getWorkflowDefinition();
 
-    //*Create workflow manager
+    std::vector<Staff *> pool;
+    pool.push_back(new Employee("Phil Coulson", "Agent", 1));
+    pool.push_back(new Employee("Maria Hill", "Analyst", 2));
+    pool.push_back(new Employee("Nick Fury", "Director", 3));
+    RoleBasedAssignment *assign = new RoleBasedAssignment(pool);
 
-    //*Create the facade
+    //* Create workflow manager + facade
+    WorkflowFacade facade;
+    facade.addDefinition(threatResponse); // facade now owns it
 
-    //*Undo Mechanisms
+    //?Need to get the stages from workflow defintion that I created
+    facade.setAssignmentStrategy(assign);
+    facade.createWorkflowInstance(threatResponse);
+
+    //?The User would have to select which stages they created they want to use to set up the routing
+    facade.setRoutingStrategy(new SeverityBasedRouting("Deploy Team", "Assemble Avengers"));
+
+    //* Run it
+    AuditLogObserver audit;
+    WorkflowInstance *mission = facade.createWorkflowInstance(threatResponse);
+    mission->attach(&audit);
+    facade.executeWorkflow(mission);
+
+    std::cout << mission->getId() << " is " << mission->getState()->getName() << std::endl;
+
+    //* Undo Mechanisms
+    // skip for now
+
+    delete NickFury;
 
     return 0;
 }
