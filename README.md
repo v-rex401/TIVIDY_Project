@@ -19,7 +19,7 @@ First run takes ~2 minutes while cmake is installed in the image
 
 ### Locally
 
-Requires `g++` (C++11), `cmake` and `make`.
+Requires `g++` (C++17), `cmake` (3.14+) and `make`. CMake fetches FTXUI (the TUI library) and GoogleTest on the first build; don't install them yourself.
 
 ```bash
 make # build
