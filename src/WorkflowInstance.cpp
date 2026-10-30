@@ -257,3 +257,8 @@ void WorkflowInstance::setDefinition(WorkflowDefinition *def)
 {
     this->definition = def;
 }
+
+WorkflowDefinition *WorkflowInstance::getDefinition()
+{
+    return this->definition;
+}
