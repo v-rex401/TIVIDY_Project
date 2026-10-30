@@ -121,6 +121,14 @@ int main()
     // skip for now
 
     delete NickFury;
+    delete buildThreat;
+
+    for (Staff *s : pool)
+    {
+        delete s;
+    }
+    delete fieldTeam;
+    delete command;
 
     return 0;
 }
