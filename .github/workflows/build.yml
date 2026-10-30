@@ -19,8 +19,12 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
+      # CMake fetches FTXUI and compiles src/ as C++17 with -Wall -Wextra
+      - name: Configure
+        run: cmake -S . -B build
+
       - name: Compile
-        run: g++ -std=c++11 -Wall -Wextra -Iinclude -o main $(find src -name '*.cpp')
+        run: cmake --build build --target tividy -j 4
 
       - name: Run
-        run: ./main < /dev/null
+        run: ./build/tividy < /dev/null
