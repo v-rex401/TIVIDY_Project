@@ -159,20 +159,30 @@ TEST(WorkloadBasedAssignmentTests, TiesChooseFirstRosterMemberAndNullInputsRetur
 
 TEST(SeverityBasedRoutingTests, RoutesCriticalAndHighToEmergencyOtherwiseNormal)
 {
-    Stage normal, emergency;
+    WorkflowDefinition def; // owns the stages added below
+    Stage *normal = new Stage();
+    normal->setName("Normal");
+    Stage *emergency = new Stage();
+    emergency->setName("Emergency");
+    def.addStage(normal);
+    def.addStage(emergency);
+
     WorkflowInstance context;
-    SeverityBasedRouting strategy(&normal, &emergency);
+    context.setDefinition(&def);
+
+    SeverityBasedRouting strategy("Normal", "Emergency");
     StrategyTestWorkItem item;
-    EXPECT_EQ(&normal, strategy.selectItemState(&item, &context));
+    EXPECT_EQ(normal, strategy.selectItemState(&item, &context));
     item.setSeverity("High");
-    EXPECT_EQ(&emergency, strategy.selectItemState(&item, &context));
+    EXPECT_EQ(emergency, strategy.selectItemState(&item, &context));
     item.setSeverity("Critical");
-    EXPECT_EQ(&emergency, strategy.selectItemState(&item, &context));
+    EXPECT_EQ(emergency, strategy.selectItemState(&item, &context));
     item.setSeverity("Unknown");
-    EXPECT_EQ(&normal, strategy.selectItemState(&item, &context));
+    EXPECT_EQ(normal, strategy.selectItemState(&item, &context));
     EXPECT_EQ(nullptr, strategy.selectItemState(nullptr, &context));
     EXPECT_EQ(nullptr, strategy.selectItemState(&item, nullptr));
 }
+
 TEST(ApprovalChainRoutingTests, ThresholdIsStrictAndUsesContextTransactionValue)
 {
     Stage standard, escalation;
@@ -187,7 +197,7 @@ TEST(ApprovalChainRoutingTests, ThresholdIsStrictAndUsesContextTransactionValue)
     EXPECT_EQ(&escalation, strategy.selectItemState(&item, &context));
     EXPECT_EQ(nullptr, strategy.selectItemState(nullptr, &context));
     EXPECT_EQ(nullptr, strategy.selectItemState(&item, nullptr));
-    SeverityBasedRouting noEmergency(nullptr, nullptr);
+    SeverityBasedRouting noEmergency("Normal", "Missing");
     item.setSeverity("Critical");
     EXPECT_EQ(nullptr, noEmergency.selectItemState(&item, &context));
 }
@@ -372,4 +382,49 @@ TEST(WorkflowInstanceDataTests, UnsetKeysReadAsTheFallback)
     EXPECT_EQ(7.5, context.getData("nothing", 7.5));
     context.setData("x", 3.0);
     EXPECT_EQ(3.0, context.getData("x"));
+}
+
+TEST(SeverityBasedRoutingTests, ReturnsNullWhenInstanceHasNoDefinition)
+{
+    WorkflowInstance context; // no setDefinition
+    SeverityBasedRouting strategy("Normal", "Emergency");
+    StrategyTestWorkItem item;
+    EXPECT_EQ(nullptr, strategy.selectItemState(&item, &context));
+}
+
+TEST(SeverityBasedRoutingTests, ReturnsNullWhenNamedStageDoesNotExist)
+{
+    WorkflowDefinition def;
+    Stage *normal = new Stage();
+    normal->setName("Normal");
+    def.addStage(normal); // no "Emergency" stage
+
+    WorkflowInstance context;
+    context.setDefinition(&def);
+    SeverityBasedRouting strategy("Normal", "Emergency");
+    StrategyTestWorkItem item;
+
+    EXPECT_EQ(normal, strategy.selectItemState(&item, &context));
+    item.setSeverity("Critical");
+    EXPECT_EQ(nullptr, strategy.selectItemState(&item, &context));
+}
+
+TEST(SeverityBasedRoutingTests, ResolvesAgainstTheInstancesOwnDefinition)
+{
+    WorkflowDefinition original;
+    Stage *s = new Stage();
+    s->setName("Normal");
+    original.addStage(s);
+
+    WorkflowDefinition *copy = original.clone(); // what the facade does per instance
+    WorkflowInstance context;
+    context.setDefinition(copy);
+
+    SeverityBasedRouting strategy("Normal", "Emergency");
+    StrategyTestWorkItem item;
+    Stage *routed = strategy.selectItemState(&item, &context);
+
+    EXPECT_NE(nullptr, routed);
+    EXPECT_NE(s, routed); // the clone's stage, not the original's
+    delete copy;
 }
