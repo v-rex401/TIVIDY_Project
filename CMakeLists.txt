@@ -15,8 +15,20 @@ add_library(tividy_engine ${ENGINE_SRC})
 add_executable(tividy src/main.cpp)
 target_link_libraries(tividy tividy_engine)
 
-# GoogleTest 1.17.0 (needs C++17)
 include(FetchContent)
+
+# FTXUI 6.1.9 for the TUI (needs C++17); only the libraries, no examples/docs/tests
+set(FTXUI_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(FTXUI_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(FTXUI_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(FTXUI_ENABLE_INSTALL OFF CACHE BOOL "" FORCE)
+set(FTXUI_QUIET ON CACHE BOOL "" FORCE)
+FetchContent_Declare(ftxui
+  URL https://github.com/ArthurSonzogni/FTXUI/archive/refs/tags/v6.1.9.zip
+  DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
+FetchContent_MakeAvailable(ftxui)
+
+# GoogleTest 1.17.0 (needs C++17)
 FetchContent_Declare(googletest
   URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
   DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
