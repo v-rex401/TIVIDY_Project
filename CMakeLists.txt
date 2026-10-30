@@ -15,6 +15,11 @@ add_library(tividy_engine ${ENGINE_SRC})
 add_executable(tividy src/main.cpp)
 target_link_libraries(tividy tividy_engine)
 
+# Warnings for src/ only (not FTXUI or GoogleTest), as the Build check used to compile it
+set(TIVIDY_WARNINGS -Wall -Wextra)
+target_compile_options(tividy_engine PRIVATE ${TIVIDY_WARNINGS})
+target_compile_options(tividy PRIVATE ${TIVIDY_WARNINGS})
+
 include(FetchContent)
 
 # FTXUI 6.1.9 for the TUI (needs C++17); only the libraries, no examples/docs/tests
