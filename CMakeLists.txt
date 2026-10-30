@@ -28,6 +28,9 @@ FetchContent_Declare(ftxui
   DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
 FetchContent_MakeAvailable(ftxui)
 
+# Only the executable uses FTXUI (component pulls in dom and screen); the engine stays UI-free
+target_link_libraries(tividy ftxui::component)
+
 # GoogleTest 1.17.0 (needs C++17)
 FetchContent_Declare(googletest
   URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
