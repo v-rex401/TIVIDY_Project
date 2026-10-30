@@ -15,10 +15,10 @@ add_library(tividy_engine ${ENGINE_SRC})
 add_executable(tividy src/main.cpp)
 target_link_libraries(tividy tividy_engine)
 
-# GoogleTest 1.12.1 = last version that supports C++11
+# GoogleTest 1.17.0 (needs C++17)
 include(FetchContent)
 FetchContent_Declare(googletest
-  URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
+  URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
   DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
