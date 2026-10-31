@@ -79,3 +79,43 @@ TEST(WorkflowDefinitionTest, CloneCopiesNameAndStrategyTypes)
     delete copy;
     delete definition;
 }
+
+TEST(WorkflowDefinitionTest, CloneKeepsTheSequentialHandlerLinks)
+{
+    SequentialWorkflowBuilder builder;
+    WorkflowDefinition *definition = buildThreeStages(builder);
+    WorkflowDefinition *copy = definition->clone();
+
+    Stage *intake = copy->findStage("Intake");
+    Stage *review = copy->findStage("Review");
+    Stage *close = copy->findStage("Close");
+    EXPECT_EQ(intake->getNextHandler(), review);
+    EXPECT_EQ(review->getNextHandler(), close);
+    EXPECT_EQ(close->getNextHandler(), nullptr);
+    delete copy;
+    delete definition;
+}
+
+TEST(WorkflowDefinitionTest, CloneKeepsTheEscalatingHandlerLinks)
+{
+    EscalatingWorkflowBuilder builder;
+    WorkflowDefinition *definition = buildThreeStages(builder);
+    WorkflowDefinition *copy = definition->clone();
+
+    EXPECT_EQ(copy->findStage("Close")->getNextHandler(), copy->findStage("Review"));
+    EXPECT_EQ(copy->findStage("Review")->getNextHandler(), copy->findStage("Intake"));
+    EXPECT_EQ(copy->findStage("Intake")->getNextHandler(), nullptr);
+    delete copy;
+    delete definition;
+}
+
+TEST(WorkflowDefinitionTest, CloneLinksPointIntoTheCopyNotTheOriginal)
+{
+    SequentialWorkflowBuilder builder;
+    WorkflowDefinition *definition = buildThreeStages(builder);
+    WorkflowDefinition *copy = definition->clone();
+
+    EXPECT_NE(copy->findStage("Intake")->getNextHandler(), definition->findStage("Review"));
+    delete copy;
+    delete definition;
+}
