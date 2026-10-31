@@ -62,6 +62,7 @@ namespace
 Component MainView(AppState &app)
 {
     std::shared_ptr<MainUi> ui = std::make_shared<MainUi>();
+    app.onStart = [ui] { *ui = MainUi(); };
 
     Popup addWork = AddWorkForm(app, ui);
     Popup escalate = EscalateForm(app, ui);

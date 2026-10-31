@@ -45,13 +45,16 @@ struct AppState
     std::string flash;     ///< Result of the last action, shown above the key bar.
     bool flashOk = true;   ///< False when the engine refused the last action.
 
-    std::function<void()> quit; ///< Ends the program.
+    std::function<void()> quit;    ///< Ends the program.
+    std::function<void()> onStart; ///< Clears what the main screen kept from the last session.
 
     /** @return The selected case, or nullptr if there are none. */
     WorkflowInstance *currentCase();
 
     /**
      * @brief Start a session from a setup, open its first case and show the main screen.
+     *
+     * Calls onStart first, so nothing from the previous scenario is still on show.
      * @param setup The setup to run.
      */
     void start(const ScenarioSetup &setup);

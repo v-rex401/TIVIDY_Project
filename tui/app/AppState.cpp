@@ -27,6 +27,10 @@ WorkflowInstance *AppState::currentCase()
 
 void AppState::start(const ScenarioSetup &setup)
 {
+    if (onStart)
+    {
+        onStart();
+    }
     session.reset(new Session(setup));
     session->openCase();
     caseIndex = 0;

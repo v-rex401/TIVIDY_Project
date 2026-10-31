@@ -12,6 +12,8 @@
 #include <sstream>
 #include <utility>
 
+#include <ftxui/component/event.hpp>
+
 #include "State.h"
 #include "Theme.h"
 #include "WorkflowDefinition.h"
@@ -127,7 +129,25 @@ Component CasesView(AppState &app, std::shared_ptr<MainUi> ui, const CaseActions
                             text("  "), Theme::stateLabel(status), filler()});
         return state.focused ? Theme::selected(row) : row;
     };
+    auto refreshLabels = [&app, labels]
+    {
+        labels->clear();
+        if (!app.session)
+        {
+            return;
+        }
+        for (WorkflowInstance *c : app.session->cases())
+        {
+            labels->push_back(c->getId() + "|" + c->getState()->getName());
+        }
+    };
     Component caseList = Menu(labels.get(), &app.caseIndex, menuOption);
+    // The menu clamps the selection to its labels, so they must be current even before the next redraw.
+    caseList = CatchEvent(caseList, [refreshLabels](Event)
+    {
+        refreshLabels();
+        return false;
+    });
 
     Component buttons = Container::Vertical({
         actionButton("a", "Approve", actions.approve),
@@ -145,14 +165,10 @@ Component CasesView(AppState &app, std::shared_ptr<MainUi> ui, const CaseActions
 
     Component layout = Container::Horizontal({caseList, buttons});
 
-    return Renderer(layout, [&app, ui, labels, caseList, buttons]
+    return Renderer(layout, [&app, ui, refreshLabels, caseList, buttons]
     {
         Session &session = *app.session;
-        labels->clear();
-        for (WorkflowInstance *c : session.cases())
-        {
-            labels->push_back(c->getId() + "|" + c->getState()->getName());
-        }
+        refreshLabels();
         WorkflowInstance *c = app.currentCase();
         if (c == nullptr)
         {

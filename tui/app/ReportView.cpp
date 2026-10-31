@@ -21,6 +21,11 @@
 using namespace ftxui;
 using namespace FormParts;
 
+namespace
+{
+    const int kRows = 18; ///< Report lines shown at once.
+}
+
 Popup ReportView(AppState &app, std::shared_ptr<MainUi> ui)
 {
     /** @brief The pop-up's state. */
@@ -28,6 +33,7 @@ Popup ReportView(AppState &app, std::shared_ptr<MainUi> ui)
     {
         int which = 0;
         int scroll = 0;
+        int lastScroll = 0; ///< The scroll that shows the last line.
         std::string content;
         std::vector<std::string> kinds = {"Progress report", "Audit trail"};
     };
@@ -50,23 +56,25 @@ Popup ReportView(AppState &app, std::shared_ptr<MainUi> ui)
         {
             lines.push_back(line);
         }
-        f->scroll = std::max(0, std::min(f->scroll, static_cast<int>(lines.size()) - 1));
+        f->lastScroll = std::max(0, static_cast<int>(lines.size()) - kRows);
+        f->scroll = std::max(0, std::min(f->scroll, f->lastScroll));
         Elements rows;
-        for (std::size_t i = f->scroll; i < lines.size() && rows.size() < 18; ++i)
+        for (std::size_t i = f->scroll; i < lines.size() && static_cast<int>(rows.size()) < kRows; ++i)
         {
             rows.push_back(text(lines[i]));
         }
-        Element box = vbox(rows) | size(HEIGHT, EQUAL, 18);
+        Element box = vbox(rows) | size(HEIGHT, EQUAL, kRows);
         return focused ? box | borderLight | color(Theme::accent()) : box | borderLight;
     });
+    // Scroll while there is more to see; at either end the arrow moves on to the next field instead.
     body = CatchEvent(body, [f](Event event)
     {
-        if (event == Event::ArrowDown)
+        if (event == Event::ArrowDown && f->scroll < f->lastScroll)
         {
             ++f->scroll;
             return true;
         }
-        if (event == Event::ArrowUp)
+        if (event == Event::ArrowUp && f->scroll > 0)
         {
             --f->scroll;
             return true;
