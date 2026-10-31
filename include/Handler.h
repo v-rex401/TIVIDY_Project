@@ -38,6 +38,8 @@ public:
 
 	std::string getSeverity() override;
 
+	void setSeverity(const std::string& severity) override;
+
 	std::string getRequiredPosition() override;
 
 	void setRequiredPosition(const std::string& position) override;

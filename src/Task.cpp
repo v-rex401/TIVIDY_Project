@@ -68,6 +68,11 @@ WorkItem* Task::clone()
     return clonedTask;
 }
 
+void Task::setSeverity(const std::string& severity)
+{
+    this->severity = severity;
+}
+
 Staff* Task::getResponsible()
 {
     return responsible;

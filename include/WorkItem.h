@@ -35,6 +35,16 @@ public:
 	virtual std::string getSeverity() = 0;
 
 	/**
+	 * @brief Set how urgent the item is, e.g. "Low", "High" or "Critical".
+	 *
+	 * SeverityBasedRouting reads this to pick the emergency stage. The default
+	 * does nothing, for work items that carry no severity.
+	 *
+	 * @param severity The severity label.
+	 */
+	virtual void setSeverity(const std::string& /*severity*/) {}
+
+	/**
 	 * @brief get the required Staff position of a Stage
 	 */
 	virtual std::string getRequiredPosition() = 0;

@@ -54,6 +54,12 @@ public:
 	std::string getSeverity() override;
 
 	/**
+	 * @brief set the severity of a Task
+	 * @param severity The severity label, e.g. "High".
+	 */
+	void setSeverity(const std::string& severity) override;
+
+	/**
 	 * @brief get the required Staff position of a Task
 	 */
 	std::string getRequiredPosition() override;
