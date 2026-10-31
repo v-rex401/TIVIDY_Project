@@ -9,6 +9,8 @@ void AuditExportVisitor::visitStage(Stage *s)
 	std::cout << "Title: ";
 	std::cout << s->getTitle() << std::endl;
 	s->printHierarchy("");
+
+	this->trail += "Stage: " + s->getName() + "\n";
 }
 
 void AuditExportVisitor::visitTask(Task *t)
@@ -18,6 +20,8 @@ void AuditExportVisitor::visitTask(Task *t)
 	std::cout << "Title: ";
 	std::cout << t->getTitle() << std::endl;
 	t->printHierarchy("");
+
+	this->trail += "Task: " + t->getName() + "\n";
 }
 
 void AuditExportVisitor::visitWorkItem(WorkItem *w)
@@ -27,6 +31,8 @@ void AuditExportVisitor::visitWorkItem(WorkItem *w)
 	std::cout << "Title: ";
 	std::cout << w->getTitle() << std::endl;
 	w->printHierarchy("");
+
+	this->trail += "WorkItem: " + w->getName() + "\n";
 }
 
 void AuditExportVisitor::visitParticipant(Staff *p)
@@ -36,6 +42,8 @@ void AuditExportVisitor::visitParticipant(Staff *p)
 	std::cout << "Title: ";
 	std::cout << p->getTitle() << std::endl;
 	p->printHierarchy("");
+
+	this->trail += "Participant: " + p->getName() + ", " + p->getTitle() + "\n";
 }
 
 void AuditExportVisitor::visitHistoryEntry(WorkflowEvent *e)
@@ -43,10 +51,10 @@ void AuditExportVisitor::visitHistoryEntry(WorkflowEvent *e)
 	std::cout << e->getTimestamp() << std::endl;
 	std::cout << e->getType() << std::endl;
 	std::cout << e->getDescription() << std::endl;
+
+	this->trail += e->getTimestamp() + "  " + e->getType() + "  " + e->getDescription() + "\n";
 }
 std::string AuditExportVisitor::getAuditTrail()
 {
-	std::string result = "Audit Trail\n";
-	// TODO: Determine what is being visited
 	return "Audit Trail\n" + this->trail + "End of Audit Trail\n";
 }
