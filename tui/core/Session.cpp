@@ -326,8 +326,7 @@ WorkflowInstance *Session::openCase()
     record->invoker.reset(new Invoker(record->history.get()));
     records.push_back(std::move(record));
 
-    log(c, "Opened from \"" + spec.workflowName + "\" with its own copy of the stages, and started: Pending → Active",
-        "Facade, Prototype, State");
+    log(c, "Opened with its own copy of the stages, started: Pending → Active", "Facade, Prototype, State");
     return c;
 }
 
