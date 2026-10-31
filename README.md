@@ -28,6 +28,10 @@ make test # build and run tests
 make clean # remove build output
 ```
 
+### Using the TUI
+
+`make run` opens the full-screen TUI. See [tui/README.md](tui/README.md) for the keys, a demo script, how it is built and the engine changes it needed.
+
 ### Documentation
 
 ```bash
