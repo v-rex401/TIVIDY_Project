@@ -19,7 +19,7 @@
 class WorkflowInstance;
 
 /** @brief The three screens, in the order of the root tab container. */
-enum Screen
+enum AppScreen
 {
     PickerScreen = 0,  ///< Choose a ready-made scenario or build your own.
     BuilderScreen = 1, ///< Build your own setup.
