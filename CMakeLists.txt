@@ -12,12 +12,22 @@ file(GLOB ENGINE_SRC src/*.cpp)
 list(REMOVE_ITEM ENGINE_SRC ${CMAKE_SOURCE_DIR}/src/main.cpp)
 add_library(tividy_engine ${ENGINE_SRC})
 
-add_executable(tividy src/main.cpp)
-target_link_libraries(tividy tividy_engine)
+# TUI core = the terminal-free part of the TUI (session, scenarios); tested like the engine
+file(GLOB TUI_CORE_SRC tui/core/*.cpp)
+add_library(tividy_tui_core ${TUI_CORE_SRC})
+target_include_directories(tividy_tui_core PUBLIC tui/core)
+target_link_libraries(tividy_tui_core PUBLIC tividy_engine)
+
+# The program = main.cpp + the FTXUI screens in tui/app
+file(GLOB TUI_APP_SRC tui/app/*.cpp)
+add_executable(tividy src/main.cpp ${TUI_APP_SRC})
+target_include_directories(tividy PRIVATE tui/app)
+target_link_libraries(tividy tividy_tui_core)
 
 # Warnings for src/ only (not FTXUI or GoogleTest), as the Build check used to compile it
 set(TIVIDY_WARNINGS -Wall -Wextra)
 target_compile_options(tividy_engine PRIVATE ${TIVIDY_WARNINGS})
+target_compile_options(tividy_tui_core PRIVATE ${TIVIDY_WARNINGS})
 target_compile_options(tividy PRIVATE ${TIVIDY_WARNINGS})
 
 include(FetchContent)
@@ -46,6 +56,6 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 file(GLOB TEST_SRC tests/*.cpp)
 add_executable(tividy_tests ${TEST_SRC})
-target_link_libraries(tividy_tests tividy_engine gtest_main)
+target_link_libraries(tividy_tests tividy_tui_core gtest_main)
 include(GoogleTest)
 gtest_discover_tests(tividy_tests)
