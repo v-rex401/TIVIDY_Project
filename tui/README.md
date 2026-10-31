@@ -7,11 +7,38 @@ is what the engine actually did.
 
 ## Run it
 
+### Locally
+
+Needs `g++` (C++17), `cmake` 3.14+ and `make`. FTXUI and GoogleTest are downloaded
+by CMake on the first build.
+
 ```bash
-make run          # or: ./build/tividy
+make run          # build, then open the TUI (or: ./build/tividy)
+make test         # build, then run all the tests
 ```
 
+### With Docker
+
+Needs Docker Desktop (or Docker Engine with Compose) running. Nothing else.
+
+```bash
+docker compose build                    # build the image (first time: a few minutes)
+docker compose run --rm tividy          # open the TUI
+docker compose run --rm tests           # run all the tests
+docker compose run --rm -T tividy < /dev/null   # the scripted text demo, no TUI
+```
+
+- **Rebuild after changing code.** The image holds a copy of the code from when
+  it was built, and `run` doesn't rebuild it. Run `docker compose build` again, or
+  add `--build` to `run`.
+- The TUI takes the size of the terminal you start it in, so make the window big
+  first.
+- `--rm` deletes the container when you quit, so they don't pile up.
+
+### Good to know
+
 - Use a terminal of at least **120 × 36**. Full screen is best for the demo.
+- Press `q` to quit, `?` for help on any screen.
 - If stdin or stdout isn't a terminal (CI, Valgrind, a pipe), the program runs a
   **scripted text demo** of the S.H.I.E.L.D. scenario instead and exits.
   This is what `./build/tividy < /dev/null` prints.

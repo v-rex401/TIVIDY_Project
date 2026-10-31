@@ -11,11 +11,12 @@
 ### With Docker
 
 ```bash
-docker compose run tividy # run the program
-docker compose run tests # run the test suite
+docker compose build # build the image
+docker compose run --rm tividy # run the program (opens the TUI)
+docker compose run --rm tests # run the test suite
 ```
 
-First run takes ~2 minutes while cmake is installed in the image
+The first build takes a few minutes while CMake, FTXUI and GoogleTest are set up in the image. `run` doesn't rebuild the image, so run `docker compose build` again after changing code.
 
 ### Locally
 
