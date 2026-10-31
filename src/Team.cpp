@@ -88,6 +88,15 @@ void Team::removeMember(Staff* member)
 }
 
 /**
+ * @brief The team's direct members
+ * @return The members, in the order they were added
+ */
+const std::vector<Staff*>& Team::getMembers() const
+{
+    return this->members;
+}
+
+/**
  * @brief Attempts to handle a request based on the required rank
  * @param rank Minimum rank required to handle the request
  * @return true if handled, otherwise false
