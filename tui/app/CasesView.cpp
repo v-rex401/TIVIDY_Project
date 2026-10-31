@@ -65,7 +65,7 @@ namespace
         option.transform = [key, label](const EntryState &state)
         {
             Element row = hbox({text(" " + key + " ") | bold | color(Theme::accent()), text(label + " "), filler()});
-            return state.focused ? row | inverted : row;
+            return state.focused ? Theme::selected(row) : row;
         };
         return Button(label, std::move(run), option);
     }
@@ -87,7 +87,7 @@ Element StateTrack(const std::vector<std::string> &path)
         {
             label = label | dim;
         }
-        return state == current ? label | inverted : label;
+        return state == current ? Theme::selected(label | bold, Theme::stateColour(state)) : label;
     };
     auto edge = [&](const std::string &a, const std::string &b)
     {
@@ -125,7 +125,7 @@ Component CasesView(AppState &app, std::shared_ptr<MainUi> ui, const CaseActions
         std::string status = bar == std::string::npos ? "" : state.label.substr(bar + 1);
         Element row = hbox({text(state.active ? " › " : "   ") | color(Theme::accent()), text(id) | bold,
                             text("  "), Theme::stateLabel(status), filler()});
-        return state.focused ? row | inverted : row;
+        return state.focused ? Theme::selected(row) : row;
     };
     Component caseList = Menu(labels.get(), &app.caseIndex, menuOption);
 

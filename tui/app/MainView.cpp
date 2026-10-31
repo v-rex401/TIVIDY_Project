@@ -120,7 +120,7 @@ Component MainView(AppState &app)
         for (std::size_t i = 0; i < kTabs.size(); ++i)
         {
             Element label = text(" " + std::to_string(i + 1) + " " + kTabs[i] + " ");
-            tabLabels.push_back(static_cast<int>(i) == app.tab ? label | inverted | bold : label | dim);
+            tabLabels.push_back(static_cast<int>(i) == app.tab ? Theme::selected(label | bold) : label | dim);
         }
         Element title = hbox({
             text(" TIVIDY ") | bold | color(Theme::accent()),

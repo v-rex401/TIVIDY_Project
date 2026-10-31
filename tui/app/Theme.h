@@ -40,6 +40,19 @@ namespace Theme
     ftxui::Color stateColour(const std::string &state);
 
     /**
+     * @brief Draw an element as selected: dark text on a solid background.
+     *
+     * Used instead of `inverted`, which swaps each cell's own colours, so
+     * coloured or dimmed text inside a selected row came out unreadable.
+     * Here every cell gets the same two colours, whatever it had before.
+     *
+     * @param element The element to highlight.
+     * @param background The highlight colour; light grey by default.
+     * @return The element.
+     */
+    ftxui::Element selected(ftxui::Element element, ftxui::Color background = ftxui::Color::RGB(215, 215, 215));
+
+    /**
      * @brief A state name in its colour.
      * @param state The state.
      * @return The element.
@@ -90,6 +103,17 @@ namespace Theme
      */
     ftxui::Component choice(const std::vector<std::string> *entries, int *selected,
                             std::function<void()> onChange = {});
+
+    /**
+     * @brief Let Tab leave a component instead of changing it.
+     *
+     * An FTXUI menu uses Tab to pick its next option, so pressing Tab to move on
+     * would silently change the choice.
+     *
+     * @param component The component, usually a menu.
+     * @return The wrapped component.
+     */
+    ftxui::Component tabMovesOn(ftxui::Component component);
 }
 
 #endif

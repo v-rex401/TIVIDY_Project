@@ -66,9 +66,9 @@ Popup AddWorkForm(AppState &app, std::shared_ptr<MainUi> ui)
         Element row = hbox({text(state.active ? " › " : "   ") | color(Theme::accent()),
                             text(state.label.substr(0, bar)) | size(WIDTH, EQUAL, 28),
                             text(bar == std::string::npos ? "" : state.label.substr(bar + 1)) | dim});
-        return state.focused ? row | inverted : row;
+        return state.focused ? Theme::selected(row) : row;
     };
-    Component picks = Menu(&f->picks, &f->pick, pickOption);
+    Component picks = Theme::tabMovesOn(Menu(&f->picks, &f->pick, pickOption));
 
     InputOption typed = Theme::input();
     typed.on_enter = submitTyped;
