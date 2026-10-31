@@ -8,8 +8,11 @@
 #ifndef THEME_H
 #define THEME_H
 
+#include <functional>
 #include <string>
+#include <vector>
 
+#include <ftxui/component/component.hpp>
 #include <ftxui/component/component_options.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/color.hpp>
@@ -77,6 +80,16 @@ namespace Theme
      * @return The option.
      */
     ftxui::InputOption input();
+
+    /**
+     * @brief Pick one of a few options on one line; the chosen one is in the accent colour.
+     * @param entries The options (read every time it is drawn, so the list may change).
+     * @param selected Index of the chosen option.
+     * @param onChange Called after the choice changes.
+     * @return The component.
+     */
+    ftxui::Component choice(const std::vector<std::string> *entries, int *selected,
+                            std::function<void()> onChange = {});
 }
 
 #endif

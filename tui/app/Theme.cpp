@@ -7,6 +7,8 @@
 
 #include "Theme.h"
 
+#include <utility>
+
 #include <map>
 
 using namespace ftxui;
@@ -50,7 +52,7 @@ Element Theme::heading(const std::string &title)
 
 Element Theme::panel(const std::string &title, Element content)
 {
-    return window(text(" " + title + " ") | bold, content | flex, LIGHT);
+    return window(text(" " + title + " ") | bold, content, LIGHT);
 }
 
 ButtonOption Theme::button()
@@ -85,4 +87,21 @@ InputOption Theme::input()
         return state.element;
     };
     return option;
+}
+
+Component Theme::choice(const std::vector<std::string> *entries, int *selected, std::function<void()> onChange)
+{
+    MenuOption option = MenuOption::Horizontal();
+    option.entries_option.transform = [](const EntryState &state)
+    {
+        Element label = text(" " + state.label + " ");
+        label = state.active ? label | bold | color(accent()) : label | dim;
+        return state.focused ? label | inverted : label;
+    };
+    option.elements_infix = [] { return text(" "); };
+    if (onChange)
+    {
+        option.on_change = std::move(onChange);
+    }
+    return Menu(entries, selected, option);
 }
