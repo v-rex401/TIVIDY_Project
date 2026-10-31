@@ -74,6 +74,18 @@ public:
 	std::vector<WorkItem *> getWorkItem();
 	const std::vector<WorkItem *> &getWorkItems() const;
 	void addWorkItem(WorkItem *item);
+
+	/**
+	 * @brief Record that a staff member works on this instance.
+	 * @param staff The staff member (not owned). Null or already recorded is ignored.
+	 */
+	void addParticipant(Staff *staff);
+
+	/**
+	 * @brief Everyone recorded as working on this instance.
+	 * @return The participants, in the order they joined (not owned).
+	 */
+	const std::vector<Staff *> &getParticipants() const;
 	// double getTransactionValue() const;
 	// void setTransactionValue(double value);
 	// double getEventMetric() const;

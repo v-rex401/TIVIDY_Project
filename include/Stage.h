@@ -40,6 +40,12 @@ public:
 	virtual std::string getSeverity() override;
 
 	/**
+	 * @brief set the severity of a Stage
+	 * @param severity The severity label, e.g. "High".
+	 */
+	void setSeverity(const std::string &severity) override;
+
+	/**
 	 * @brief get the required Staff position of a Stage
 	 */
 	virtual std::string getRequiredPosition() override;

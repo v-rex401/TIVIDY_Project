@@ -127,6 +127,11 @@ std::string Stage::getSeverity()
     return severity;
 }
 
+void Stage::setSeverity(const std::string &severity)
+{
+    this->severity = severity;
+}
+
 std::string Stage::getRequiredPosition()
 {
     return requiredPosition;

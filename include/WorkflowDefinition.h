@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <utility>
 #include "Stage.h"
 
 class WorkItem;
@@ -61,6 +62,12 @@ public:
 	void setName(std::string name);
 
 	/**
+	 * @brief Get the name of the workflow
+	 * @return The name given to the builder.
+	 */
+	std::string getName() const;
+
+	/**
 	 * @brief Add a transition from A to B
 	 */
 	void addTransition(std::string from, std::string to);
@@ -79,6 +86,24 @@ public:
 	 * @brief Set Routing Strategy for workflow
 	 */
 	void setRoutingStrategyType(std::string type);
+
+	/**
+	 * @brief Get the assignment strategy type the workflow asks for
+	 * @return The type name, or empty if none was set.
+	 */
+	std::string getAssignmentStrategyType() const;
+
+	/**
+	 * @brief Get the routing strategy type the workflow asks for
+	 * @return The type name, or empty if none was set.
+	 */
+	std::string getRoutingStrategyType() const;
+
+	/**
+	 * @brief Get the transitions between stages, in the order they were added
+	 * @return Pairs of (from stage name, to stage name).
+	 */
+	std::vector<std::pair<std::string, std::string>> getTransitions() const;
 
 	/**
 	 * @brief Add initial data to workflow

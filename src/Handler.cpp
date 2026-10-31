@@ -111,6 +111,11 @@ std::string Handler::getSeverity()
     return this->severity;
 }
 
+void Handler::setSeverity(const std::string& severity)
+{
+    this->severity = severity;
+}
+
 std::string Handler::getRequiredPosition()
 {
     return this->requiredPosition;

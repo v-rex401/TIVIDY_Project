@@ -40,6 +40,12 @@ public:
     void removeMember(Staff* member);
 
 	/**
+     * @brief The team's direct members, in the order they were added
+     * @return The members (owned by the team)
+     */
+    const std::vector<Staff*>& getMembers() const;
+
+	/**
      * @brief Attempts to handle a request based on the required rank
      * @param rank Minimum rank required to handle the request
      * @return true if handled, otherwise false

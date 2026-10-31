@@ -17,14 +17,29 @@ void ProgressReportVisitor::visitStage(Stage *s)
 	std::cout << "Stage: ";
 	std::cout << s->getName() << std::endl;
 
-	this->total++;
 	this->report += "Stage: " + s->getName() + "\n";
 }
 
 void ProgressReportVisitor::visitTask(Task *t)
 {
+	if (t == NULL)
+	{
+		return;
+	}
 	std::cout << "Task: ";
 	std::cout << t->getName() << std::endl;
+
+	this->total++;
+	Staff *who = t->getResponsible();
+	if (who != NULL)
+	{
+		this->completed++;
+		this->report += "  Task: " + t->getName() + ", " + who->getName() + "\n";
+	}
+	else
+	{
+		this->report += "  Task: " + t->getName() + ", nobody yet\n";
+	}
 }
 
 void ProgressReportVisitor::visitWorkItem(WorkItem *w)
@@ -39,17 +54,21 @@ void ProgressReportVisitor::visitParticipant(Staff *p)
 	std::cout << "Participant: ";
 	std::cout << p->getName() << std::endl;
 	p->printHierarchy("");
+
+	this->report += "Participant: " + p->getName() + " (" + p->getTitle() + ")\n";
 }
 
 void ProgressReportVisitor::visitHistoryEntry(WorkflowEvent *e)
 {
 	std::cout << e->getDescription() << std::endl;
+
+	this->report += "History: " + e->getDescription() + "\n";
 }
 
 std::string ProgressReportVisitor::getReport()
 {
 	std::ostringstream out;
 	out << this->report
-	    << this->completed << " of " << this->total << " work items reported complete\n";
+	    << this->completed << " of " << this->total << " tasks have someone responsible\n";
 	return out.str();
 }

@@ -274,7 +274,7 @@ The first run takes ~2 minutes while cmake is installed in the image.
 
 ### Locally
 
-Requires `g++` (C++11), `cmake` and `make`.
+Requires `g++` (C++17), `cmake` (3.14+) and `make`. CMake fetches FTXUI and GoogleTest on the first build.
 
 ```bash
 make  # build
@@ -309,8 +309,8 @@ Three workflows run on every PR to `main` and `dev`:
 
 | Workflow | What it does |
 |---|---|
-| **Build** | Compiles all of `src/` with `-Wall -Wextra`, runs the binary |
-| **Valgrind** | Compiles with `-g`, runs under `--leak-check=full --error-exitcode=1` |
+| **Build** | Builds `tividy` with CMake (C++17, `-Wall -Wextra` on `src/`), runs it with stdin closed |
+| **Valgrind** | Builds `tividy` with CMake in Debug, runs it under `--leak-check=full --error-exitcode=1` |
 | **Tests** | Runs `make test` — CMake, GoogleTest, ctest |
 
 A red CI build blocks the merge.

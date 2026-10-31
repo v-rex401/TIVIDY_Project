@@ -46,7 +46,7 @@ public:
     WorkItem *clone() override { return new StrategyTestWorkItem(*this); }
     Staff *getResponsible() override { return responsible; }
     void setResponsible(Staff *s) override { responsible = s; }
-    void setSeverity(const std::string &s) { severity = s; }
+    void setSeverity(const std::string &s) override { severity = s; }
 };
 
 class RecordingAssignment : public AssignmentStrategy

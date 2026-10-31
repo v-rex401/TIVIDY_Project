@@ -7,9 +7,9 @@ class ProgressReportVisitor : public WorkflowVisitor
 {
 
 private:
-	int completed;
-	int total;
-	std::string report;
+	int completed;      ///< Tasks visited that have someone responsible.
+	int total;          ///< Tasks visited.
+	std::string report; ///< Text built up as elements are visited.
 
 public:
 	/** @brief Starts with an empty report and no items counted. */

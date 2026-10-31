@@ -15,16 +15,18 @@ class WorkItem {
 private:
 	WorkItem* successor = nullptr;
 
-protected:
+public:
     /**
      * @brief Get the next handler in the chain
+     * @return The successor, or nullptr at the end of the chain.
+     *
+     * Public so a client and a cloned definition can follow the chain.
      */
     WorkItem* getNextHandler() const
     {
         return this->successor;
     }
 
-public:
 	virtual std::string getName() = 0;
 
 	virtual std::string getTitle() = 0;
@@ -33,6 +35,16 @@ public:
 	 * @brief get the severity of a Stage
 	 */
 	virtual std::string getSeverity() = 0;
+
+	/**
+	 * @brief Set how urgent the item is, e.g. "Low", "High" or "Critical".
+	 *
+	 * SeverityBasedRouting reads this to pick the emergency stage. The default
+	 * does nothing, for work items that carry no severity.
+	 *
+	 * @param severity The severity label.
+	 */
+	virtual void setSeverity(const std::string& severity) { (void)severity; }
 
 	/**
 	 * @brief get the required Staff position of a Stage
