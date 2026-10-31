@@ -339,3 +339,33 @@ TEST(TaskTest, CloneReturnsIndependentCopy)
     EXPECT_EQ(copy->getTitle(), "Title");
     delete copy;
 }
+// ---------- Reports built from visits ----------
+
+TEST(AuditExportVisitorTest, AuditTrailListsWhatWasVisited)
+{
+    AuditExportVisitor v;
+    Stage s("Design", "Design Phase");
+    WorkflowEvent e("STATE_CHANGE", "Pending -> Active", "2026-10-31 09:00");
+    capture([&]
+            { v.visitStage(&s); v.visitHistoryEntry(&e); });
+
+    std::string trail = v.getAuditTrail();
+    EXPECT_NE(trail.find("Stage: Design"), std::string::npos);
+    EXPECT_NE(trail.find("2026-10-31 09:00  STATE_CHANGE  Pending -> Active"), std::string::npos);
+}
+
+TEST(ProgressReportVisitorTest, ReportCountsTasksWithSomeoneResponsible)
+{
+    ProgressReportVisitor v;
+    FakeStaff jane("Jane", "Nurse");
+    Task assigned("Check vitals");
+    Task open("Discharge");
+    assigned.setResponsible(&jane);
+    capture([&]
+            { v.visitTask(&assigned); v.visitTask(&open); });
+
+    std::string report = v.getReport();
+    EXPECT_NE(report.find("Check vitals, Jane"), std::string::npos);
+    EXPECT_NE(report.find("Discharge, nobody yet"), std::string::npos);
+    EXPECT_NE(report.find("1 of 2 tasks have someone responsible"), std::string::npos);
+}
