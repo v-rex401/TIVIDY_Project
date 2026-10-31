@@ -74,9 +74,9 @@ Popup AddWorkForm(AppState &app, std::shared_ptr<MainUi> ui)
     typed.on_enter = submitTyped;
     Component name = Input(&f->name, "e.g. Check vitals", typed);
     Component role = Input(&f->role, "a job title, e.g. Nurse", typed);
-    Component severity = Toggle(&f->severities, &f->severity);
-    Component assignment = Toggle(&f->assignments, &f->assignment);
-    Component routing = Toggle(&f->routings, &f->routing);
+    Component severity = Theme::choice(&f->severities, &f->severity);
+    Component assignment = Theme::choice(&f->assignments, &f->assignment);
+    Component routing = Theme::choice(&f->routings, &f->routing);
     Component add = Button("Add", submitTyped, Theme::button());
     Component cancel = Button("Cancel", [ui] { ui->addWork = false; }, Theme::button());
 

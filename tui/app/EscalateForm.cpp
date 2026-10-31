@@ -25,7 +25,7 @@ Popup EscalateForm(AppState &app, std::shared_ptr<MainUi> ui)
     struct Fields
     {
         int start = 0;
-        std::string rank = "3";
+        std::string rank;
         std::vector<std::string> starts;
         std::vector<std::string> workNames;
     };
@@ -33,7 +33,7 @@ Popup EscalateForm(AppState &app, std::shared_ptr<MainUi> ui)
 
     auto run = [&app, ui, f]
     {
-        int rank = toInt(f->rank, 1);
+        int rank = toInt(f->rank, 3);
         EscalationResult result = f->start == 0
                                       ? app.session->escalate(app.currentCase(), rank)
                                       : app.session->escalateWork(app.currentCase(), f->workNames[f->start - 1], rank);
@@ -45,7 +45,7 @@ Popup EscalateForm(AppState &app, std::shared_ptr<MainUi> ui)
     Component start = Radiobox(&f->starts, &f->start);
     InputOption rankOption = Theme::input();
     rankOption.on_enter = run;
-    Component rank = Input(&f->rank, "1-9", rankOption);
+    Component rank = Input(&f->rank, "3", rankOption);
     Component go = Button("Escalate", run, Theme::button());
     Component close = Button("Close", [ui] { ui->escalate = false; }, Theme::button());
     Component form = Container::Vertical({start, rank, Container::Horizontal({go, close})});
@@ -84,6 +84,7 @@ Popup EscalateForm(AppState &app, std::shared_ptr<MainUi> ui)
             }
         }
         f->start = 0;
+        f->rank.clear();
         ui->hasLadder = false;
     };
     return {view, onOpen};

@@ -40,9 +40,7 @@ Popup ReportView(AppState &app, std::shared_ptr<MainUi> ui)
         f->scroll = 0;
     };
 
-    MenuOption kindOption = MenuOption::Toggle();
-    kindOption.on_change = refresh;
-    Component kind = Menu(&f->kinds, &f->which, kindOption);
+    Component kind = Theme::choice(&f->kinds, &f->which, refresh);
 
     Component body = Renderer([f](bool focused)
     {

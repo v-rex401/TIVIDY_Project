@@ -26,14 +26,15 @@ Popup AddPersonForm(AppState &app, std::shared_ptr<MainUi> ui)
     {
         std::string name;
         std::string title;
-        std::string rank = "1";
+        std::string rank;
         int team = 0;
         std::vector<std::string> teams;
         std::string last;
     };
     std::shared_ptr<Fields> f = std::make_shared<Fields>();
+    std::shared_ptr<std::weak_ptr<ComponentBase>> firstField = std::make_shared<std::weak_ptr<ComponentBase>>();
 
-    auto add = [&app, f]
+    auto add = [&app, f, firstField]
     {
         std::string team = f->team == 0 ? "" : f->teams[f->team];
         ActionResult result = app.session->addPerson({f->name, f->title, toInt(f->rank, 1), team});
@@ -41,16 +42,23 @@ Popup AddPersonForm(AppState &app, std::shared_ptr<MainUi> ui)
         f->last = result.message;
         if (result.changed)
         {
-            f->name.clear(); // keep title, rank and team: the next person is often similar
+            f->name.clear(); // the team is kept: the next person often joins the same one
+            f->title.clear();
+            f->rank.clear();
+            if (Component field = firstField->lock())
+        {
+            field->TakeFocus();
+        }
         }
     };
 
     InputOption option = Theme::input();
     option.on_enter = add;
     Component name = Input(&f->name, "full name", option);
+    *firstField = name;
     Component title = Input(&f->title, "job title, e.g. Nurse", option);
-    Component rank = Input(&f->rank, "1-9", option);
-    Component team = Toggle(&f->teams, &f->team);
+    Component rank = Input(&f->rank, "1", option);
+    Component team = Theme::choice(&f->teams, &f->team);
     Component ok = Button("Add", add, Theme::button());
     Component done = Button("Done", [ui] { ui->addPerson = false; }, Theme::button());
     Component form = Container::Vertical({name, title, rank, team, Container::Horizontal({ok, done})});
@@ -58,7 +66,7 @@ Popup AddPersonForm(AppState &app, std::shared_ptr<MainUi> ui)
     Component view = Renderer(form, [f, name, title, rank, team, ok, done]
     {
         Element content = vbox({
-            paragraph("Enter in any field adds the person. The form stays open so you can add the next one.") | dim,
+            paragraph("Tab moves between fields, enter adds the person. The form stays open for the next one.") | dim,
             text(""),
             row("Name", name->Render()),
             row("Title", title->Render()),

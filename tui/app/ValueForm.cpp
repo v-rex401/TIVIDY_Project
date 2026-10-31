@@ -52,7 +52,7 @@ Popup ValueForm(AppState &app, std::shared_ptr<MainUi> ui)
         }
     };
 
-    Component key = Toggle(&f->keys, &f->key);
+    Component key = Theme::choice(&f->keys, &f->key);
     InputOption option = Theme::input();
     option.on_enter = set;
     Component value = Input(&f->value, "a number", option);
