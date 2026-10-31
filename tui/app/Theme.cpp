@@ -50,7 +50,7 @@ Element Theme::heading(const std::string &title)
     return text(title) | bold;
 }
 
-Element Theme::panel(const std::string &title, Element content)
+Element Theme::panel(const std::string &title, ftxui::Element content)
 {
     return window(text(" " + title + " ") | bold, content, LIGHT);
 }
