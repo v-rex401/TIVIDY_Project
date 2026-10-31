@@ -78,6 +78,11 @@ void WorkflowDefinition::setName(std::string name)
     this->name = name;
 }
 
+std::string WorkflowDefinition::getName() const
+{
+    return this->name;
+}
+
 void WorkflowDefinition::addTransition(std::string from, std::string to)
 {
     transitionFrom.push_back(from);
@@ -98,6 +103,26 @@ void WorkflowDefinition::setAssignmentStrategyType(std::string type)
 void WorkflowDefinition::setRoutingStrategyType(std::string type)
 {
     this->routingStrategyType = type;
+}
+
+std::string WorkflowDefinition::getAssignmentStrategyType() const
+{
+    return this->assignmentStrategyType;
+}
+
+std::string WorkflowDefinition::getRoutingStrategyType() const
+{
+    return this->routingStrategyType;
+}
+
+std::vector<std::pair<std::string, std::string>> WorkflowDefinition::getTransitions() const
+{
+    std::vector<std::pair<std::string, std::string>> result;
+    for (std::size_t i = 0; i < transitionFrom.size() && i < transitionTo.size(); ++i)
+    {
+        result.push_back(std::make_pair(transitionFrom[i], transitionTo[i]));
+    }
+    return result;
 }
 
 void WorkflowDefinition::addInitialData(std::string key, std::string value)
