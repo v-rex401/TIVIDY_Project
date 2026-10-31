@@ -8,13 +8,18 @@ class Staff
 private:
 	Staff *successor = nullptr;
 
-protected:
+public:
+    /**
+     * @brief Get the next staff member in the chain
+     * @return The successor, or nullptr at the end of the chain.
+     *
+     * Public so a client can show who a request would be passed to.
+     */
     Staff* getNextHandler() const
     {
         return this->successor;
     }
 
-public:
 	/**
 	 * @brief Virtual destructor the Staff interface.
 	 * It ensures proper cleanup of derived Employee and Team objects when deleted via a Staff pointer.

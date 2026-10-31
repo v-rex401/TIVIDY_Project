@@ -15,16 +15,18 @@ class WorkItem {
 private:
 	WorkItem* successor = nullptr;
 
-protected:
+public:
     /**
      * @brief Get the next handler in the chain
+     * @return The successor, or nullptr at the end of the chain.
+     *
+     * Public so a client and a cloned definition can follow the chain.
      */
     WorkItem* getNextHandler() const
     {
         return this->successor;
     }
 
-public:
 	virtual std::string getName() = 0;
 
 	virtual std::string getTitle() = 0;
