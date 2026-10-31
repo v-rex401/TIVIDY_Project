@@ -98,6 +98,7 @@ void WorkflowManager::executeWorkflow(WorkflowInstance *instance, WorkItem *item
 	item->setResponsible(assignedStaff);
 	destination->addMember(item);
 	instance->addWorkItem(item);
+	instance->addParticipant(assignedStaff);
 }
 
 void WorkflowManager::cancelWorkflow(WorkflowInstance *instance)
