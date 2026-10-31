@@ -45,6 +45,30 @@ WorkflowDefinition *WorkflowDefinition::clone()
         }
     }
 
+    // Stage::clone() copies one stage, so the links the builder made between
+    // stages (the Chain of Responsibility) are rebuilt here by position.
+    std::vector<WorkItem *> *copies = clonedDefinition->getStages();
+    std::vector<WorkItem *> originals;
+    for (WorkItem *stage : this->stages)
+    {
+        if (stage != nullptr)
+        {
+            originals.push_back(stage);
+        }
+    }
+    for (std::size_t i = 0; i < originals.size(); ++i)
+    {
+        WorkItem *next = originals[i]->getNextHandler();
+        for (std::size_t j = 0; j < originals.size() && next != nullptr; ++j)
+        {
+            if (originals[j] == next)
+            {
+                (*copies)[i]->setNextHandler((*copies)[j]);
+                break;
+            }
+        }
+    }
+
     return clonedDefinition;
 }
 
