@@ -17,6 +17,8 @@ EscalatingWorkflowBuilder::~EscalatingWorkflowBuilder()
 
 void EscalatingWorkflowBuilder::buildDefinition(std::string name)
 {
+    // Starting a new definition discards any part-built one
+    delete this->definition;
 	definition = new WorkflowDefinition();
 
     definition->setName(name);

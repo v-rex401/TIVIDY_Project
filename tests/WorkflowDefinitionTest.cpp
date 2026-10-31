@@ -119,3 +119,16 @@ TEST(WorkflowDefinitionTest, CloneLinksPointIntoTheCopyNotTheOriginal)
     delete copy;
     delete definition;
 }
+
+TEST(WorkflowDefinitionTest, EscalatingBuilderCanStartOverWithoutLeaking)
+{
+    EscalatingWorkflowBuilder builder;
+    builder.buildDefinition("First");
+    builder.buildStage("Old stage");
+    builder.buildDefinition("Second");
+    WorkflowDefinition *definition = builder.getWorkflowDefinition();
+
+    EXPECT_EQ(definition->getName(), "Second");
+    EXPECT_TRUE(definition->getStages()->empty());
+    delete definition;
+}
