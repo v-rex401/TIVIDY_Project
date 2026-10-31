@@ -52,7 +52,7 @@ Component PickerView(AppState &app)
             }
             rows.push_back(hbox({text(here ? " › " : "   ") | color(Theme::accent()), title, filler(),
                                  text(tag + " ") | dim}));
-            rows.push_back(paragraph(summary) | dim | size(WIDTH, LESS_THAN, 66));
+            rows.push_back(hbox({text("   "), paragraph(summary) | dim | size(WIDTH, LESS_THAN, 66)}));
             rows.push_back(text(""));
         }
 
