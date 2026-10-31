@@ -34,7 +34,8 @@ namespace
 
 Component WorkflowView(AppState &app)
 {
-    return Renderer([&app]
+    // The (bool) form makes the tab focusable. A tab that can't take focus stops the main screen getting keys.
+    return Renderer([&app](bool)
     {
         if (!app.session)
         {
