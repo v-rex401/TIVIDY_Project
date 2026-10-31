@@ -44,7 +44,7 @@ public:
 	 *
 	 * @param severity The severity label.
 	 */
-	virtual void setSeverity(const std::string& /*severity*/) {}
+	virtual void setSeverity(const std::string& severity) { (void)severity; }
 
 	/**
 	 * @brief get the required Staff position of a Stage
