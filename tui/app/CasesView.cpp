@@ -216,7 +216,7 @@ Component CasesView(AppState &app, std::shared_ptr<MainUi> ui, const CaseActions
         {
             const TimelineEntry &entry = story[i];
             bool newest = i + 1 == story.size();
-            Element line = text((entry.refused ? "✗ " : "") + entry.text);
+            Element line = paragraph((entry.refused ? "✗ " : "") + entry.text);
             if (entry.refused)
             {
                 line = line | color(Theme::refused());
@@ -233,7 +233,7 @@ Component CasesView(AppState &app, std::shared_ptr<MainUi> ui, const CaseActions
         Element middle = vbox({
             Theme::panel("Status", vbox({header, text(""), StateTrack(session.statePath(c))})),
             hbox({board | flex, values}) | flex,
-            timeline | size(HEIGHT, GREATER_THAN, 6),
+            timeline | size(HEIGHT, EQUAL, 10),
         }) | flex;
 
         // ----- right: actions -----
