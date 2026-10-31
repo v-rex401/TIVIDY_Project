@@ -164,6 +164,19 @@ void WorkflowInstance::addWorkItem(WorkItem *item)
     }
 }
 
+void WorkflowInstance::addParticipant(Staff *staff)
+{
+    if (staff != nullptr && std::find(participants.begin(), participants.end(), staff) == participants.end())
+    {
+        participants.push_back(staff);
+    }
+}
+
+const std::vector<Staff *> &WorkflowInstance::getParticipants() const
+{
+    return participants;
+}
+
 void WorkflowInstance::setData(const std::string &key, double value)
 {
     this->data[key] = value;
