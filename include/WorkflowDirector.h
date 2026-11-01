@@ -28,6 +28,9 @@ public:
 
 	/**
 	 * @brief Constructs a workflow with the specified stages and tasks
+	 * @param name Name of the workflow to construct
+	 * @param stages Vector containing the names of the workflow stages
+	 * @param tasks Map associating each stage name with its task titles
 	 */
 	void construct(std::string name, std::vector<std::string> stages, std::map<std::string, std::vector<std::string>> tasks);
 };
