@@ -743,15 +743,16 @@ namespace
 
 EscalationResult Session::escalate(WorkflowInstance *c, int rank)
 {
-    EscalationResult result = walkChain(chainHead, rank);
     if (rank < 1)
     {
-        result.rank = rank;
-        result.steps.clear();
-        result.message = "A request has to need a rank of 1 or more.";
-        log(c, result.message, "Chain of Responsibility", true);
-        return result;
+        EscalationResult refused;
+        refused.rank = rank;
+        refused.message = "A request has to need a rank of 1 or more.";
+        log(c, refused.message, "Chain of Responsibility", true);
+        return refused;
     }
+
+    EscalationResult result = walkChain(chainHead, rank);
     
     if (chainHead == nullptr)
     {

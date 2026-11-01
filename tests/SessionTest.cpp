@@ -402,3 +402,17 @@ TEST(SessionTest, EscalateRefusesARankBelowOne)
     EXPECT_FALSE(result.handled);
     EXPECT_TRUE(result.steps.empty());
 }
+
+/** Escalating a work item refuses the same ranks as escalating a case. */
+TEST(SessionTest, EscalateWorkRefusesARankBelowOne)
+{
+    Session session(Scenarios::hospital());
+    WorkflowInstance *c = session.openCase();
+    ASSERT_TRUE(session.addWork(c, {"Check vitals", "Nurse", "Low"}, "RoleBased", "EventBased").accepted);
+
+    EscalationResult result = session.escalateWork(c, "Check vitals", 0);
+
+    EXPECT_FALSE(result.handled);
+    EXPECT_TRUE(result.steps.empty());
+    EXPECT_TRUE(session.escalateWork(c, "Check vitals", 3).handled);
+}

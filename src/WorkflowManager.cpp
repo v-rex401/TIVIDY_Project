@@ -44,7 +44,7 @@ Staff *WorkflowManager::assignWorkItem(WorkItem *wi, WorkflowInstance *wc)
 	Staff *assignee = this->assignmentStrategy->selectAssignmentItem(wi, wc, runningInstances);
 	
 	if(assignee != nullptr){
-		// Nobody took the work so there is nothing to tell the outside system
+		// Someone took the work, so the outside system is told about it
 		this->notifyExternal();
 	}
 
@@ -57,7 +57,7 @@ Stage *WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc)
 
 	Stage *next = this->routingStrategy->selectItemState(wi, wc);
 	if(next != nullptr){
-		//Nothing was routed, so there is nothing to tell the outside system
+		// This work reached a stage, so the outside system is told about it
 		this->notifyExternal();
 	}
 

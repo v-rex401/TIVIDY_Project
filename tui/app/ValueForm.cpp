@@ -26,14 +26,13 @@ Popup ValueForm(AppState &app, std::shared_ptr<MainUi> ui)
     {
         int key = 0;
         std::string value;
-        std::string newKey;
         std::vector<std::string> keys;
     };
     std::shared_ptr<Fields> f = std::make_shared<Fields>();
 
     auto set = [&app, ui, f]
     {
-        std::string key = !f->newKey.empty() ? f->newKey : (f->keys.empty() ? "" : f->keys[f->key]);
+        std::string key = f->keys.empty() ? "" : f->keys[f->key];
         double value = 0;
         try
         {
@@ -56,23 +55,21 @@ Popup ValueForm(AppState &app, std::shared_ptr<MainUi> ui)
     InputOption option = Theme::input();
     option.on_enter = set;
     Component value = Input(&f->value, "a number", option);
-    Component newKey = Input(&f->newKey, "or a new value name", option);
     Component ok = Button("Set", set, Theme::button());
     Component cancel = Button("Cancel", [ui] { ui->value = false; }, Theme::button());
-    Component form = Container::Vertical({key, value, newKey, Container::Horizontal({ok, cancel})});
+    Component form = Container::Vertical({key, value, Container::Horizontal({ok, cancel})});
 
-    Component view = Renderer(form, [&app, f, key, value, newKey, ok, cancel]
+    Component view = Renderer(form, [&app, f, key, value, ok, cancel]
     {
         WorkflowInstance *c = app.currentCase();
         std::string now = (c != nullptr && !f->keys.empty()) ? number(c->getData(f->keys[f->key])) : "-";
         Element content = vbox({
             paragraph("Routing reads these values, so changing one changes where the next work goes. "
-                      "Only this case changes.") | dim,
+                    "Only this case changes.") | dim,
             text(""),
             row("Value", key->Render()),
             row("Now", text(now) | bold),
             row("New value", value->Render()),
-            row("", newKey->Render()),
             text(""),
             hbox({ok->Render(), text("  "), cancel->Render(), filler(), text("esc closes") | dim}),
         });
@@ -84,7 +81,6 @@ Popup ValueForm(AppState &app, std::shared_ptr<MainUi> ui)
         f->keys = app.session->dataKeys();
         f->key = 0;
         f->value.clear();
-        f->newKey.clear();
     };
     return {view, onOpen};
 }
