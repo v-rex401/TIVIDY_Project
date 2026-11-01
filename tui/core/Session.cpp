@@ -654,10 +654,10 @@ SubmitResult Session::addWork(WorkflowInstance *c, const WorkSpec &work,
 
     if (c->getWorkItems().size() == itemsBefore)
     {
-        // The manager notifies once after assigning and once after routing,
-        // so one notification means nobody was found to do it.
+        // The manager notifies once it has assigned the work and once it has
+        // routed it, so no notification means nobody was found to do it.
         delete task;
-        result.message = result.notificationsSent <= 1
+        result.message = result.notificationsSent == 0
                              ? "Nobody could take \"" + work.name + "\" (" + assignment + " found no one" +
                                    (work.role.empty() ? "" : " for \"" + work.role + "\"") + ")"
                              : "\"" + work.name + "\" had someone but " + routing + " routing chose no stage";

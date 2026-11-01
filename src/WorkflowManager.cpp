@@ -42,7 +42,11 @@ Staff *WorkflowManager::assignWorkItem(WorkItem *wi, WorkflowInstance *wc)
 	if (assignmentStrategy == nullptr || wi == nullptr || wc == nullptr) return nullptr;
 
 	Staff *assignee = this->assignmentStrategy->selectAssignmentItem(wi, wc, runningInstances);
-	this->notifyExternal();
+	
+	if(assignee != nullptr){
+		// Nobody took the work so there is nothing to tell the outside system
+		this->notifyExternal();
+	}
 
 	return assignee;
 }
@@ -52,7 +56,10 @@ Stage *WorkflowManager::routeWorkItem(WorkItem *wi, WorkflowInstance *wc)
 	if (routingStrategy == nullptr || wi == nullptr || wc == nullptr) return nullptr;
 
 	Stage *next = this->routingStrategy->selectItemState(wi, wc);
-	this->notifyExternal();
+	if(next != nullptr){
+		//Nothing was routed, so there is nothing to tell the outside system
+		this->notifyExternal();
+	}
 
 	return next;
 }
