@@ -775,6 +775,13 @@ EscalationResult Session::escalateWork(WorkflowInstance *c, const std::string &w
 {
     EscalationResult result;
     result.rank = rank;
+    if (rank < 1)
+    {
+        result.message = "A request has to need a rank of 1 or more.";
+        log(c, result.message, "Chain of Responsibility", true);
+        return result;
+    }
+
     CaseRecord *record = recordFor(c);
     WorkItem *item = nullptr;
     if (record != nullptr)
@@ -802,7 +809,7 @@ EscalationResult Session::escalateWork(WorkflowInstance *c, const std::string &w
     }
     result.startedWith = workName + " (" + item->getResponsible()->getName() + ")";
     result.message = "\"" + workName + "\" needs rank " + std::to_string(rank) + ": " + ladder(result.steps) +
-                     (result.handled ? "" : ", nobody can approve it");
+                    (result.handled ? "" : ", nobody can approve it");
     log(c, result.message, "Chain of Responsibility", !result.handled);
     return result;
 }
