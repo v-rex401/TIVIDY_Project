@@ -1,3 +1,10 @@
+/**
+ * @file Task.cpp
+ * @brief Implementation of the Task class
+ * @author Kayla Falconer
+ * @date 2026-10-24
+ */
+
 #include "Task.h"
 #include "WorkflowVisitor.h"
 #include "Staff.h"
@@ -5,25 +12,49 @@
 #include <string>
 #include <iostream>
 
+/**
+ * @brief Constructs a Task with a name and title
+ * @param name Short identifier for the Task
+ * @param title Human-readable title of the Task
+ */
 Task::Task(const std::string& name, const std::string& title)
 	: name(name), title(title), responsible(nullptr)
 {}
 
+/**
+ * @brief Gets the name of the Task
+ * @return The Task's name
+ */
 std::string Task::getName()
 {
 	return this->name;
 }
 
+/**
+ * @brief Gets the title of the Task
+ * @return The Task's title
+ */
 std::string Task::getTitle()
 {
 	return this->title;
 }
 
+/**
+ * @brief Prints the Task in the workflow hierarchy
+ * @param indent String used for indentation
+ */
 void Task::printHierarchy(std::string indent)
 {
 	std::cout << indent << "Task: " << this->name << "\n";
 }
 
+/**
+ * @brief Attempts to handle a workflow request based on Staff rank
+ * First delegates the request to the responsible Staff member
+ * If the Staff member cannot handle the request, it is forwarded to the next WorkItem in the Chain of Responsibility
+ * @param rank Minimum Staff rank required to handle the request
+ * @return true if the request was handled, otherwise false
+ */
 bool Task::handleRequest(int rank)
 {
     if(this->responsible != nullptr)
@@ -42,11 +73,20 @@ bool Task::handleRequest(int rank)
     return false;
 }
 
+/**
+ * @brief Sets the next WorkItem in the Chain of Responsibility
+ * @param next Pointer to the next WorkItem
+ */
 void Task::setNextHandler(WorkItem *next)
 {
 	WorkItem::setNextHandler(next);
 }
 
+/**
+ * @brief Accepts a WorkflowVisitor
+ * Calls the visitor's visitTask() method to perform an operation on the Task
+ * @param v Pointer to the WorkflowVisitor
+ */
 void Task::accept(WorkflowVisitor *v)
 {
 	if (v == nullptr)
@@ -57,6 +97,12 @@ void Task::accept(WorkflowVisitor *v)
 	v->visitTask(this);
 }
 
+/**
+ * @brief Creates a clone of the Task
+ * Copies the Task's name, title, severity and required position
+ * The responsible Staff pointer is copied without cloning the Staff object.
+ * @return Pointer to the cloned Task
+ */
 WorkItem* Task::clone()
 {
     Task* clonedTask = new Task(this->name, this->title);
@@ -68,31 +114,55 @@ WorkItem* Task::clone()
     return clonedTask;
 }
 
+/**
+ * @brief Sets the severity of the Task
+ * @param severity The severity label, e.g. "High"
+ */
 void Task::setSeverity(const std::string& severity)
 {
     this->severity = severity;
 }
 
+/**
+ * @brief Gets the Staff member responsible for the Task
+ * @return Pointer to the responsible Staff member, or nullptr
+ */
 Staff* Task::getResponsible()
 {
     return responsible;
 }
 
+/**
+ * @brief Sets the Staff member responsible for the Task
+ * @param staff Pointer to the responsible Staff member
+ */
 void Task::setResponsible(Staff* staff)
 {
     responsible = staff;
 }
 
+/**
+ * @brief Gets the severity of the Task
+ * @return The severity level
+ */
 std::string Task::getSeverity()
 {
     return severity;
 }
 
+/**
+ * @brief Gets the required Staff position of the Task
+ * @return The required Staff position
+ */
 std::string Task::getRequiredPosition()
 {
     return requiredPosition;
 }
 
+/**
+ * @brief Sets the required Staff position of the Task
+ * @param position The required Staff position
+ */
 void Task::setRequiredPosition(const std::string& position)
 {
     requiredPosition = position;
