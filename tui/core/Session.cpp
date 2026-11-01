@@ -407,12 +407,23 @@ ActionResult Session::setData(WorkflowInstance *c, const std::string &key, doubl
         result.message = "Pick a case and a value name first.";
         return result;
     }
-    double old = c->getData(key);
-    c->setData(key, value);
     if (std::find(keys.begin(), keys.end(), key) == keys.end())
     {
-        keys.push_back(key);
+        // Only the values this workflow declared, so a typo cannot quietly
+        // create a value no strategy ever reads.
+        result.message = "This workflow has no value called \"" + key + "\".";
+        log(c, result.message, "Instance data", true);
+        return result;
     }
+    if (!(value >= kLowestValue && value <= kHighestValue)) // also rejects NaN
+    {
+        result.message = "\"" + key + "\" must be between " + number(kLowestValue) +
+                        " and " + number(kHighestValue) + ".";
+        log(c, result.message, "Instance data", true);
+        return result;
+    }
+    double old = c->getData(key);
+    c->setData(key, value);
     result.changed = true;
     result.message = key + ": " + number(old) + " → " + number(value);
     log(c, result.message, "Instance data");
@@ -654,10 +665,10 @@ SubmitResult Session::addWork(WorkflowInstance *c, const WorkSpec &work,
 
     if (c->getWorkItems().size() == itemsBefore)
     {
-        // The manager notifies once after assigning and once after routing,
-        // so one notification means nobody was found to do it.
+        // The manager notifies once it has assigned the work and once it has
+        // routed it, so no notification means nobody was found to do it.
         delete task;
-        result.message = result.notificationsSent <= 1
+        result.message = result.notificationsSent == 0
                              ? "Nobody could take \"" + work.name + "\" (" + assignment + " found no one" +
                                    (work.role.empty() ? "" : " for \"" + work.role + "\"") + ")"
                              : "\"" + work.name + "\" had someone but " + routing + " routing chose no stage";
@@ -732,7 +743,17 @@ namespace
 
 EscalationResult Session::escalate(WorkflowInstance *c, int rank)
 {
+    if (rank < 1)
+    {
+        EscalationResult refused;
+        refused.rank = rank;
+        refused.message = "A request has to need a rank of 1 or more.";
+        log(c, refused.message, "Chain of Responsibility", true);
+        return refused;
+    }
+
     EscalationResult result = walkChain(chainHead, rank);
+    
     if (chainHead == nullptr)
     {
         result.message = "There is no escalation chain set up.";
@@ -745,7 +766,7 @@ EscalationResult Session::escalate(WorkflowInstance *c, int rank)
         keepOutput(capture.lines());
     }
     result.message = "Rank " + std::to_string(rank) + " request: " + ladder(result.steps) +
-                     (result.handled ? "" : ", nobody can approve it");
+                    (result.handled ? "" : ", nobody can approve it");
     log(c, result.message, "Chain of Responsibility", !result.handled);
     return result;
 }
@@ -754,6 +775,13 @@ EscalationResult Session::escalateWork(WorkflowInstance *c, const std::string &w
 {
     EscalationResult result;
     result.rank = rank;
+    if (rank < 1)
+    {
+        result.message = "A request has to need a rank of 1 or more.";
+        log(c, result.message, "Chain of Responsibility", true);
+        return result;
+    }
+
     CaseRecord *record = recordFor(c);
     WorkItem *item = nullptr;
     if (record != nullptr)
@@ -781,7 +809,7 @@ EscalationResult Session::escalateWork(WorkflowInstance *c, const std::string &w
     }
     result.startedWith = workName + " (" + item->getResponsible()->getName() + ")";
     result.message = "\"" + workName + "\" needs rank " + std::to_string(rank) + ": " + ladder(result.steps) +
-                     (result.handled ? "" : ", nobody can approve it");
+                    (result.handled ? "" : ", nobody can approve it");
     log(c, result.message, "Chain of Responsibility", !result.handled);
     return result;
 }

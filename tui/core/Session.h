@@ -179,6 +179,9 @@ public:
     /** @return Names of the values cases carry (e.g. "triage score"). */
     std::vector<std::string> dataKeys() const;
 
+    static constexpr double kLowestValue = 0.0;    ///< Smallest value setData accepts.
+    static constexpr double kHighestValue = 1e9;   ///< Largest value setData accepts.
+
     /**
      * @brief Change a value on one case.
      * @param c The case.

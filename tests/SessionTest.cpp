@@ -236,7 +236,7 @@ TEST(SessionTest, WorkNobodyFitsIsRefusedAndNotAdded)
 
     SubmitResult result = session.addWork(c, {"Fly the plane", "Pilot", "Low"}, "RoleBased", "EventBased");
     EXPECT_FALSE(result.accepted);
-    EXPECT_EQ(result.notificationsSent, 1);
+    EXPECT_EQ(result.notificationsSent, 0); // nobody was assigned, so nothing was sent
     EXPECT_EQ(stageOf(session, c, "Fly the plane"), "");
 }
 
@@ -366,4 +366,53 @@ TEST(SessionTest, EveryReadyMadeScenarioRunsEndToEnd)
         }
         EXPECT_TRUE(session.approve(c).changed) << setup.name;
     }
+}
+
+/** A typo must not quietly create a value no strategy reads. */
+TEST(SessionTest, SetDataRefusesAValueTheWorkflowDoesNotHave)
+{
+    Session session(Scenarios::hospital());
+    WorkflowInstance *c = session.openCase();
+    const std::size_t before = session.dataKeys().size();
+
+    ActionResult result = session.setData(c, "no such value", 5);
+
+    EXPECT_FALSE(result.changed);
+    EXPECT_EQ(session.dataKeys().size(), before);
+}
+
+/** Values outside the allowed range are refused, and the old value stays. */
+TEST(SessionTest, SetDataRefusesValuesOutOfRange)
+{
+    Session session(Scenarios::hospital());
+    WorkflowInstance *c = session.openCase();
+
+    EXPECT_FALSE(session.setData(c, "triage score", -1).changed);
+    EXPECT_FALSE(session.setData(c, "triage score", 1e308).changed);
+    EXPECT_TRUE(session.setData(c, "triage score", 9).changed);
+}
+
+/** A request that needs no rank at all is not a request. */
+TEST(SessionTest, EscalateRefusesARankBelowOne)
+{
+    Session session(Scenarios::hospital());
+
+    EscalationResult result = session.escalate(nullptr, 0);
+
+    EXPECT_FALSE(result.handled);
+    EXPECT_TRUE(result.steps.empty());
+}
+
+/** Escalating a work item refuses the same ranks as escalating a case. */
+TEST(SessionTest, EscalateWorkRefusesARankBelowOne)
+{
+    Session session(Scenarios::hospital());
+    WorkflowInstance *c = session.openCase();
+    ASSERT_TRUE(session.addWork(c, {"Check vitals", "Nurse", "Low"}, "RoleBased", "EventBased").accepted);
+
+    EscalationResult result = session.escalateWork(c, "Check vitals", 0);
+
+    EXPECT_FALSE(result.handled);
+    EXPECT_TRUE(result.steps.empty());
+    EXPECT_TRUE(session.escalateWork(c, "Check vitals", 3).handled);
 }
