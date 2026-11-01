@@ -23,6 +23,7 @@
 #include "WorkflowEvent.h"
 #include "WorkflowInstance.h"
 #include "WorkflowManager.h"
+#include "Staff.h"
 #include "WorkItem.h"
 
 namespace
@@ -42,8 +43,32 @@ namespace
         WorkItem *clone() override { return new StubWorkItem(); }
     };
 
-    /** Lets the manager run without a real assignment strategy. */
+    /** Someone for the strategy to hand the work to. */
+    class StubStaff : public Staff
+    {
+    public:
+        std::string getName() override { return "Stub"; }
+        std::string getTitle() override { return "Tester"; }
+        int getRank() override { return 1; }
+        bool handleRequest(int) override { return true; }
+    };
+
+    /** Always finds someone, so the work is assigned. */
     class StubAssignment : public AssignmentStrategy
+    {
+    public:
+        Staff *selectAssignmentItem(WorkItem *, WorkflowInstance *,
+                                    const std::vector<WorkflowInstance *> &)
+        {
+            return &who;
+        }
+
+    private:
+        StubStaff who;
+    };
+
+    /** Never finds anyone, so nothing is assigned. */
+    class RefusingAssignment : public AssignmentStrategy
     {
     public:
         Staff *selectAssignmentItem(WorkItem *, WorkflowInstance *,
@@ -197,6 +222,23 @@ TEST(ManagerAdapterTest, AssigningWorkNotifiesThroughTheAdapter)
 
     manager.assignWorkItem(&item, &context);
     EXPECT_EQ(2, service.getSentCount());
+}
+
+/** Nothing was assigned, so there is nothing to tell the outside system. */
+TEST(ManagerAdapterTest, AFailedAssignmentNotifiesNothing)
+{
+    NotificationSystem service;
+    NotificationAdapter adapter(&service);
+
+    WorkflowManager manager;
+    manager.setAssignmentStrategy(new RefusingAssignment()); // manager deletes it
+    manager.setExternalSystem(&adapter);
+
+    StubWorkItem item;
+    WorkflowInstance context;
+
+    EXPECT_TRUE(manager.assignWorkItem(&item, &context) == NULL);
+    EXPECT_EQ(0, service.getSentCount());
 }
 
 /** Without an external system the engine still runs. */
