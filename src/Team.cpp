@@ -10,20 +10,38 @@
 #include <iostream>
 #include <algorithm>
 
+/**
+ * @brief Constructs a Team with a name, title and rank
+ * @param name Name of the Team
+ * @param title Title of the Team
+ * @param rank Authority rank assigned to the Team
+ */
 Team::Team(std::string name, std::string title, int rank) {
     this->name = name;
     this->title = title;
     this->rank = rank;
 }
 
+/**
+ * @brief Gets the name of the Team
+ * @return The Team's name
+ */
 std::string Team::getName() {
 	return this->name;
 }
 
+/**
+ * @brief Gets the title of the Team
+ * @return The Team's title
+ */
 std::string Team::getTitle() {
 	return this->title;
 }
 
+/**
+ * @brief Performs the Team's operation
+ * Currently has no implementation, as no logic was specified in the UML.
+ */
 void Team::operation() {
 	//no logic specified in the UML.
 }
@@ -44,6 +62,10 @@ void Team::printHierarchy(std::string indent) {
     }
 }
 
+/**
+ * @brief Gets the authority rank of the Team
+ * @return The Team's rank
+ */
 int Team::getRank() {
 	return this->rank;
 }

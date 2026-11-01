@@ -2,6 +2,10 @@
 #define STAFF_H
 #include <string>
 
+/**
+ * @brief Abstract base class representing a staff member in a chain of responsibility
+ */
+
 class Staff
 {
 
@@ -25,9 +29,30 @@ public:
 	 * It ensures proper cleanup of derived Employee and Team objects when deleted via a Staff pointer.
 	 */
 	virtual ~Staff() = default;
+
+    /**
+     * @brief Gets the name of the Staff member
+     * @return The Staff member's name
+     */
 	virtual std::string getName() = 0;
+
+    /**
+     * @brief Gets the title of the Staff member
+     * @return The Staff member's title
+     */
 	virtual std::string getTitle() = 0;
+
+    /**
+     * @brief Gets the authority rank of the Staff member
+     * @return The Staff member's rank
+     */
 	virtual int getRank() = 0;
+
+    /**
+     * @brief Prints the Staff hierarchy
+     * The default implementation performs no action
+     * @param indent String used for indentation
+     */
 	virtual void printHierarchy(std::string) {}
 
 	/**

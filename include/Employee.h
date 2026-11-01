@@ -3,6 +3,10 @@
 #include <string>
 #include "Staff.h"
 
+/**
+ * @brief Represents an Employee in the staff hierarchy
+ */
+
 class Employee : public Staff {
 
 private:
@@ -21,9 +25,27 @@ public:
      */
     Employee(std::string name, std::string title, int rank);
 
+	/**
+     * @brief Destructor for the Employee
+     */
 	~Employee() override = default;
+
+	/**
+     * @brief Gets the name of the Employee
+     * @return The Employee's name
+     */
 	std::string getName() override;
+
+	/**
+     * @brief Gets the job title of the Employee
+     * @return The Employee's title
+     */
 	std::string getTitle() override;
+
+	/**
+     * @brief Gets the authority rank of the Employee
+     * @return The Employee's rank
+     */
 	int getRank() override;
 
 	/**

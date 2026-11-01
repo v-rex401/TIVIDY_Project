@@ -7,7 +7,9 @@ class WorkflowVisitor;
 class Staff;
 
 /**
- * @brief Abstract base class for tasks and stages in a workflow
+ * @brief Abstract base class for workflow items
+ * 
+ * Defines the common interface for Tasks, Stages and Handlers
  */
 
 class WorkItem {
@@ -27,12 +29,21 @@ public:
         return this->successor;
     }
 
+	/**
+     * @brief Gets the name of the WorkItem
+     * @return The WorkItem's name
+     */
 	virtual std::string getName() = 0;
 
+	/**
+     * @brief Gets the title of the WorkItem
+     * @return The WorkItem's title
+     */
 	virtual std::string getTitle() = 0;
 
 	/**
-	 * @brief get the severity of a Stage
+	 * @brief get the severity of the WorkItem
+	 * @return The severity level
 	 */
 	virtual std::string getSeverity() = 0;
 
@@ -47,17 +58,20 @@ public:
 	virtual void setSeverity(const std::string& severity) { (void)severity; }
 
 	/**
-	 * @brief get the required Staff position of a Stage
+	 * @brief get the required Staff position of the WorkItem
+	 * @return The required Staff position
 	 */
 	virtual std::string getRequiredPosition() = 0;
 
 	/**
-	 * @brief set the required Staff position of a Stage
+	 * @brief set the required Staff position of the WorkItem
+	 * @param position The required Staff position
 	 */
 	virtual void setRequiredPosition(const std::string& position) = 0;
 
 	/**
 	 * @brief Print the hierarchy of work items
+	 * @param indent String used for indentation
 	 */
 	virtual void printHierarchy(std::string indent) = 0;
 
@@ -70,22 +84,38 @@ public:
 
 	/**
 	 * @brief Set the next handler in the chain
+	 * @param next Pointer to the next WorkItem
 	 */
 	void setNextHandler(WorkItem* next);
 
 	/**
 	 * @brief Create a clone of the work item
+	 * @return Pointer to the cloned WorkItem
 	 */
 	virtual WorkItem* clone() = 0;
 
 	/**
 	 * @brief Accept a workflow visitor
+	 * @param v Pointer to the visitor
 	 */
 	virtual void accept(WorkflowVisitor* v);
-
+	
+	/**
+     * @brief Gets the Staff member responsible for the WorkItem
+     * @return Pointer to the responsible Staff member, or nullptr if none is assigned
+     */
 	virtual Staff* getResponsible() { return nullptr; }
+
+	/**
+     * @brief Assigns a responsible Staff member to the WorkItem
+     * The default implementation performs no action
+     * @param staff Pointer to the Staff member
+     */
 	virtual void setResponsible(Staff*) {}
 
+	/**
+     * @brief Virtual destructor for the WorkItem base class.
+     */
 	virtual ~WorkItem() = default;
 };
 
