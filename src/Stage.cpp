@@ -16,8 +16,6 @@
 
 /**
  * @brief Constructs a Stage with a name and title
- * @param name Short identifier for the Stage
- * @param title Human-readable title of the Stage
  */
 Stage::Stage(const std::string &name, const std::string &title)
     : name(name), title(title), responsible(nullptr)
@@ -41,7 +39,6 @@ Stage::~Stage()
 /**
  * @brief Adds a WorkItem to the Stage
  * Prevents null pointers and duplicate pointers from being added to the Stage's collection
- * @param c Pointer to the WorkItem to add
  */
 void Stage::addMember(WorkItem *c)
 {
@@ -63,7 +60,6 @@ void Stage::addMember(WorkItem *c)
 /**
  * @brief Removes a WorkItem from the Stage
  * Removes the WorkItem pointer from the collection without deleting the object
- * @param c Pointer to the WorkItem to remove
  */
 void Stage::removeMember(WorkItem *c)
 {
@@ -89,7 +85,6 @@ void Stage::removeMember(WorkItem *c)
  * @brief Attempts to handle a request based on the required Staff rank
  * First delegates the request to the responsible Staff member
  * If the Staff member cannot handle it, the request is forwarded to the next WorkItem in the Chain of Responsibility
- * @param rank Minimum Staff rank required to handle the request
  * @return true if the request was handled, otherwise false
  */
 bool Stage::handleRequest(int rank)
@@ -112,7 +107,6 @@ bool Stage::handleRequest(int rank)
 
 /**
  * @brief Sets the next WorkItem in the Chain of Responsibility
- * @param next Pointer to the next WorkItem
  */
 void Stage::setNextHandler(WorkItem *next)
 {
@@ -122,7 +116,6 @@ void Stage::setNextHandler(WorkItem *next)
 /**
  * @brief Accepts a WorkflowVisitor
  * Calls the visitor's visitStage() method to perform an operation on the Stage
- * @param v Pointer to the WorkflowVisitor
  */
 void Stage::accept(WorkflowVisitor *v)
 {
@@ -172,7 +165,6 @@ Staff *Stage::getResponsible()
 
 /**
  * @brief Sets the Staff member responsible for the Stage
- * @param staff Pointer to the responsible Staff member
  */
 void Stage::setResponsible(Staff *staff)
 {
@@ -190,7 +182,6 @@ std::string Stage::getSeverity()
 
 /**
  * @brief Sets the severity of the Stage
- * @param severity The severity label
  */
 void Stage::setSeverity(const std::string &severity)
 {
@@ -245,7 +236,6 @@ std::string Stage::getTitle()
 /**
  * @brief Prints the Stage and its contained WorkItem hierarchy
  * Recursively calls printHierarchy() on each contained WorkItem, increasing the indentation for each level
- * @param indent String used for indentation
  */
 void Stage::printHierarchy(std::string indent)
 {
@@ -262,7 +252,6 @@ void Stage::printHierarchy(std::string indent)
 
 /**
  * @brief Sets the name of the Stage
- * @param name The new Stage name
  */
 void Stage::setName(std::string name)
 {

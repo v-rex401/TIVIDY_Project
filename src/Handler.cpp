@@ -113,7 +113,6 @@ void Handler::setResponsible(Staff* staff)
  * @brief Attempts to handle a workflow request based on Staff rank
  * First delegates the request to the responsible Staff member
  * If the Staff member cannot handle the request, it is forwarded to the next WorkItem in the Chain of Responsibility
- * @param rank Minimum Staff rank required to handle the request
  * @return true if the request was handled, otherwise false
  */
 bool Handler::handleRequest(int rank)
@@ -171,7 +170,6 @@ std::string Handler::getSeverity()
 
 /**
  * @brief Sets the severity of the Handler
- * @param severity The severity label
  */
 void Handler::setSeverity(const std::string& severity)
 {

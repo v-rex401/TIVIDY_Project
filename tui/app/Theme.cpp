@@ -108,7 +108,7 @@ Color Theme::stateColour(const std::string &state)
     return found == colours.end() ? Color::Default : found->second;
 }
 
-Element Theme::selected(Element element, Color background)
+ftxui::Element Theme::selected(ftxui::Element element, ftxui::Color background)
 {
     return std::make_shared<SelectedNode>(std::move(element), background);
 }
@@ -184,7 +184,7 @@ Component Theme::choice(const std::vector<std::string> *entries, int *selected, 
     return tabMovesOn(Menu(entries, selected, option));
 }
 
-Component Theme::tabMovesOn(Component component)
+ftxui::Component Theme::tabMovesOn(ftxui::Component component)
 {
     return std::make_shared<TabMovesOn>(std::move(component));
 }

@@ -12,9 +12,6 @@
 
 /**
  * @brief Constructs a Team with a name, title and rank
- * @param name Name of the Team
- * @param title Title of the Team
- * @param rank Authority rank assigned to the Team
  */
 Team::Team(std::string name, std::string title, int rank) {
     this->name = name;
@@ -48,7 +45,6 @@ void Team::operation() {
 
 /**
  * @brief Prints the team hierarchy.
- * @param indent The string that is used for indentation formatting.
  */
 void Team::printHierarchy(std::string indent) {
 	std::cout << indent << "Team: " << this->name << " (Rank: " << this->rank << ")\n";
@@ -72,7 +68,6 @@ int Team::getRank() {
 
 /**
  * @brief Adds a staff member to the team
- * @param member Pointer to the staff member
  */
 void Team::addMember(Staff* member)
 {
@@ -94,7 +89,6 @@ void Team::addMember(Staff* member)
 
 /**
  * @brief Removes and deletes a staff member from the team
- * @param member Pointer to the staff member
  */
 void Team::removeMember(Staff* member)
 {
@@ -120,7 +114,6 @@ const std::vector<Staff*>& Team::getMembers() const
 
 /**
  * @brief Attempts to handle a request based on the required rank
- * @param rank Minimum rank required to handle the request
  * @return true if handled, otherwise false
  */
 bool Team::handleRequest(int rank)

@@ -107,7 +107,6 @@ WorkflowDefinition::~WorkflowDefinition()
 /**
  * @brief Adds a WorkItem as a stage in the workflow definition
  * Ignores null pointers. The WorkflowDefinition takes ownership of the added WorkItem
- * @param s Pointer to the WorkItem to add
  */
 void WorkflowDefinition::addStage(WorkItem *s)
 {

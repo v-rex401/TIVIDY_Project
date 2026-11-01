@@ -64,7 +64,6 @@ WorkflowInstance::~WorkflowInstance()
 
 /**
  * @brief Restores the state saved in a Memento. It does not go through setState(), as the state is already owned by this instance.
- * @param m The Memento to restore from.
  */
 void WorkflowInstance::setMemento(Memento *m)
 {

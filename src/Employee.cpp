@@ -57,7 +57,6 @@ void Employee::printHierarchy(std::string indent) {
  * @brief Attempts to handle a request based on the required Staff rank
  * Handles the request if the Employee's rank meets or exceeds the required rank
  * Otherwise, forwards the request to the next Staff member in the Chain of Responsibility
- * @param rank Minimum Staff rank required to handle the request
  * @return true if the request was handled, otherwise false
  */
 bool Employee::handleRequest(int rank) {

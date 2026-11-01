@@ -13,7 +13,6 @@
  * @brief Constructs a WorkflowDirector with the specified builder
  * Stores a pointer to the WorkflowBuilder used to construct workflow definitions
  * The director does not take ownership of the builder
- * @param b Pointer to the WorkflowBuilder
  */
 WorkflowDirector::WorkflowDirector(WorkflowBuilder* b)
 {
