@@ -10,7 +10,6 @@
 
 /**
  * @brief Sets the next WorkItem in the Chain of Responsibility
- * @param next Pointer to the next WorkItem in the chain
  */
 void WorkItem::setNextHandler(WorkItem* next) {
 	this->successor = next;
@@ -18,7 +17,6 @@ void WorkItem::setNextHandler(WorkItem* next) {
 
 /**
  * @brief Accepts a visitor to perform an operation on the WorkItem
- * @param v Pointer to the WorkflowVisitor
  */
 void WorkItem::accept(WorkflowVisitor* v)
 {

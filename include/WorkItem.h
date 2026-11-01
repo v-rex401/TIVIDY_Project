@@ -111,7 +111,7 @@ public:
      * The default implementation performs no action
      * @param staff Pointer to the Staff member
      */
-	virtual void setResponsible(Staff*) {}
+	virtual void setResponsible(Staff *staff) {}
 
 	/**
      * @brief Virtual destructor for the WorkItem base class.

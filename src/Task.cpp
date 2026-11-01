@@ -14,8 +14,6 @@
 
 /**
  * @brief Constructs a Task with a name and title
- * @param name Short identifier for the Task
- * @param title Human-readable title of the Task
  */
 Task::Task(const std::string& name, const std::string& title)
 	: name(name), title(title), responsible(nullptr)
@@ -52,7 +50,6 @@ void Task::printHierarchy(std::string indent)
  * @brief Attempts to handle a workflow request based on Staff rank
  * First delegates the request to the responsible Staff member
  * If the Staff member cannot handle the request, it is forwarded to the next WorkItem in the Chain of Responsibility
- * @param rank Minimum Staff rank required to handle the request
  * @return true if the request was handled, otherwise false
  */
 bool Task::handleRequest(int rank)
@@ -75,7 +72,6 @@ bool Task::handleRequest(int rank)
 
 /**
  * @brief Sets the next WorkItem in the Chain of Responsibility
- * @param next Pointer to the next WorkItem
  */
 void Task::setNextHandler(WorkItem *next)
 {
@@ -85,7 +81,6 @@ void Task::setNextHandler(WorkItem *next)
 /**
  * @brief Accepts a WorkflowVisitor
  * Calls the visitor's visitTask() method to perform an operation on the Task
- * @param v Pointer to the WorkflowVisitor
  */
 void Task::accept(WorkflowVisitor *v)
 {
@@ -116,7 +111,6 @@ WorkItem* Task::clone()
 
 /**
  * @brief Sets the severity of the Task
- * @param severity The severity label, e.g. "High"
  */
 void Task::setSeverity(const std::string& severity)
 {
@@ -134,7 +128,6 @@ Staff* Task::getResponsible()
 
 /**
  * @brief Sets the Staff member responsible for the Task
- * @param staff Pointer to the responsible Staff member
  */
 void Task::setResponsible(Staff* staff)
 {
@@ -161,7 +154,6 @@ std::string Task::getRequiredPosition()
 
 /**
  * @brief Sets the required Staff position of the Task
- * @param position The required Staff position
  */
 void Task::setRequiredPosition(const std::string& position)
 {

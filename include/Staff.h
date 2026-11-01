@@ -53,7 +53,7 @@ public:
      * The default implementation performs no action
      * @param indent String used for indentation
      */
-	virtual void printHierarchy(std::string) {}
+	virtual void printHierarchy(std::string indent) {}
 
 	/**
      * @brief Sets the next staff member in the chain
