@@ -744,6 +744,15 @@ namespace
 EscalationResult Session::escalate(WorkflowInstance *c, int rank)
 {
     EscalationResult result = walkChain(chainHead, rank);
+    if (rank < 1)
+    {
+        result.rank = rank;
+        result.steps.clear();
+        result.message = "A request has to need a rank of 1 or more.";
+        log(c, result.message, "Chain of Responsibility", true);
+        return result;
+    }
+    
     if (chainHead == nullptr)
     {
         result.message = "There is no escalation chain set up.";
@@ -756,7 +765,7 @@ EscalationResult Session::escalate(WorkflowInstance *c, int rank)
         keepOutput(capture.lines());
     }
     result.message = "Rank " + std::to_string(rank) + " request: " + ladder(result.steps) +
-                     (result.handled ? "" : ", nobody can approve it");
+                    (result.handled ? "" : ", nobody can approve it");
     log(c, result.message, "Chain of Responsibility", !result.handled);
     return result;
 }
