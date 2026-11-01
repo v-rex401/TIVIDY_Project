@@ -91,7 +91,7 @@ Neither scenario changes any of these; the differences arrive as data through th
 ## Dependencies
 
 | Dependency | Version | Why |
-|---|---|---|---|
+|---|---|---|
 | [FTXUI](https://github.com/ArthurSonzogni/FTXUI) | 6.1.9 | Terminal user interface |
 | [GoogleTest](https://github.com/google/googletest) | 1.17.0 | Unit tests |
 
