@@ -8,3 +8,4 @@ latex/
 *.lck
 *.bak_*
 .vscode/
+docs/latex/
