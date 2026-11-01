@@ -3,8 +3,8 @@ name: Build
 # Controls when the workflow will run
 on:
   pull_request:
-    branches: [ "main", "dev"]
-  push: 
+    branches: ["main", "dev"]
+  push:
     branches: ["main", "dev"]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -19,8 +19,12 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
+      # CMake fetches FTXUI and compiles src/ as C++17 with -Wall -Wextra
+      - name: Configure
+        run: cmake -S . -B build
+
       - name: Compile
-        run: g++ -std=c++11 -Wall -Wextra -o main $(find src -name '*.cpp')
+        run: cmake --build build --target tividy -j 4
 
       - name: Run
-        run: ./main
+        run: ./build/tividy < /dev/null

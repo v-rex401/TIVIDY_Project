@@ -2,7 +2,7 @@ name: Valgrind
 
 on:
   pull_request:
-    branches: ["main", "dev"] 
+    branches: ["main", "dev"]
   push:
     branches: ["main", "dev"]
 
@@ -12,11 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Valgrind 
+      - name: Install Valgrind
         run: sudo apt-get update && sudo apt-get install -y valgrind
 
       - name: Compile with debug info
-        run: g++ -std=c++11 -g -o main $(find src -name '*.cpp')
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+          cmake --build build --target tividy -j 4
 
       - name: Run under Valgrind
-        run: valgrind --leak-check=full --error-exitcode=1 ./main
+        run: valgrind --leak-check=full --error-exitcode=1 ./build/tividy < /dev/null
