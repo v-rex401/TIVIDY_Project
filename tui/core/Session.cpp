@@ -407,12 +407,23 @@ ActionResult Session::setData(WorkflowInstance *c, const std::string &key, doubl
         result.message = "Pick a case and a value name first.";
         return result;
     }
-    double old = c->getData(key);
-    c->setData(key, value);
     if (std::find(keys.begin(), keys.end(), key) == keys.end())
     {
-        keys.push_back(key);
+        // Only the values this workflow declared, so a typo cannot quietly
+        // create a value no strategy ever reads.
+        result.message = "This workflow has no value called \"" + key + "\".";
+        log(c, result.message, "Instance data", true);
+        return result;
     }
+    if (!(value >= kLowestValue && value <= kHighestValue)) // also rejects NaN
+    {
+        result.message = "\"" + key + "\" must be between " + number(kLowestValue) +
+                        " and " + number(kHighestValue) + ".";
+        log(c, result.message, "Instance data", true);
+        return result;
+    }
+    double old = c->getData(key);
+    c->setData(key, value);
     result.changed = true;
     result.message = key + ": " + number(old) + " → " + number(value);
     log(c, result.message, "Instance data");
